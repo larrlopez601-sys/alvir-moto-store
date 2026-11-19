@@ -844,8 +844,6 @@
                         renderHistoryTable();
                         renderUsersTable();
                     }
-                } else {
-                    await pushToCloud();
                 }
             } catch (err) {
                 console.warn('Error leyendo desde Cloud Firestore:', err);
@@ -880,10 +878,10 @@
                     const parsed = JSON.parse(raw);
                     applyParsedAppData(parsed);
                 } catch (err) {
-                    saveAppData();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
                 }
             } else {
-                saveAppData();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
             }
         }
 
