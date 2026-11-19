@@ -1,1660 +1,1972 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alvir Moto Store | Inventario y Recibos de Entrega</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuente Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome para Iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        moto: {
-                            dark: '#0f172a',
-                            card: '#1e293b',
-                            accent: '#ef4444',
-                            accentHover: '#dc2626',
-                            orange: '#f97316'
-                        }
-                    }
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alvir Moto Store | Inventario y Recibos de Entrega</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fuente Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome para Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            moto: {
+              dark: '#0f172a',
+              card: '#1e293b',
+              accent: '#ef4444',
+              accentHover: '#dc2626',
+              orange: '#f97316'
             }
+          }
         }
-    </script>
-    <style>
-        /* Estilos personalizados para impresión de Recibos y Kardex */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            body.printing-receipt #printable-receipt,
-            body.printing-receipt #printable-receipt * {
-                visibility: visible;
-            }
-            body.printing-receipt #printable-receipt {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                box-shadow: none !important;
-                border: none !important;
-                padding: 10px !important;
-                margin: 0 !important;
-            }
-            body.printing-kardex #printable-kardex,
-            body.printing-kardex #printable-kardex * {
-                visibility: visible;
-            }
-            body.printing-kardex #printable-kardex {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                box-shadow: none !important;
-                border: none !important;
-                padding: 10px !important;
-                margin: 0 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
+      }
+    };
+  </script>
+  <style>
+    /* Estilos personalizados para impresión de Recibos y Kardex */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      body.printing-receipt #printable-receipt,
+      body.printing-receipt #printable-receipt * {
+        visibility: visible;
+      }
+      body.printing-receipt #printable-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10px !important;
+        margin: 0 !important;
+      }
+      body.printing-kardex #printable-kardex,
+      body.printing-kardex #printable-kardex * {
+        visibility: visible;
+      }
+      body.printing-kardex #printable-kardex {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10px !important;
+        margin: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
 
-        /* Animaciones suaves */
-        .fade-in {
-            animation: fadeIn 0.25s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    /* Animaciones suaves */
+    .fade-in {
+      animation: fadeIn 0.25s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- NOTIFICACIÓN FLOTANTE -->
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <!-- NOTIFICACIÓN FLOTANTE -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- ========================================== -->
-    <!-- 1. PANTALLA DE INICIO DE SESIÓN ESTRICTA   -->
-    <!-- ========================================== -->
-    <section id="login-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-4">
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in">
-            <!-- Cabecera del Login -->
-            <div class="bg-slate-900 px-8 py-8 text-center relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 via-orange-500 to-red-600"></div>
-                <div class="w-16 h-16 bg-red-600/20 border border-red-500/40 rounded-2xl flex items-center justify-center mx-auto mb-4 text-red-500 text-3xl shadow-inner">
-                    <i class="fa-solid fa-motorcycle"></i>
-                </div>
-                <h1 class="text-2xl font-extrabold text-white tracking-tight">Alvir Moto Store</h1>
-                <p class="text-slate-400 text-sm mt-1">Control de Inventario y Recibos de Entrega</p>
-            </div>
-
-            <!-- Formulario de Login (Solo campos de Usuario y Contraseña) -->
-            <form id="login-form" class="p-8 space-y-5">
-                <div id="login-error" class="hidden bg-red-50 border-l-4 border-red-600 text-red-700 p-3.5 rounded-r-lg text-sm flex items-center gap-2.5">
-                    <i class="fa-solid fa-circle-exclamation text-red-600"></i>
-                    <span id="login-error-text">Usuario o contraseña incorrectos.</span>
-                </div>
-
-                <div>
-                    <label for="login-username" class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre de usuario</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                            <i class="fa-solid fa-user"></i>
-                        </span>
-                        <input type="text" id="login-username" required autocomplete="off"
-                            placeholder="Ingresa tu nombre de usuario"
-                            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="login-password" class="block text-sm font-semibold text-slate-700 mb-1.5">Contraseña</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
-                        <input type="password" id="login-password" required
-                            placeholder="Ingresa tu contraseña"
-                            class="w-full pl-10 pr-11 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
-                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" title="Mostrar/Ocultar contraseña">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold rounded-xl shadow-lg shadow-red-600/30 transition flex items-center justify-center gap-2 text-sm">
-                    <span>Ingresar</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </form>
+  <!-- 1. PANTALLA DE INICIO DE SESIÓN ESTRICTA -->
+  <section id="login-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in">
+      <!-- Cabecera del Login -->
+      <div class="bg-slate-900 px-8 py-7 text-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 via-orange-500 to-red-600"></div>
+        <div class="w-16 h-16 bg-red-600/20 border border-red-500/40 rounded-2xl flex items-center justify-center mx-auto mb-4 text-red-500 text-3xl shadow-inner">
+          <i class="fa-solid fa-motorcycle"></i>
         </div>
-    </section>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">Alvir Moto Store</h1>
+        <p class="text-slate-400 text-sm mt-1">Control de Inventario y Recibos de Entrega</p>
+      </div>
 
-    <!-- ========================================== -->
-    <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN)       -->
-    <!-- ========================================== -->
-    <div id="app-shell" class="hidden flex-col min-h-screen">
-        
-        <!-- Barra Superior de Navegación -->
-        <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 gap-3">
-                    <!-- Logo y Nombre del Negocio -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl shadow-md">
-                                <i class="fa-solid fa-motorcycle"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-extrabold tracking-tight leading-none">Alvir Moto Store</h1>
-                                <span class="text-xs text-slate-400 font-medium">Inventario y Recibos de Entrega</span>
-                            </div>
-                        </div>
-                        <!-- Botón cerrar sesión móvil -->
-                        <button onclick="logout()" class="sm:hidden bg-slate-800 hover:bg-red-600 text-slate-200 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-right-from-bracket"></i> Salir
-                        </button>
-                    </div>
+      <!-- Formulario de Login -->
+      <form id="login-form" class="p-8 space-y-5">
+        <div id="login-error" class="hidden bg-red-50 border-l-4 border-red-600 text-red-700 p-3.5 rounded-r-lg text-sm flex items-center gap-2.5">
+          <i class="fa-solid fa-circle-exclamation text-red-600"></i>
+          <span id="login-error-text">Usuario o contraseña incorrectos.</span>
+        </div>
 
-                    <!-- Info del Usuario Activo y Cerrar Sesión Desktop -->
-                    <div class="flex items-center justify-between sm:justify-end gap-4 bg-slate-800/70 sm:bg-transparent px-3 py-2 sm:p-0 rounded-xl">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 text-xs font-bold">
-                                <i class="fa-solid fa-user-check"></i>
-                            </div>
-                            <div class="text-left">
-                                <div class="flex items-center gap-1.5">
-                                    <p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold leading-none">Atendido por</p>
-                                    <span id="active-role-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white uppercase">Admin</span>
-                                </div>
-                                <p id="active-user-display" class="text-sm font-bold text-white mt-0.5">vendedor Alvir Moto Store</p>
-                            </div>
-                        </div>
-                        <button onclick="logout()" class="hidden sm:flex bg-slate-800 hover:bg-red-600 border border-slate-700 hover:border-red-600 text-slate-200 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition items-center gap-2">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            <span>Cerrar sesión</span>
-                        </button>
-                    </div>
-                </div>
+        <div>
+          <label for="login-username" class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre de usuario</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <input type="text" id="login-username" required autocomplete="off"
+              placeholder="Ingresa tu nombre de usuario"
+              class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition" />
+          </div>
+        </div>
 
-                <!-- Menú de Pestañas (Dinámico según Rol) -->
-                <nav class="flex space-x-1 sm:space-x-2 pt-1 overflow-x-auto">
-                    <button id="tab-btn-inventory" onclick="switchTab('inventory')" 
-                        class="tab-btn admin-only px-4 py-3 text-sm font-bold border-b-2 border-red-500 text-white flex items-center gap-2 whitespace-nowrap transition">
-                        <i class="fa-solid fa-boxes-stacked text-red-500"></i>
-                        <span>Inventario y Kardex</span>
-                        <span id="badge-inventory-count" class="ml-1 bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
-                    </button>
-                    <button id="tab-btn-billing" onclick="switchTab('billing')" 
-                        class="tab-btn px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
-                        <i class="fa-solid fa-receipt"></i>
-                        <span>Emisión de Recibo</span>
-                    </button>
-                    <button id="tab-btn-history" onclick="switchTab('history')" 
-                        class="tab-btn admin-only px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                        <span>Historial de Recibos</span>
-                        <span id="badge-receipts-count" class="ml-1 bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
-                    </button>
-                    <button id="tab-btn-users" onclick="switchTab('users')" 
-                        class="tab-btn admin-only px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
-                        <i class="fa-solid fa-users-gear"></i>
-                        <span>Gestión de Usuarios</span>
-                    </button>
-                </nav>
-            </div>
-        </header>
+        <div>
+          <label for="login-password" class="block text-sm font-semibold text-slate-700 mb-1.5">Contraseña</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input type="password" id="login-password" required
+              placeholder="Ingresa tu contraseña"
+              class="w-full pl-10 pr-11 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition" />
+            <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" title="Mostrar/Ocultar contraseña">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
 
-        <!-- Contenido Principal -->
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-            <!-- ========================================== -->
-            <!-- PESTAÑA A: INVENTARIO (SOLO ADMIN)         -->
-            <!-- ========================================== -->
-            <div id="view-inventory" class="admin-only fade-in space-y-6">
-                
-                <!-- Tarjetas de Resumen Rápido + Botón Kardex -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-tags"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Productos</p>
-                            <p id="stat-total-products" class="text-2xl font-extrabold text-slate-800">0</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-cubes"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Unidades en Stock</p>
-                            <p id="stat-total-units" class="text-2xl font-extrabold text-slate-800">0</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-sack-dollar"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Valor Total</p>
-                            <p id="stat-total-value" class="text-xl font-extrabold text-slate-800">C$ 0.00</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-800 flex flex-col justify-center">
-                        <button type="button" onclick="openKardexModal()" class="w-full h-full py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
-                            <i class="fa-solid fa-print text-base"></i>
-                            <span>Imprimir Kardex / Inventario</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Formulario para Añadir Nuevo Producto -->
-                    <div class="lg:col-span-4">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-28">
-                            <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-slate-100">
-                                <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
-                                    <i class="fa-solid fa-plus"></i>
-                                </div>
-                                <h2 class="text-lg font-bold text-slate-800">Añadir Producto Nuevo</h2>
-                            </div>
-
-                            <form id="add-product-form" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nombre del Producto *</label>
-                                    <input type="text" id="prod-name" required placeholder="Ej. Casco Integral LS2 Negro"
-                                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Número de Serie / Código </label>
-                                    <input type="text" id="prod-serial"  placeholder="Ej. MOTO-SN-001"
-                                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Precio (C$) *</label>
-                                        <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00"
-                                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Cantidad *</label>
-                                        <input type="number" id="prod-stock" required min="1" step="1" value="1"
-                                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="w-full py-3 px-4 bg-slate-900 hover:bg-red-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm mt-2">
-                                    <i class="fa-solid fa-floppy-disk"></i>
-                                    <span>Guardar en Inventario</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Tabla de Inventario Actual -->
-                    <div class="lg:col-span-8">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div>
-                                    <h2 class="text-lg font-bold text-slate-800">Inventario Disponible</h2>
-                                    <p class="text-xs text-slate-500">Gestiona existencias, precios y números de serie</p>
-                                </div>
-                                <div class="relative w-full sm:w-72">
-                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                                    </span>
-                                    <input type="text" id="inventory-search" placeholder="Buscar por nombre o serie..."
-                                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
-                                </div>
-                            </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                                            <th class="py-3.5 px-5">N° Serie</th>
-                                            <th class="py-3.5 px-5">Producto</th>
-                                            <th class="py-3.5 px-5 text-right">Precio</th>
-                                            <th class="py-3.5 px-5 text-center">Stock</th>
-                                            <th class="py-3.5 px-5 text-right">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="inventory-table-body" class="divide-y divide-slate-100 text-sm">
-                                        <!-- Filas generadas dinámicamente -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div id="inventory-empty-state" class="hidden p-10 text-center text-slate-400">
-                                <i class="fa-solid fa-box-open text-4xl mb-2"></i>
-                                <p class="text-sm font-medium">No se encontraron productos en el inventario.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
-            <!-- PESTAÑA B: EMISIÓN DE RECIBO DE ENTREGA    -->
-            <!-- ========================================== -->
-            <div id="view-billing" class="hidden fade-in space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    
-                    <!-- Columna Izquierda: Buscador Rápido de Productos y Precios -->
-                    <div class="lg:col-span-6 space-y-6">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                            <div class="flex items-center gap-2.5 pb-4 mb-4 border-b border-slate-100">
-                                <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
-                                    <i class="fa-solid fa-search"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-bold text-slate-800">Buscar Producto y Consultar Precio</h2>
-                                    <p class="text-xs text-slate-500">Busca por número de serie o nombre del artículo para agregarlo</p>
-                                </div>
-                            </div>
-
-                            <!-- Input de Búsqueda Rápida -->
-                            <div class="relative mb-4">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-barcode"></i>
-                                </span>
-                                <input type="text" id="billing-product-search" placeholder="Escribe N° de serie o nombre del producto..."
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                            </div>
-
-                            <!-- Lista de Productos Filtrables -->
-                            <div id="billing-product-list" class="space-y-2.5 max-h-[430px] overflow-y-auto pr-1">
-                                <!-- Tarjetas de productos generadas por JS -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Columna Derecha: Datos del Cliente, Detalle y Pago -->
-                    <div class="lg:col-span-6">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
-                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center">
-                                        <i class="fa-solid fa-receipt"></i>
-                                    </div>
-                                    <h2 class="text-lg font-bold text-slate-800">Nuevo Recibo de Entrega</h2>
-                                </div>
-                                <span class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
-                                    Alvir Moto Store
-                                </span>
-                            </div>
-
-                            <!-- Datos del Cliente -->
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-user-pen text-red-500"></i> Datos del Cliente
-                                </h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente *</label>
-                                        <input type="text" id="client-name" required placeholder="Ej. Carlos Mendoza"
-                                            class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Teléfono *</label>
-                                        <input type="tel" id="client-phone" required placeholder="Ej. 8888-9999"
-                                            class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Productos Seleccionados en el Recibo -->
-                            <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600">Detalle de Entrega</h3>
-                                    <button type="button" onclick="clearCart()" class="text-xs text-red-600 hover:underline font-medium">Limpiar lista</button>
-                                </div>
-                                <div class="border border-slate-200 rounded-xl overflow-hidden">
-                                    <table class="w-full text-left text-sm">
-                                        <thead class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase text-slate-500">
-                                            <tr>
-                                                <th class="py-2.5 px-3">Producto / Serie</th>
-                                                <th class="py-2.5 px-2 text-center">Cant.</th>
-                                                <th class="py-2.5 px-3 text-right">Subtotal</th>
-                                                <th class="py-2.5 px-2"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="cart-items-body" class="divide-y divide-slate-100">
-                                            <!-- Items en carrito -->
-                                        </tbody>
-                                    </table>
-                                    <div id="cart-empty-msg" class="p-6 text-center text-slate-400 text-xs">
-                                        Selecciona productos desde el buscador de la izquierda para añadirlos al recibo.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Método de Pago -->
-                            <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Método de Pago *</label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="payment-method" value="Efectivo" checked class="peer sr-only">
-                                        <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-red-600 peer-checked:bg-red-50/50 flex items-center justify-center gap-2 font-bold text-sm text-slate-700 peer-checked:text-red-700 transition">
-                                            <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
-                                            <span>Efectivo</span>
-                                        </div>
-                                    </label>
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="payment-method" value="Transferencia" class="peer sr-only">
-                                        <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-red-600 peer-checked:bg-red-50/50 flex items-center justify-center gap-2 font-bold text-sm text-slate-700 peer-checked:text-red-700 transition">
-                                            <i class="fa-solid fa-building-columns text-blue-600"></i>
-                                            <span>Transferencia</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Total y Botón Emitir Recibo -->
-                            <div class="pt-4 border-t border-slate-200">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="text-sm font-bold text-slate-600">TOTAL A PAGAR:</span>
-                                    <span id="cart-total-display" class="text-2xl font-extrabold text-slate-900">C$ 0.00</span>
-                                </div>
-
-                                <button type="button" onclick="generateReceipt()" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 transition flex items-center justify-center gap-2 text-sm">
-                                    <i class="fa-solid fa-file-circle-check text-lg"></i>
-                                    <span>Emitir Recibo de Entrega</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
-            <!-- PESTAÑA C: HISTORIAL DE RECIBOS (ADMIN)    -->
-            <!-- ========================================== -->
-            <div id="view-history" class="admin-only hidden fade-in">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-lg font-bold text-slate-800">Historial de Recibos de Entrega</h2>
-                            <p class="text-xs text-slate-500">Consulta o reimprime comprobantes de entrega emitidos</p>
-                        </div>
-                        <button type="button" onclick="resetReceiptsHistory()" class="px-3.5 py-2 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-200 rounded-xl text-xs font-bold transition flex items-center gap-2 self-start sm:self-auto">
-                            <i class="fa-solid fa-rotate-left"></i>
-                            <span>Reiniciar Historial a Cero</span>
-                        </button>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                                    <th class="py-3.5 px-5">N° Recibo</th>
-                                    <th class="py-3.5 px-5">Fecha</th>
-                                    <th class="py-3.5 px-5">Cliente</th>
-                                    <th class="py-3.5 px-5">Vendedor</th>
-                                    <th class="py-3.5 px-5">Método Pago</th>
-                                    <th class="py-3.5 px-5 text-right">Total</th>
-                                    <th class="py-3.5 px-5 text-right">Comprobante</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-table-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Historial dinámico -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="history-empty-state" class="p-10 text-center text-slate-400">
-                        <i class="fa-solid fa-receipt text-4xl mb-2"></i>
-                        <p class="text-sm font-medium">Aún no se ha emitido ningún recibo de entrega (0 registros).</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
-            <!-- PESTAÑA D: GESTIÓN DE USUARIOS (SOLO ADMIN)-->
-            <!-- ========================================== -->
-            <div id="view-users" class="admin-only hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Formulario para Crear Nuevo Vendedor -->
-                    <div class="lg:col-span-5">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                            <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-slate-100">
-                                <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-bold text-slate-800">Crear Nuevo Usuario Vendedor</h2>
-                                    <p class="text-xs text-slate-500">Acceso limitado solo a búsqueda de precios y recibos</p>
-                                </div>
-                            </div>
-
-                            <form id="add-user-form" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nombre de Usuario *</label>
-                                    <input type="text" id="new-user-name" required autocomplete="off" placeholder="Ej. Juan Pérez"
-                                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Contraseña *</label>
-                                    <input type="text" id="new-user-pass" required autocomplete="off" placeholder="Asigna una contraseña"
-                                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition">
-                                </div>
-
-                                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex items-start gap-2">
-                                    <i class="fa-solid fa-shield-halved mt-0.5 text-amber-600"></i>
-                                    <span>Los usuarios creados aquí podrán consultar precios, emitir recibos de entrega y ver su nombre como vendedor, pero <strong>no</strong> podrán ver el inventario completo ni imprimir Kardex.</span>
-                                </div>
-
-                                <button type="submit" class="w-full py-3 px-4 bg-slate-900 hover:bg-red-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
-                                    <i class="fa-solid fa-user-check"></i>
-                                    <span>Crear Usuario Vendedor</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Lista de Usuarios Registrados -->
-                    <div class="lg:col-span-7">
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                            <div class="p-6 border-b border-slate-100">
-                                <h2 class="text-lg font-bold text-slate-800">Usuarios Autorizados del Sistema</h2>
-                                <p class="text-xs text-slate-500">Administra las cuentas de acceso a Alvir Moto Store</p>
-                            </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                                            <th class="py-3.5 px-5">Usuario</th>
-                                            <th class="py-3.5 px-5">Contraseña</th>
-                                            <th class="py-3.5 px-5">Rol / Permisos</th>
-                                            <th class="py-3.5 px-5 text-right">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="users-table-body" class="divide-y divide-slate-100 text-sm">
-                                        <!-- Usuarios generados dinámicamente -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
+        <button type="submit" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold rounded-xl shadow-lg shadow-red-600/30 transition flex items-center justify-center gap-2 text-sm">
+          <span>Ingresar</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
     </div>
+  </section>
 
-    <!-- ========================================== -->
-    <!-- 3. MODAL DE RECIBO DE ENTREGA (IMPRIMIBLE) -->
-    <!-- ========================================== -->
-    <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in my-auto">
-            
-            <!-- Área Imprimible del Recibo de Entrega -->
-            <div id="printable-receipt" class="p-8 bg-white text-slate-800">
-                <!-- Encabezado Negocio -->
-                <div class="text-center border-b-2 border-slate-900 pb-5 mb-5">
-                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-900 text-white text-2xl mb-2">
-                        <i class="fa-solid fa-motorcycle"></i>
-                    </div>
-                    <h2 class="text-2xl font-black tracking-tight uppercase text-slate-900">Alvir Moto Store</h2>
-                    <p class="text-xs font-extrabold text-red-600 uppercase tracking-widest mt-1">RECIBO DE ENTREGA</p>
+  <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN) -->
+  <div id="app-shell" class="hidden flex-col min-h-screen">
+
+    <!-- Fondo oscuro para menú lateral en móvil -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+    <!-- Barra Superior Limpia con Botón de Menú Izquierdo -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3">
+        <!-- Izquierda: Botón Menú + Logo y Nombre del Negocio -->
+        <div class="flex items-center gap-3">
+          <button type="button" id="menu-toggle-btn" onclick="toggleSidebar()"
+            class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-red-600 text-slate-200 hover:text-white border border-slate-700 flex items-center justify-center transition"
+            title="Abrir menú">
+            <i class="fa-solid fa-bars text-base"></i>
+          </button>
+
+          <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl shadow shrink-0">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight leading-none">Alvir Moto Store</h1>
+            <span class="text-[11px] sm:text-xs text-slate-400 font-medium">Inventario y Recibos de Entrega</span>
+          </div>
+        </div>
+
+        <!-- Derecha: Usuario Activo y Botón Salir -->
+        <div class="flex items-center gap-2.5 sm:gap-4">
+          <div class="hidden sm:flex items-center gap-2.5 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700/70">
+            <div class="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+              <i class="fa-solid fa-user-check text-xs"></i>
+            </div>
+            <div class="text-left">
+              <div class="flex items-center gap-1.5 leading-none">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Atendido por</span>
+                <span id="active-role-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white uppercase">Admin</span>
+              </div>
+              <p id="active-user-display" class="text-xs sm:text-sm font-bold text-white mt-0.5">vendedor Alvir Moto Store</p>
+            </div>
+          </div>
+
+          <button type="button" onclick="logout()"
+            class="bg-slate-800 hover:bg-red-600 border border-slate-700 hover:border-red-500 text-slate-200 hover:text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Salir</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenedor Principal: Menú Lateral Izquierdo + Área de Contenido -->
+    <div class="flex-1 flex max-w-7xl w-full mx-auto relative">
+
+      <!-- MENÚ LATERAL DESPLEGABLE (IZQUIERDA) -->
+      <aside id="left-sidebar"
+        class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-slate-900 text-slate-200 border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out flex flex-col justify-between shrink-0">
+        <div class="p-4 space-y-4 overflow-y-auto">
+          <!-- Encabezado del Menú Lateral -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Menú Principal</span>
+            <button type="button" onclick="toggleSidebar(false)" class="lg:hidden w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Tarjeta de Usuario en Menú Lateral (visible especialmente en móvil) -->
+          <div class="sm:hidden bg-slate-800/80 p-3 rounded-xl border border-slate-700/70 flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0">
+              <i class="fa-solid fa-user-check text-sm"></i>
+            </div>
+            <div class="min-w-0">
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">Atendido por</span>
+              <p id="sidebar-user-display" class="text-xs font-bold text-white truncate">vendedor Alvir Moto Store</p>
+            </div>
+          </div>
+
+          <!-- Opciones de Navegación Separadas -->
+          <nav class="space-y-1.5">
+            <button type="button" id="tab-btn-inventory" onclick="switchTab('inventory')"
+              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition text-left bg-red-600 text-white shadow-md shadow-red-600/20">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-boxes-stacked w-4 text-center"></i>
+                <span>Inventario y Kardex</span>
+              </span>
+              <span id="badge-inventory-count" class="bg-slate-950/40 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            </button>
+
+            <button type="button" id="tab-btn-billing" onclick="switchTab('billing')"
+              class="nav-item w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition text-left text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-receipt w-4 text-center"></i>
+                <span>Emisión de Recibos</span>
+              </span>
+            </button>
+
+            <button type="button" id="tab-btn-history" onclick="switchTab('history')"
+              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition text-left text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-clock-rotate-left w-4 text-center"></i>
+                <span>Historial de Recibos</span>
+              </span>
+              <span id="badge-receipts-count" class="bg-slate-800 text-slate-300 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            </button>
+
+            <button type="button" id="tab-btn-reports" onclick="switchTab('reports')"
+              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition text-left text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-chart-line w-4 text-center"></i>
+                <span>Reportes de Ventas</span>
+              </span>
+            </button>
+
+            <button type="button" id="tab-btn-users" onclick="switchTab('users')"
+              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition text-left text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-users-gear w-4 text-center"></i>
+                <span>Gestión de Usuarios</span>
+              </span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Pie del Menú Lateral -->
+        <div class="p-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1">
+          <p class="font-semibold text-slate-300">Alvir Moto Store</p>
+          <p>Respaldo activo en dispositivo y nube</p>
+        </div>
+      </aside>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="flex-1 max-w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 min-w-0">
+
+        <!-- PESTAÑA A: INVENTARIO Y KARDEX (SOLO ADMIN) -->
+        <div id="view-inventory" class="admin-only fade-in space-y-6">
+          <!-- Tarjetas de Resumen Rápido + Botón Kardex -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
+                <i class="fa-solid fa-tags"></i>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Productos</p>
+                <p id="stat-total-products" class="text-2xl font-extrabold text-slate-800">0</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                <i class="fa-solid fa-cubes"></i>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Unidades en Stock</p>
+                <p id="stat-total-units" class="text-2xl font-extrabold text-slate-800">0</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                <i class="fa-solid fa-sack-dollar"></i>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Valor Total</p>
+                <p id="stat-total-value" class="text-xl font-extrabold text-slate-800">C$ 0.00</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-800 flex flex-col justify-center">
+              <button type="button" onclick="openKardexModal()" class="w-full h-full py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-print text-base"></i>
+                <span>Imprimir Kardex / Inventario</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Formulario para Añadir Nuevo Producto -->
+            <div class="lg:col-span-4">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 lg:sticky lg:top-24">
+                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-slate-100">
+                  <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
+                    <i class="fa-solid fa-plus"></i>
+                  </div>
+                  <h2 class="text-lg font-bold text-slate-800">Añadir Producto Nuevo</h2>
                 </div>
 
-                <!-- Metadatos de Recibo y Vendedor -->
-                <div class="grid grid-cols-2 gap-4 text-xs mb-5 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <form id="add-product-form" class="space-y-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nombre del Producto *</label>
+                    <input type="text" id="prod-name" required placeholder="Ej. Casco Integral LS2 Negro"
+                      class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Número de Serie / Código (Opcional)</label>
+                    <input type="text" id="prod-serial" placeholder="Ej. MOTO-SN-001"
+                      class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <p class="text-slate-400 font-semibold uppercase">N° Recibo</p>
-                        <p id="rec-number" class="font-mono font-bold text-slate-900 text-sm">REC-0001</p>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Precio (C$) *</label>
+                      <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00"
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
                     </div>
-                    <div class="text-right">
-                        <p class="text-slate-400 font-semibold uppercase">Fecha y Hora</p>
-                        <p id="rec-date" class="font-semibold text-slate-800">--/--/----</p>
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Cantidad *</label>
+                      <input type="number" id="prod-stock" required min="1" step="1" value="1"
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
                     </div>
-                    <div class="col-span-2 pt-2 border-t border-slate-200">
-                        <p class="text-slate-400 font-semibold uppercase">Atendido por / Vendedor</p>
-                        <p id="rec-seller" class="font-bold text-slate-900">vendedor Alvir Moto Store</p>
+                  </div>
+
+                  <button type="submit" class="w-full py-3 px-4 bg-slate-900 hover:bg-red-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm mt-2">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Guardar en Inventario</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Tabla de Inventario Actual -->
+            <div class="lg:col-span-8">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Inventario Disponible</h2>
+                    <p class="text-xs text-slate-500">Gestiona existencias, precios y números de serie</p>
+                  </div>
+                  <div class="relative w-full sm:w-72">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                      <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="inventory-search" placeholder="Buscar por nombre o serie..."
+                      class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                  </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                        <th class="py-3.5 px-5">N° Serie</th>
+                        <th class="py-3.5 px-5">Producto</th>
+                        <th class="py-3.5 px-5 text-right">Precio</th>
+                        <th class="py-3.5 px-5 text-center">Stock</th>
+                        <th class="py-3.5 px-5 text-right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="inventory-table-body" class="divide-y divide-slate-100 text-sm">
+                      <!-- Filas generadas dinámicamente -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div id="inventory-empty-state" class="hidden p-10 text-center text-slate-400">
+                  <i class="fa-solid fa-box-open text-4xl mb-2"></i>
+                  <p class="text-sm font-medium">No se encontraron productos en el inventario.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA B: EMISIÓN DE RECIBO DE ENTREGA -->
+        <div id="view-billing" class="hidden fade-in space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Columna Izquierda: Buscador Rápido de Productos y Precios -->
+            <div class="lg:col-span-6 space-y-6">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-2.5 pb-4 mb-4 border-b border-slate-100">
+                  <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
+                    <i class="fa-solid fa-search"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Buscar Producto y Consultar Precio</h2>
+                    <p class="text-xs text-slate-500">Busca por número de serie o nombre del artículo para agregarlo</p>
+                  </div>
+                </div>
+
+                <!-- Input de Búsqueda Rápida -->
+                <div class="relative mb-4">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i class="fa-solid fa-barcode"></i>
+                  </span>
+                  <input type="text" id="billing-product-search" placeholder="Escribe N° de serie o nombre del producto..."
+                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                </div>
+
+                <!-- Lista de Productos Filtrables -->
+                <div id="billing-product-list" class="space-y-2.5 max-h-[430px] overflow-y-auto pr-1">
+                  <!-- Tarjetas de productos generadas por JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Datos del Cliente, Detalle y Pago -->
+            <div class="lg:col-span-6">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center">
+                      <i class="fa-solid fa-receipt"></i>
                     </div>
+                    <h2 class="text-lg font-bold text-slate-800">Nuevo Recibo de Compra / Entrega</h2>
+                  </div>
+                  <span class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">Alvir Moto Store</span>
                 </div>
 
                 <!-- Datos del Cliente -->
-                <div class="mb-5 text-xs">
-                    <p class="text-slate-400 font-bold uppercase tracking-wider mb-1.5">Datos del Cliente</p>
-                    <div class="border border-slate-200 rounded-xl p-3.5 space-y-1">
-                        <p><span class="text-slate-500 font-medium">Cliente:</span> <strong id="rec-client-name" class="text-slate-900">Nombre Cliente</strong></p>
-                        <p><span class="text-slate-500 font-medium">Teléfono:</span> <strong id="rec-client-phone" class="text-slate-900">0000-0000</strong></p>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-pen text-red-600"></i> Datos del Cliente
+                  </h3>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente *</label>
+                      <input type="text" id="client-name" required placeholder="Ej. Carlos Mendoza"
+                        class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
                     </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Teléfono *</label>
+                      <input type="tel" id="client-phone" required placeholder="Ej. 8888-9999"
+                        class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Detalle de Productos Entregados -->
-                <div class="mb-5">
-                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Detalle de Productos Entregados</p>
-                    <table class="w-full text-xs border-collapse">
-                        <thead>
-                            <tr class="border-b-2 border-slate-200 text-slate-500 uppercase">
-                                <th class="py-2 text-left">Producto / Serie</th>
-                                <th class="py-2 text-center">Cant.</th>
-                                <th class="py-2 text-right">Precio</th>
-                                <th class="py-2 text-right">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rec-items-list" class="divide-y divide-slate-100">
-                            <!-- Items entregados -->
-                        </tbody>
+                <!-- Productos Seleccionados en el Recibo -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600">Detalle de Entrega</h3>
+                    <button type="button" onclick="clearCart()" class="text-xs text-red-600 hover:underline font-medium">Limpiar lista</button>
+                  </div>
+                  <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                      <thead class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                        <tr>
+                          <th class="py-2.5 px-3">Producto / Serie</th>
+                          <th class="py-2.5 px-2 text-center">Cant.</th>
+                          <th class="py-2.5 px-3 text-right">Subtotal</th>
+                          <th class="py-2.5 px-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="cart-items-body" class="divide-y divide-slate-100">
+                        <!-- Items en carrito -->
+                      </tbody>
                     </table>
-                </div>
-
-                <!-- Método de Pago y Total -->
-                <div class="border-t-2 border-slate-900 pt-4 space-y-2">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-semibold text-slate-500 uppercase">Método de Pago:</span>
-                        <span id="rec-payment-method" class="font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-900">Efectivo</span>
+                    <div id="cart-empty-msg" class="p-6 text-center text-slate-400 text-xs">
+                      Selecciona productos desde el buscador para añadirlos al recibo.
                     </div>
-                    <div class="flex justify-between items-center text-lg pt-1">
-                        <span class="font-extrabold text-slate-900">TOTAL PAGADO:</span>
-                        <span id="rec-total" class="font-black text-red-600 text-xl">C$ 0.00</span>
-                    </div>
+                  </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-dashed border-slate-300 text-center text-[11px] text-slate-400">
-                    Comprobante de entrega de mercancía — Alvir Moto Store
+                <!-- Método de Pago -->
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Método de Pago *</label>
+                  <div class="grid grid-cols-2 gap-3">
+                    <label class="cursor-pointer">
+                      <input type="radio" name="payment-method" value="Efectivo" checked class="peer sr-only" />
+                      <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-red-600 peer-checked:bg-red-50/40 flex items-center justify-center gap-2 font-bold text-sm text-slate-700 peer-checked:text-red-700 transition">
+                        <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
+                        <span>Efectivo</span>
+                      </div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="payment-method" value="Transferencia" class="peer sr-only" />
+                      <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-red-600 peer-checked:bg-red-50/40 flex items-center justify-center gap-2 font-bold text-sm text-slate-700 peer-checked:text-red-700 transition">
+                        <i class="fa-solid fa-building-columns text-blue-600"></i>
+                        <span>Transferencia</span>
+                      </div>
+                    </label>
+                  </div>
                 </div>
-            </div>
 
-            <!-- Botones de Acción del Modal (No se imprimen) -->
-            <div class="no-print bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-wrap items-center justify-end gap-3">
-                <button type="button" onclick="printDocument('receipt')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-print"></i> Imprimir Recibo
-                </button>
-                <button type="button" onclick="closeReceiptModal()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
-                    Listo / Cerrar
-                </button>
+                <!-- Total y Botón Emitir Recibo -->
+                <div class="pt-4 border-t border-slate-200">
+                  <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-bold text-slate-600">TOTAL A PAGAR:</span>
+                    <span id="cart-total-display" class="text-2xl font-extrabold text-slate-900">C$ 0.00</span>
+                  </div>
+
+                  <button type="button" onclick="generateReceipt()" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-file-circle-check text-lg"></i>
+                    <span>Emitir Recibo de Entrega</span>
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
 
-    <!-- ========================================== -->
-    <!-- 4. MODAL HOJA DE KARDEX / INVENTARIO       -->
-    <!-- ========================================== -->
-    <div id="kardex-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in my-auto">
-            
-            <!-- Área Imprimible de la Hoja de Kardex -->
-            <div id="printable-kardex" class="p-8 bg-white text-slate-800">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 mb-5 gap-3">
-                    <div>
-                        <h2 class="text-2xl font-black uppercase text-slate-900">Alvir Moto Store</h2>
-                        <p class="text-xs font-extrabold text-red-600 uppercase tracking-widest">HOJA DE KARDEX — CONTROL FÍSICO Y VALORADO DE INVENTARIO</p>
-                    </div>
-                    <div class="text-left sm:text-right text-xs">
-                        <p class="text-slate-500">Fecha de emisión: <strong id="kardex-date" class="text-slate-900">--/--/----</strong></p>
-                        <p class="text-slate-500">Responsable: <strong id="kardex-admin" class="text-slate-900">vendedor Alvir Moto Store</strong></p>
-                    </div>
+        <!-- PESTAÑA C: HISTORIAL DE RECIBOS (SOLO ADMIN) -->
+        <div id="view-history" class="admin-only hidden fade-in">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex flex-col gap-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 class="text-lg font-bold text-slate-800">Historial de Recibos de Compra / Entrega</h2>
+                  <p class="text-xs text-slate-500">Consulta o reimprime comprobantes guardados por número de recibo o rango de fechas</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <button type="button" onclick="clearHistoryFilters()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                    <span>Limpiar Filtros</span>
+                  </button>
+                  <button type="button" onclick="resetReceiptsHistory()" class="px-3.5 py-2 bg-red-50 text-slate-700 hover:text-red-600 border border-slate-200 hover:border-red-200 rounded-xl text-xs font-bold transition flex items-center gap-2 self-start sm:self-auto">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reiniciar Historial a Cero</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Filtros: Buscar por N° de Recibo + Desde / Hasta -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div>
+                  <label for="history-search-number" class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Buscar N° de Recibo</label>
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                      <i class="fa-solid fa-hashtag text-xs"></i>
+                    </span>
+                    <input type="text" id="history-search-number" oninput="renderHistoryTable()" placeholder="Ej. REC-0001"
+                      class="w-full pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+                  </div>
                 </div>
 
-                <div class="overflow-x-auto mb-5">
-                    <table class="w-full text-xs border-collapse border border-slate-300">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-800 uppercase">
-                                <th class="border border-slate-300 py-2 px-3 text-center w-10">#</th>
-                                <th class="border border-slate-300 py-2 px-3 text-left">N° Serie / Código</th>
-                                <th class="border border-slate-300 py-2 px-3 text-left">Descripción del Producto</th>
-                                <th class="border border-slate-300 py-2 px-3 text-center">Stock Actual</th>
-                                <th class="border border-slate-300 py-2 px-3 text-right">Precio Unit.</th>
-                                <th class="border border-slate-300 py-2 px-3 text-right">Valor Total</th>
-                                <th class="border border-slate-300 py-2 px-3 text-center w-24">Conteo Físico</th>
-                            </tr>
-                        </thead>
-                        <tbody id="kardex-table-body">
-                            <!-- Filas del Kardex -->
-                        </tbody>
-                        <tfoot>
-                            <tr class="bg-slate-50 font-extrabold text-slate-900">
-                                <td colspan="3" class="border border-slate-300 py-2.5 px-3 text-right uppercase">Totales Generales:</td>
-                                <td id="kardex-total-units" class="border border-slate-300 py-2.5 px-3 text-center">0</td>
-                                <td class="border border-slate-300 py-2.5 px-3 text-right">—</td>
-                                <td id="kardex-total-value" class="border border-slate-300 py-2.5 px-3 text-right text-red-600">C$ 0.00</td>
-                                <td class="border border-slate-300 py-2.5 px-3"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div>
+                  <label for="history-date-from" class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Desde (Fecha)</label>
+                  <input type="date" id="history-date-from" onchange="renderHistoryTable()"
+                    class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-8 pt-8 text-center text-xs text-slate-500">
-                    <div>
-                        <div class="border-t border-slate-400 w-48 mx-auto pt-1">Firma del Responsable</div>
-                    </div>
-                    <div>
-                        <div class="border-t border-slate-400 w-48 mx-auto pt-1">Verificación / Auditoría</div>
-                    </div>
+                <div>
+                  <label for="history-date-to" class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Hasta (Fecha)</label>
+                  <input type="date" id="history-date-to" onchange="renderHistoryTable()"
+                    class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
                 </div>
+              </div>
             </div>
 
-            <!-- Botones de Acción del Kardex -->
-            <div class="no-print bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3">
-                <button type="button" onclick="printDocument('kardex')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-print"></i> Imprimir Hoja de Kardex
-                </button>
-                <button type="button" onclick="closeKardexModal()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
-                    Cerrar
-                </button>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    <th class="py-3.5 px-5">N° Recibo</th>
+                    <th class="py-3.5 px-5">Fecha</th>
+                    <th class="py-3.5 px-5">Cliente</th>
+                    <th class="py-3.5 px-5">Vendedor</th>
+                    <th class="py-3.5 px-5">Método Pago</th>
+                    <th class="py-3.5 px-5 text-right">Total</th>
+                    <th class="py-3.5 px-5 text-right">Comprobante</th>
+                  </tr>
+                </thead>
+                <tbody id="history-table-body" class="divide-y divide-slate-100 text-sm">
+                  <!-- Historial dinámico -->
+                </tbody>
+              </table>
             </div>
+
+            <div id="history-empty-state" class="hidden p-10 text-center text-slate-400">
+              <i class="fa-solid fa-receipt text-4xl mb-2"></i>
+              <p class="text-sm font-medium">No hay recibos que coincidan con el filtro o aún no se ha emitido ninguno.</p>
+            </div>
+          </div>
         </div>
+
+        <!-- PESTAÑA D: REPORTES DE VENTAS SEMANAL, MENSUAL Y ANUAL (SOLO ADMIN) -->
+        <div id="view-reports" class="admin-only hidden fade-in space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-slate-100">
+              <div>
+                <h2 class="text-lg font-bold text-slate-800">Reportes de Ventas</h2>
+                <p class="text-xs text-slate-500">Resumen acumulado de dinero vendido según los recibos registrados</p>
+              </div>
+              <span id="report-reference-date" class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full"></span>
+            </div>
+
+            <!-- 3 Tarjetas Principales: Semanal, Mensual, Anual -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div class="p-5 rounded-2xl border border-blue-200 bg-blue-50/50">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Venta Semanal</span>
+                  <i class="fa-solid fa-calendar-week text-blue-600"></i>
+                </div>
+                <p id="report-weekly-total" class="text-2xl font-extrabold text-slate-900">C$ 0.00</p>
+                <p id="report-weekly-count" class="text-xs text-slate-500 mt-1">0 recibos esta semana</p>
+              </div>
+
+              <div class="p-5 rounded-2xl border border-emerald-200 bg-emerald-50/50">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Venta Mensual</span>
+                  <i class="fa-solid fa-calendar-days text-emerald-600"></i>
+                </div>
+                <p id="report-monthly-total" class="text-2xl font-extrabold text-slate-900">C$ 0.00</p>
+                <p id="report-monthly-count" class="text-xs text-slate-500 mt-1">0 recibos este mes</p>
+              </div>
+
+              <div class="p-5 rounded-2xl border border-amber-200 bg-amber-50/50">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700">Venta Anual</span>
+                  <i class="fa-solid fa-calendar text-amber-600"></i>
+                </div>
+                <p id="report-annual-total" class="text-2xl font-extrabold text-slate-900">C$ 0.00</p>
+                <p id="report-annual-count" class="text-xs text-slate-500 mt-1">0 recibos este año</p>
+              </div>
+            </div>
+
+            <!-- Desglose por Método de Pago en el Período Seleccionado -->
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700">Desglose por Método de Pago</h3>
+                <select id="report-period-select" onchange="renderSalesReports()"
+                  class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                  <option value="week">Semana actual</option>
+                  <option value="month" selected>Mes actual</option>
+                  <option value="year">Año actual</option>
+                  <option value="all">Todo el historial</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-600 flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
+                    <span>Efectivo</span>
+                  </span>
+                  <span id="report-cash-total" class="text-sm font-extrabold text-slate-900">C$ 0.00</span>
+                </div>
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-600 flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns text-blue-600"></i>
+                    <span>Transferencia</span>
+                  </span>
+                  <span id="report-transfer-total" class="text-sm font-extrabold text-slate-900">C$ 0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA E: GESTIÓN DE USUARIOS (SOLO ADMIN) -->
+        <div id="view-users" class="admin-only hidden fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Formulario para crear nuevo vendedor -->
+            <div class="lg:col-span-5">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-slate-100">
+                  <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
+                    <i class="fa-solid fa-user-plus"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Crear Nuevo Usuario Vendedor</h2>
+                    <p class="text-xs text-slate-500">Acceso limitado solo a búsqueda de precios y recibos</p>
+                  </div>
+                </div>
+
+                <form id="add-user-form" class="space-y-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nombre de Usuario *</label>
+                    <input type="text" id="new-user-name" required autocomplete="off" placeholder="Ej. Juan Pérez"
+                      class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Contraseña *</label>
+                    <input type="text" id="new-user-pass" required autocomplete="off" placeholder="Asigna una contraseña"
+                      class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition" />
+                  </div>
+
+                  <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex items-start gap-2">
+                    <i class="fa-solid fa-shield-halved mt-0.5 text-amber-600"></i>
+                    <span>Los usuarios creados aquí podrán consultar precios, emitir recibos de entrega y ver su nombre como vendedor, pero <strong>no</strong> podrán ver el inventario completo ni imprimir Kardex.</span>
+                  </div>
+
+                  <button type="submit" class="w-full py-3 px-4 bg-slate-900 hover:bg-red-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Crear Usuario Vendedor</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Lista de Usuarios Registrados -->
+            <div class="lg:col-span-7">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-100">
+                  <h2 class="text-lg font-bold text-slate-800">Usuarios Autorizados del Sistema</h2>
+                  <p class="text-xs text-slate-500">Administra las cuentas de acceso a Alvir Moto Store</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                        <th class="py-3.5 px-5">Usuario</th>
+                        <th class="py-3.5 px-5">Contraseña</th>
+                        <th class="py-3.5 px-5">Rol / Permisos</th>
+                        <th class="py-3.5 px-5 text-right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="users-table-body" class="divide-y divide-slate-100 text-sm">
+                      <!-- Usuarios generados dinámicamente -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
     </div>
+  </div>
 
-    <!-- ========================================== -->
-    <!-- FIREBASE SDK PARA CLOUD FIRESTORE          -->
-    <!-- ========================================== -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <!-- 3. MODAL DE RECIBO DE ENTREGA (IMPRIMIBLE) -->
+  <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in my-auto">
+      <!-- Área Imprimible del Recibo de Entrega -->
+      <div id="printable-receipt" class="p-8 bg-white text-slate-800">
+        <!-- Encabezado Negocio -->
+        <div class="text-center border-b-2 border-slate-900 pb-4 mb-5">
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-900 text-white text-xl mb-2">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <h2 class="text-2xl font-black tracking-tight uppercase text-slate-900">Alvir Moto Store</h2>
+          <p class="text-xs font-extrabold text-red-600 uppercase tracking-widest mt-1">RECIBO DE COMPRA / ENTREGA</p>
+        </div>
 
-    <!-- ========================================== -->
-    <!-- LÓGICA JAVASCRIPT DE LA APLICACIÓN         -->
-    <!-- ========================================== -->
-    <script>
-        // --- 1. CLAVE DE PERSISTENCIA LIMPIA (v2 para iniciar recibos en cero) ---
-        const STORAGE_KEY = 'alvir_moto_store_v2';
+        <!-- Metadatos de Recibo y Vendedor -->
+        <div class="grid grid-cols-2 gap-4 text-xs mb-5 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <div>
+            <p class="text-slate-400 font-semibold uppercase">N° Recibo</p>
+            <p id="rec-number" class="font-mono font-bold text-slate-900 text-sm">REC-0001</p>
+          </div>
+          <div class="text-right">
+            <p class="text-slate-400 font-semibold uppercase">Fecha y Hora</p>
+            <p id="rec-date" class="font-semibold text-slate-800">--/--/---- --:--</p>
+          </div>
+          <div class="col-span-2 pt-2 border-t border-slate-200">
+            <p class="text-slate-400 font-semibold uppercase">Atendido por / Vendedor</p>
+            <p id="rec-seller" class="font-bold text-slate-900">vendedor Alvir Moto Store</p>
+          </div>
+        </div>
 
-        // --- 1B. CONEXIÓN A CLOUD FIRESTORE (RESPALDO EN LA NUBE) ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyB9Zc25-HQK4XJTNdwYs4mwVxNtXCt-3Fo",
-            authDomain: "alvir-moto-store-145c0.firebaseapp.com",
-            projectId: "alvir-moto-store-145c0",
-            storageBucket: "alvir-moto-store-145c0.firebasestorage.app",
-            messagingSenderId: "908225874811",
-            appId: "1:908225874811:web:9afccb068592c0d44ecbde",
-            measurementId: "G-NK2P799E66"
-        };
+        <!-- Datos del Cliente -->
+        <div class="mb-5 text-xs">
+          <p class="text-slate-400 font-bold uppercase tracking-wider mb-1.5">Datos del Cliente</p>
+          <div class="border border-slate-200 rounded-xl p-3.5 space-y-1">
+            <p><span class="text-slate-500 font-medium">Cliente:</span> <strong id="rec-client-name" class="text-slate-900">Nombre Cliente</strong></p>
+            <p><span class="text-slate-500 font-medium">Teléfono:</span> <strong id="rec-client-phone" class="text-slate-900">0000-0000</strong></p>
+          </div>
+        </div>
 
-        let db = null;
-        const CLOUD_COLLECTION = 'stores';
-        const CLOUD_DOC_ID = 'alvir_moto_store_v2';
+        <!-- Detalle de Productos Entregados -->
+        <div class="mb-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Detalle de Productos Entregados</p>
+          <table class="w-full text-xs border-collapse">
+            <thead>
+              <tr class="border-b-2 border-slate-200 text-slate-500 uppercase">
+                <th class="py-2 text-left">Producto / Serie</th>
+                <th class="py-2 text-center">Cant.</th>
+                <th class="py-2 text-right">Precio</th>
+                <th class="py-2 text-right">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="rec-items-list" class="divide-y divide-slate-100">
+              <!-- Items entregados -->
+            </tbody>
+          </table>
+        </div>
 
+        <!-- Método de Pago y Total -->
+        <div class="border-t-2 border-slate-900 pt-4 space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-semibold text-slate-500 uppercase">Método de Pago:</span>
+            <span id="rec-payment-method" class="font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-900">Efectivo</span>
+          </div>
+          <div class="flex justify-between items-center text-lg pt-1">
+            <span class="font-extrabold text-slate-900">TOTAL PAGADO:</span>
+            <span id="rec-total" class="font-black text-red-600 text-xl">C$ 0.00</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-dashed border-slate-300 text-center text-[11px] text-slate-400">
+          Comprobante de compra y entrega de mercancía - Alvir Moto Store
+        </div>
+      </div>
+
+      <!-- Botones de Acción del Modal (No se imprimen) -->
+      <div class="no-print bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-wrap items-center justify-end gap-3">
+        <button type="button" onclick="printDocument('receipt')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+          <i class="fa-solid fa-print"></i>
+          <span>Imprimir Recibo</span>
+        </button>
+        <button type="button" onclick="closeReceiptModal()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
+          Listo / Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MODAL HOJA DE KARDEX / INVENTARIO -->
+  <div id="kardex-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-slate-200 fade-in my-auto">
+      <!-- Área Imprimible de la Hoja de Kardex -->
+      <div id="printable-kardex" class="p-8 bg-white text-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 mb-5 gap-3">
+          <div>
+            <h2 class="text-2xl font-black uppercase text-slate-900">Alvir Moto Store</h2>
+            <p class="text-xs font-extrabold text-red-600 uppercase tracking-widest">HOJA DE KARDEX - CONTROL FÍSICO Y VALORADO DE INVENTARIO</p>
+          </div>
+          <div class="text-left sm:text-right text-xs">
+            <p class="text-slate-500">Fecha de emisión: <strong id="kardex-date" class="text-slate-900">--/--/----</strong></p>
+            <p class="text-slate-500">Responsable: <strong id="kardex-admin" class="text-slate-900">vendedor Alvir Moto Store</strong></p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto mb-6">
+          <table class="w-full text-xs border-collapse border border-slate-300">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 uppercase">
+                <th class="border border-slate-300 py-2 px-3 text-center w-10">#</th>
+                <th class="border border-slate-300 py-2 px-3 text-left">N° Serie / Código</th>
+                <th class="border border-slate-300 py-2 px-3 text-left">Descripción del Producto</th>
+                <th class="border border-slate-300 py-2 px-3 text-center">Stock Actual</th>
+                <th class="border border-slate-300 py-2 px-3 text-right">Precio Unit.</th>
+                <th class="border border-slate-300 py-2 px-3 text-right">Valor Total</th>
+                <th class="border border-slate-300 py-2 px-3 text-center w-24">Conteo Físico</th>
+              </tr>
+            </thead>
+            <tbody id="kardex-table-body">
+              <!-- Filas del kardex -->
+            </tbody>
+            <tfoot>
+              <tr class="bg-slate-100 font-extrabold text-slate-900">
+                <td colspan="3" class="border border-slate-300 py-2.5 px-3 text-right uppercase">Totales Generales:</td>
+                <td id="kardex-total-units" class="border border-slate-300 py-2.5 px-3 text-center">0</td>
+                <td class="border border-slate-300 py-2.5 px-3 text-right">—</td>
+                <td id="kardex-total-value" class="border border-slate-300 py-2.5 px-3 text-right text-red-600">C$ 0.00</td>
+                <td class="border border-slate-300 py-2.5 px-3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 pt-8 text-center text-xs text-slate-500">
+          <div>
+            <div class="border-t border-slate-400 w-48 mx-auto pt-1">Firma del Responsable</div>
+          </div>
+          <div>
+            <div class="border-t border-slate-400 w-48 mx-auto pt-1">Verificación / Auditoría</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de Acción del Kardex -->
+      <div class="no-print bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3">
+        <button type="button" onclick="printDocument('kardex')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+          <i class="fa-solid fa-print"></i>
+          <span>Imprimir Hoja de Kardex</span>
+        </button>
+        <button type="button" onclick="closeKardexModal()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE SDK PARA CLOUD FIRESTORE -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- LÓGICA JAVASCRIPT DE LA APLICACIÓN -->
+  <script>
+    // 1. CLAVE DE PERSISTENCIA LIMPIA (v2 para iniciar recibos en cero)
+    const STORAGE_KEY = 'alvir_moto_store_v2';
+
+    // 1B. CONEXIÓN A CLOUD FIRESTORE (RESPALDO EN LA NUBE)
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9Zc2S-HQK42JTnOvYs4mwVvkTXcT-3Fo",
+      authDomain: "alvir-moto-store-145c0.firebaseapp.com",
+      projectId: "alvir-moto-store-145c0",
+      storageBucket: "alvir-moto-store-145c0.firebasestorage.app",
+      messagingSenderId: "908225874011",
+      appId: "1:908225874011:web:9afccb060542c0da4ecade",
+      measurementId: "G-NK2P709C86"
+    };
+
+    let db = null;
+    const CLOUD_COLLECTION = 'stores';
+    const CLOUD_DOC_ID = 'alvir_moto_store_v2';
+
+    try {
+      if (typeof firebase !== 'undefined') {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+      }
+    } catch (err) {
+      console.warn('Firebase no inicializado:', err);
+    }
+
+    // 2. USUARIO ADMINISTRADOR PRINCIPAL PREDEFINIDO
+    const PRIMARY_ADMIN = {
+      username: "vendedor Alvir Moto Store",
+      password: "12344321",
+      role: "admin"
+    };
+
+    // 3. INVENTARIO INICIAL DE REFERENCIA
+    const DEFAULT_INVENTORY = [
+      { id: '1', serial: 'AMS-CAS-001', name: 'Casco Integral Certificado DOT Negro Mate', price: 2850.00, stock: 8 },
+      { id: '2', serial: 'AMS-ACE-002', name: 'Aceite Sintético 4T 10W-40 (1 Litro)', price: 420.00, stock: 25 },
+      { id: '3', serial: 'AMS-KIT-003', name: 'Kit de Arrastre Reforzado (Cadena, Catalina y Piñón)', price: 1650.00, stock: 12 },
+      { id: '4', serial: 'AMS-LLA-004', name: 'Llanta Trasera Doble Propósito 120/80-18', price: 2300.00, stock: 6 },
+      { id: '5', serial: 'AMS-GUA-005', name: 'Guantes de Protección con Nudillos de Carbono', price: 750.00, stock: 15 }
+    ];
+
+    // 4. ESTADO GLOBAL
+    let currentUser = null; // { username, role }
+    let appData = {
+      users: [PRIMARY_ADMIN],
+      inventory: [...DEFAULT_INVENTORY],
+      receipts: []
+    };
+    let cart = [];
+
+    function applyParsedAppData(parsed) {
+      if (!parsed || typeof parsed !== 'object') return;
+      appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
+      appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
+      const secondaryUsers = Array.isArray(parsed.users)
+        ? parsed.users.filter(u => u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
+        : [];
+      appData.users = [PRIMARY_ADMIN, ...secondaryUsers];
+    }
+
+    async function syncFromCloud() {
+      if (!db) return;
+      try {
+        const doc = await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).get();
+        if (doc.exists && doc.data() && doc.data().payload) {
+          const cloudData = JSON.parse(doc.data().payload);
+          applyParsedAppData(cloudData);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+          updateDashboardStats();
+          if (currentUser) {
+            renderInventoryTable(document.getElementById('inventory-search')?.value || '');
+            renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
+            renderHistoryTable();
+            renderUsersTable();
+            renderSalesReports();
+          }
+        }
+      } catch (err) {
+        console.warn('Error leyendo desde Cloud Firestore:', err);
+      }
+    }
+
+    async function pushToCloud() {
+      if (!db) return;
+      try {
+        await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).set({
+          payload: JSON.stringify(appData),
+          updatedAt: new Date().toISOString(),
+          projectId: firebaseConfig.projectId
+        });
+      } catch (err) {
+        console.warn('Error guardando en Cloud Firestore:', err);
+      }
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAppData();
+      checkSession();
+      setupEventListeners();
+      syncFromCloud();
+    });
+
+    function loadAppData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
         try {
-            if (typeof firebase !== 'undefined') {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                db = firebase.firestore();
-            }
+          const parsed = JSON.parse(raw);
+          applyParsedAppData(parsed);
         } catch (err) {
-            console.warn('Firebase no inicializado:', err);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        }
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      }
+    }
+
+    function saveAppData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      updateDashboardStats();
+      pushToCloud();
+    }
+
+    // --- 5. SISTEMA DE AUTENTICACIÓN ---
+    function checkSession() {
+      const savedSession = sessionStorage.getItem('ams_v2_session');
+      if (savedSession) {
+        try {
+          const parsedUser = JSON.parse(savedSession);
+          const validUser = appData.users.find(u => u.username === parsedUser.username);
+          if (validUser) {
+            currentUser = { username: validUser.username, role: validUser.role };
+            showApp();
+            return;
+          }
+        } catch (e) {}
+      }
+      showLogin();
+    }
+
+    function showLogin() {
+      document.getElementById('login-screen').classList.remove('hidden');
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('flex');
+      toggleSidebar(false);
+    }
+
+    function showApp() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+      document.getElementById('app-shell').classList.add('flex');
+
+      document.getElementById('active-user-display').textContent = currentUser.username;
+      document.getElementById('sidebar-user-display').textContent = currentUser.username;
+      const roleBadge = document.getElementById('active-role-badge');
+      const isAdmin = currentUser.role === 'admin';
+
+      if (isAdmin) {
+        roleBadge.textContent = 'Administrador';
+        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white uppercase";
+      } else {
+        roleBadge.textContent = 'Vendedor';
+        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700 text-slate-200 uppercase";
+      }
+
+      // Aplicar control de permisos en la interfaz
+      document.querySelectorAll('.admin-only').forEach(el => {
+        if (isAdmin) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      renderInventoryTable();
+      renderBillingProducts();
+      renderCart();
+      renderHistoryTable();
+      renderUsersTable();
+      renderSalesReports();
+      updateDashboardStats();
+
+      // Pestaña inicial según el rol del usuario
+      if (isAdmin) {
+        switchTab('inventory');
+      } else {
+        switchTab('billing');
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('ams_v2_session');
+      currentUser = null;
+      cart = [];
+      document.getElementById('login-form').reset();
+      showLogin();
+      showToast('Sesión cerrada correctamente.', 'info');
+    }
+
+    function toggleSidebar(forceState) {
+      const sidebar = document.getElementById('left-sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      if (!sidebar || !backdrop) return;
+
+      const isCurrentlyOpen = !sidebar.classList.contains('-translate-x-full');
+      const nextOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+
+      if (nextOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    // --- 6. CONFIGURACIÓN DE EVENTOS ---
+    function setupEventListeners() {
+      // Submit del Login estricto
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await syncFromCloud();
+
+        const usernameInput = document.getElementById('login-username').value.trim();
+        const passwordInput = document.getElementById('login-password').value;
+
+        if (!usernameInput || !passwordInput) {
+          showLoginError('Por favor escribe tu usuario y contraseña.');
+          return;
         }
 
-        // --- 2. USUARIO ADMINISTRADOR PRINCIPAL PREDEFINIDO ---
-        const PRIMARY_ADMIN = {
-            username: "vendedor Alvir Moto Store",
-            password: "12344321",
-            role: "admin"
-        };
+        const matchedUser = appData.users.find(
+          u => u.username.toLowerCase() === usernameInput.toLowerCase() && u.password === passwordInput
+        );
 
-        // --- 3. INVENTARIO INICIAL DE REFERENCIA ---
-        const DEFAULT_INVENTORY = [
-            { id: '1', serial: 'AMS-CAS-001', name: 'Casco Integral Certificado DOT Negro Mate', price: 2850.00, stock: 8 },
-            { id: '2', serial: 'AMS-ACE-002', name: 'Aceite Sintético 4T 10W-40 (1 Litro)', price: 420.00, stock: 25 },
-            { id: '3', serial: 'AMS-KIT-003', name: 'Kit de Arrastre Reforzado (Cadena, Catalina y Piñón)', price: 1450.00, stock: 12 },
-            { id: '4', serial: 'AMS-LLA-004', name: 'Llanta Trasera Doble Propósito 120/80-18', price: 2300.00, stock: 6 },
-            { id: '5', serial: 'AMS-GUA-005', name: 'Guantes de Protección con Nudillos de Carbono', price: 750.00, stock: 15 }
-        ];
+        if (matchedUser) {
+          currentUser = { username: matchedUser.username, role: matchedUser.role };
+          sessionStorage.setItem('ams_v2_session', JSON.stringify(currentUser));
+          document.getElementById('login-error').classList.add('hidden');
+          showApp();
+          showToast(`Bienvenido, ${currentUser.username}`, 'success');
+        } else {
+          showLoginError('Nombre de usuario o contraseña incorrectos.');
+        }
+      });
 
-        // --- 4. ESTADO GLOBAL ---
-        let currentUser = null; // { username, role }
-        let appData = {
-            users: [PRIMARY_ADMIN],
-            inventory: [...DEFAULT_INVENTORY],
-            receipts: [] // Siempre inicia en cero
-        };
-        let cart = [];
+      // Mostrar / Ocultar contraseña
+      document.getElementById('toggle-password').addEventListener('click', () => {
+        const passInput = document.getElementById('login-password');
+        const icon = document.querySelector('#toggle-password i');
+        if (passInput.type === 'password') {
+          passInput.type = 'text';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+          passInput.type = 'password';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+      });
 
-        function applyParsedAppData(parsed) {
-            if (!parsed || typeof parsed !== 'object') return;
-            appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
-            appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
-            const secondaryUsers = Array.isArray(parsed.users)
-                ? parsed.users.filter(u => u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
-                : [];
-            appData.users = [PRIMARY_ADMIN, ...secondaryUsers];
+      // Añadir Producto al Inventario (Solo Admin) - Número de Serie OPCIONAL
+      document.getElementById('add-product-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (currentUser?.role !== 'admin') return;
+
+        const name = document.getElementById('prod-name').value.trim();
+        const rawSerial = document.getElementById('prod-serial').value.trim().toUpperCase();
+        const serial = rawSerial || 'S/N';
+        const price = parseFloat(document.getElementById('prod-price').value);
+        const stock = parseInt(document.getElementById('prod-stock').value, 10);
+
+        if (!name || isNaN(price) || price <= 0 || isNaN(stock) || stock < 1) {
+          showToast('Por favor completa nombre, precio y cantidad correctamente.', 'error');
+          return;
         }
 
-        async function syncFromCloud() {
-            if (!db) return;
-            try {
-                const doc = await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).get();
-                if (doc.exists && doc.data() && doc.data().payload) {
-                    const cloudData = JSON.parse(doc.data().payload);
-                    applyParsedAppData(cloudData);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-                    updateDashboardStats();
-                    if (currentUser) {
-                        renderInventoryTable(document.getElementById('inventory-search')?.value || '');
-                        renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
-                        renderHistoryTable();
-                        renderUsersTable();
-                    }
-                }
-            } catch (err) {
-                console.warn('Error leyendo desde Cloud Firestore:', err);
-            }
+        // Solo validar duplicado si se ingresó un número de serie real (distinto de S/N)
+        if (rawSerial) {
+          const existingIndex = appData.inventory.findIndex(item => item.serial.toUpperCase() === rawSerial);
+          if (existingIndex !== -1) {
+            showToast(`El número de serie "${rawSerial}" ya existe en el inventario.`, 'error');
+            return;
+          }
         }
 
-        async function pushToCloud() {
-            if (!db) return;
-            try {
-                await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).set({
-                    payload: JSON.stringify(appData),
-                    updatedAt: new Date().toISOString(),
-                    projectId: firebaseConfig.projectId
-                });
-            } catch (err) {
-                console.warn('Error guardando en Cloud Firestore:', err);
-            }
-        }
-
-        // --- INICIALIZACIÓN ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAppData();
-            checkSession();
-            setupEventListeners();
-            syncFromCloud();
+        appData.inventory.unshift({
+          id: Date.now().toString(),
+          serial,
+          name,
+          price,
+          stock
         });
 
-        function loadAppData() {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-                try {
-                    const parsed = JSON.parse(raw);
-                    applyParsedAppData(parsed);
-                } catch (err) {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-                }
-            } else {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        saveAppData();
+        renderInventoryTable(document.getElementById('inventory-search').value);
+        renderBillingProducts(document.getElementById('billing-product-search').value);
+        e.target.reset();
+        document.getElementById('prod-stock').value = 1;
+        showToast('Producto guardado en el inventario.', 'success');
+      });
+
+      // Crear Nuevo Usuario Vendedor (Solo Admin)
+      document.getElementById('add-user-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (currentUser?.role !== 'admin') return;
+
+        const username = document.getElementById('new-user-name').value.trim();
+        const password = document.getElementById('new-user-pass').value.trim();
+
+        if (!username || !password) {
+          showToast('Completa el nombre de usuario y la contraseña.', 'error');
+          return;
+        }
+
+        const exists = appData.users.some(u => u.username.toLowerCase() === username.toLowerCase());
+        if (exists) {
+          showToast('Ya existe un usuario con ese nombre.', 'error');
+          return;
+        }
+
+        appData.users.push({
+          username,
+          password,
+          role: 'seller'
+        });
+
+        saveAppData();
+        renderUsersTable();
+        e.target.reset();
+        showToast(`Usuario vendedor "${username}" creado con éxito.`, 'success');
+      });
+
+      // Buscador en Inventario
+      document.getElementById('inventory-search').addEventListener('input', (e) => {
+        renderInventoryTable(e.target.value);
+      });
+
+      // Buscador en Emisión de Recibo
+      document.getElementById('billing-product-search').addEventListener('input', (e) => {
+        renderBillingProducts(e.target.value);
+      });
+    }
+
+    function showLoginError(msg) {
+      const errBox = document.getElementById('login-error');
+      errBox.classList.remove('hidden');
+      document.getElementById('login-error-text').textContent = msg;
+    }
+
+    // --- 7. NAVEGACIÓN ENTRE SECCIONES ---
+    function switchTab(tabName) {
+      const adminTabs = ['inventory', 'history', 'reports', 'users'];
+      if (currentUser?.role !== 'admin' && adminTabs.includes(tabName)) {
+        tabName = 'billing';
+      }
+
+      const views = ['inventory', 'billing', 'history', 'reports', 'users'];
+      views.forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        const btnEl = document.getElementById(`tab-btn-${v}`);
+        if (viewEl) viewEl.classList.add('hidden');
+        if (btnEl) {
+          btnEl.classList.remove('bg-red-600', 'text-white', 'shadow-md', 'shadow-red-600/20');
+          btnEl.classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+        }
+      });
+
+      const activeView = document.getElementById(`view-${tabName}`);
+      const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+        activeBtn.classList.add('bg-red-600', 'text-white', 'shadow-md', 'shadow-red-600/20');
+      }
+
+      if (tabName === 'billing') {
+        renderBillingProducts(document.getElementById('billing-product-search').value);
+      } else if (tabName === 'history') {
+        renderHistoryTable();
+      } else if (tabName === 'reports') {
+        renderSalesReports();
+      } else if (tabName === 'users') {
+        renderUsersTable();
+      }
+
+      toggleSidebar(false);
+    }
+
+    // --- 8. GESTIÓN DE INVENTARIO ---
+    function updateDashboardStats() {
+      const totalProducts = appData.inventory.length;
+      const totalUnits = appData.inventory.reduce((sum, item) => sum + item.stock, 0);
+      const totalValue = appData.inventory.reduce((sum, item) => sum + (item.price * item.stock), 0);
+
+      document.getElementById('stat-total-products').textContent = totalProducts;
+      document.getElementById('stat-total-units').textContent = totalUnits;
+      document.getElementById('stat-total-value').textContent = formatCurrency(totalValue);
+      document.getElementById('badge-inventory-count').textContent = totalProducts;
+      document.getElementById('badge-receipts-count').textContent = appData.receipts.length;
+    }
+
+    function renderInventoryTable(filterText = '') {
+      const tbody = document.getElementById('inventory-table-body');
+      const emptyState = document.getElementById('inventory-empty-state');
+      const query = filterText.toLowerCase().trim();
+
+      const filtered = appData.inventory.filter(item =>
+        !query ||
+        item.name.toLowerCase().includes(query) ||
+        (item.serial && item.serial.toLowerCase().includes(query))
+      );
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      filtered.forEach(item => {
+        const stockBadge = item.stock > 3
+          ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${item.stock} disp.</span>`
+          : item.stock > 0
+            ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">${item.stock} bajo</span>`
+            : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">Agotado</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-3.5 px-5 font-mono text-xs font-bold text-slate-600">${escapeHTML(item.serial || 'S/N')}</td>
+          <td class="py-3.5 px-5 font-semibold text-slate-800">${escapeHTML(item.name)}</td>
+          <td class="py-3.5 px-5 text-right font-bold text-slate-900">${formatCurrency(item.price)}</td>
+          <td class="py-3.5 px-5 text-center">${stockBadge}</td>
+          <td class="py-3.5 px-5 text-right">
+            <div class="inline-flex items-center gap-1">
+              <button type="button" onclick="adjustStock('${item.id}', 1)" title="Aumentar stock (+1)"
+                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-700 text-xs transition">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button type="button" onclick="adjustStock('${item.id}', -1)" title="Reducir stock (-1)"
+                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 text-xs transition">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <button type="button" onclick="deleteProduct('${item.id}')" title="Eliminar producto"
+                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-red-100 text-slate-600 hover:text-red-600 text-xs transition ml-1">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function adjustStock(id, delta) {
+      if (currentUser?.role !== 'admin') return;
+      const product = appData.inventory.find(p => p.id === id);
+      if (!product || product.stock + delta < 0) return;
+
+      product.stock += delta;
+      saveAppData();
+      renderInventoryTable(document.getElementById('inventory-search').value);
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+    }
+
+    function deleteProduct(id) {
+      if (currentUser?.role !== 'admin') return;
+      appData.inventory = appData.inventory.filter(p => p.id !== id);
+      cart = cart.filter(c => c.id !== id);
+      saveAppData();
+      renderInventoryTable(document.getElementById('inventory-search').value);
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+      renderCart();
+      showToast('Producto eliminado del inventario.', 'info');
+    }
+
+    // --- 9. HOJA DE KARDEX (SOLO ADMIN) ---
+    function openKardexModal() {
+      if (currentUser?.role !== 'admin') return;
+
+      const now = new Date();
+      document.getElementById('kardex-date').textContent = now.toLocaleDateString('es-NI', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      document.getElementById('kardex-admin').textContent = currentUser.username;
+
+      const tbody = document.getElementById('kardex-table-body');
+      tbody.innerHTML = '';
+
+      let totalUnits = 0;
+      let totalValue = 0;
+
+      appData.inventory.forEach((item, idx) => {
+        const itemTotal = item.price * item.stock;
+        totalUnits += item.stock;
+        totalValue += itemTotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="border border-slate-300 py-2 px-3 text-center text-slate-500">${idx + 1}</td>
+          <td class="border border-slate-300 py-2 px-3 font-mono font-bold text-slate-700">${escapeHTML(item.serial || 'S/N')}</td>
+          <td class="border border-slate-300 py-2 px-3 font-medium text-slate-900">${escapeHTML(item.name)}</td>
+          <td class="border border-slate-300 py-2 px-3 text-center font-bold">${item.stock}</td>
+          <td class="border border-slate-300 py-2 px-3 text-right">${formatCurrency(item.price)}</td>
+          <td class="border border-slate-300 py-2 px-3 text-right font-bold">${formatCurrency(itemTotal)}</td>
+          <td class="border border-slate-300 py-2 px-3"></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('kardex-total-units').textContent = totalUnits;
+      document.getElementById('kardex-total-value').textContent = formatCurrency(totalValue);
+      document.getElementById('kardex-modal').classList.remove('hidden');
+    }
+
+    function closeKardexModal() {
+      document.getElementById('kardex-modal').classList.add('hidden');
+    }
+
+    // --- 10. GESTIÓN DE USUARIOS (SOLO ADMIN) ---
+    function renderUsersTable() {
+      const tbody = document.getElementById('users-table-body');
+      tbody.innerHTML = '';
+
+      appData.users.forEach(user => {
+        const isPrimary = user.username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase();
+        const roleBadge = isPrimary
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700"><i class="fa-solid fa-crown"></i> Administrador Total</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700"><i class="fa-solid fa-user"></i> Vendedor (Solo Recibos)</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-3.5 px-5 font-bold text-slate-800">${escapeHTML(user.username)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs text-slate-600">${escapeHTML(user.password)}</td>
+          <td class="py-3.5 px-5">${roleBadge}</td>
+          <td class="py-3.5 px-5 text-right">
+            ${isPrimary
+              ? `<span class="text-xs text-slate-400 italic">Principal</span>`
+              : `<button type="button" onclick="deleteUser('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white rounded-lg text-xs font-semibold transition">
+                   <i class="fa-solid fa-trash mr-1"></i>Eliminar
+                 </button>`
             }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function deleteUser(username) {
+      if (currentUser?.role !== 'admin') return;
+      if (username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase()) return;
+
+      appData.users = appData.users.filter(u => u.username !== username);
+      saveAppData();
+      renderUsersTable();
+      showToast(`Usuario "${username}" eliminado.`, 'info');
+    }
+
+    // --- 11. MÓDULO DE BÚSQUEDA Y EMISIÓN DE RECIBO ---
+    function renderBillingProducts(filterText = '') {
+      const container = document.getElementById('billing-product-list');
+      const query = filterText.toLowerCase().trim();
+
+      const filtered = appData.inventory.filter(item =>
+        !query ||
+        item.name.toLowerCase().includes(query) ||
+        (item.serial && item.serial.toLowerCase().includes(query))
+      );
+
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+            <p class="text-sm font-medium">No se encontraron productos con "${escapeHTML(filterText)}".</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const inCart = cart.find(c => c.id === item.id);
+        const inCartQty = inCart ? inCart.qty : 0;
+        const available = item.stock - inCartQty;
+        const isOutOfStock = available <= 0;
+
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border transition flex items-center justify-between gap-3 ${
+          isOutOfStock ? 'bg-slate-50 border-slate-200 opacity-60' : 'bg-white border-slate-200 hover:border-red-400 shadow-2xs'
+        }`;
+
+        card.innerHTML = `
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">${escapeHTML(item.serial || 'S/N')}</span>
+              <span class="text-[11px] font-semibold ${available > 0 ? 'text-emerald-600' : 'text-red-600'}">
+                ${available > 0 ? `${available} disponibles` : 'Agotado'}
+              </span>
+            </div>
+            <p class="text-sm font-bold text-slate-800 truncate">${escapeHTML(item.name)}</p>
+            <p class="text-xs font-extrabold text-red-600 mt-0.5">${formatCurrency(item.price)}</p>
+          </div>
+          <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
+            class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+              isOutOfStock
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-slate-900 hover:bg-red-600 text-white shadow-sm'
+            }">
+            <i class="fa-solid fa-plus"></i>
+            <span>Agregar</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(productId) {
+      const product = appData.inventory.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(c => c.id === productId);
+      if (existing) {
+        if (existing.qty >= product.stock) {
+          showToast('No hay más unidades disponibles en stock.', 'error');
+          return;
         }
-
-        function saveAppData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-            updateDashboardStats();
-            pushToCloud();
+        existing.qty += 1;
+      } else {
+        if (product.stock < 1) {
+          showToast('Producto agotado.', 'error');
+          return;
         }
+        cart.push({
+          id: product.id,
+          serial: product.serial || 'S/N',
+          name: product.name,
+          price: product.price,
+          qty: 1
+        });
+      }
 
-        // --- 5. SISTEMA DE AUTENTICACIÓN ---
-        function checkSession() {
-            const savedSession = sessionStorage.getItem('ams_v2_session');
-            if (savedSession) {
-                try {
-                    const parsedUser = JSON.parse(savedSession);
-                    const validUser = appData.users.find(u => u.username === parsedUser.username);
-                    if (validUser) {
-                        currentUser = { username: validUser.username, role: validUser.role };
-                        showApp();
-                        return;
-                    }
-                } catch (e) {}
-            }
-            showLogin();
+      renderCart();
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+    }
+
+    function updateCartQty(productId, delta) {
+      const product = appData.inventory.find(p => p.id === productId);
+      const itemIndex = cart.findIndex(c => c.id === productId);
+      if (itemIndex === -1 || !product) return;
+
+      const newQty = cart[itemIndex].qty + delta;
+      if (newQty <= 0) {
+        cart.splice(itemIndex, 1);
+      } else if (newQty > product.stock) {
+        showToast(`Stock máximo disponible: ${product.stock}`, 'error');
+        return;
+      } else {
+        cart[itemIndex].qty = newQty;
+      }
+
+      renderCart();
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById('cart-items-body');
+      const emptyMsg = document.getElementById('cart-empty-msg');
+      const totalDisplay = document.getElementById('cart-total-display');
+
+      tbody.innerHTML = '';
+
+      if (cart.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        totalDisplay.textContent = formatCurrency(0);
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      let total = 0;
+
+      cart.forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2.5 px-3">
+            <p class="font-bold text-slate-800 text-xs leading-snug">${escapeHTML(item.name)}</p>
+            <p class="font-mono text-[10px] text-slate-400">${escapeHTML(item.serial || 'S/N')} · ${formatCurrency(item.price)} c/u</p>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <div class="inline-flex items-center border border-slate-200 rounded-lg bg-slate-50">
+              <button type="button" onclick="updateCartQty('${item.id}', -1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:text-red-600">-</button>
+              <span class="px-2 text-xs font-bold text-slate-800">${item.qty}</span>
+              <button type="button" onclick="updateCartQty('${item.id}', 1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:text-emerald-600">+</button>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-right font-bold text-slate-900 text-xs">${formatCurrency(subtotal)}</td>
+          <td class="py-2.5 px-2 text-right">
+            <button type="button" onclick="updateCartQty('${item.id}', -9999)" class="text-slate-400 hover:text-red-600 text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      totalDisplay.textContent = formatCurrency(total);
+    }
+
+    // --- 12. GENERAR RECIBO DE COMPRA / ENTREGA Y DESCONTAR STOCK ---
+    function generateReceipt() {
+      const clientName = document.getElementById('client-name').value.trim();
+      const clientPhone = document.getElementById('client-phone').value.trim();
+      const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+      if (!clientName) {
+        showToast('Ingresa el nombre del cliente para emitir el recibo.', 'error');
+        document.getElementById('client-name').focus();
+        return;
+      }
+
+      if (!clientPhone) {
+        showToast('Ingresa el número de teléfono del cliente.', 'error');
+        document.getElementById('client-phone').focus();
+        return;
+      }
+
+      if (cart.length === 0) {
+        showToast('Agrega al menos un producto al recibo de entrega.', 'error');
+        return;
+      }
+
+      // Descontar del inventario
+      cart.forEach(cartItem => {
+        const invItem = appData.inventory.find(i => i.id === cartItem.id);
+        if (invItem) {
+          invItem.stock = Math.max(0, invItem.stock - cartItem.qty);
         }
+      });
 
-        function showLogin() {
-            document.getElementById('login-screen').classList.remove('hidden');
-            document.getElementById('app-shell').classList.add('hidden');
-            document.getElementById('app-shell').classList.remove('flex');
+      // Calcular total y crear objeto Recibo
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const nextNum = appData.receipts.length + 1;
+      const receiptNumber = `REC-${String(nextNum).padStart(4, '0')}`;
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('es-NI', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      const newReceipt = {
+        number: receiptNumber,
+        date: formattedDate,
+        isoDate: now.toISOString(),
+        business: 'Alvir Moto Store',
+        seller: currentUser.username,
+        clientName,
+        clientPhone,
+        paymentMethod,
+        items: JSON.parse(JSON.stringify(cart)),
+        total: totalAmount
+      };
+
+      appData.receipts.unshift(newReceipt);
+      saveAppData();
+
+      // Limpiar formulario y carrito
+      document.getElementById('client-name').value = '';
+      document.getElementById('client-phone').value = '';
+      cart = [];
+      renderCart();
+      renderInventoryTable(document.getElementById('inventory-search').value);
+      renderBillingProducts(document.getElementById('billing-product-search').value);
+      renderHistoryTable();
+      renderSalesReports();
+
+      // Mostrar Recibo generado
+      openReceiptModal(newReceipt);
+      showToast(`Recibo ${receiptNumber} emitido.`, 'success');
+    }
+
+    // --- 13. MODAL DE RECIBO, HISTORIAL CON FILTROS Y REPORTES ---
+    function openReceiptModal(receipt) {
+      document.getElementById('rec-number').textContent = receipt.number;
+      document.getElementById('rec-date').textContent = receipt.date;
+      document.getElementById('rec-seller').textContent = receipt.seller;
+      document.getElementById('rec-client-name').textContent = receipt.clientName;
+      document.getElementById('rec-client-phone').textContent = receipt.clientPhone;
+      document.getElementById('rec-payment-method').textContent = receipt.paymentMethod;
+      document.getElementById('rec-total').textContent = formatCurrency(receipt.total);
+
+      const itemsList = document.getElementById('rec-items-list');
+      itemsList.innerHTML = '';
+
+      receipt.items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2 pr-2">
+            <p class="font-bold text-slate-800">${escapeHTML(item.name)}</p>
+            <p class="font-mono text-[10px] text-slate-400">Serie: ${escapeHTML(item.serial || 'S/N')}</p>
+          </td>
+          <td class="py-2 text-center font-semibold">${item.qty}</td>
+          <td class="py-2 text-right text-slate-600">${formatCurrency(item.price)}</td>
+          <td class="py-2 text-right font-bold text-slate-900">${formatCurrency(item.price * item.qty)}</td>
+        `;
+        itemsList.appendChild(tr);
+      });
+
+      document.getElementById('receipt-modal').classList.remove('hidden');
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receipt-modal').classList.add('hidden');
+    }
+
+    function parseReceiptDate(rec) {
+      if (rec.isoDate) {
+        const d = new Date(rec.isoDate);
+        if (!isNaN(d.getTime())) return d;
+      }
+      if (rec.date) {
+        const match = rec.date.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+        if (match) {
+          const day = parseInt(match[1], 10);
+          const month = parseInt(match[2], 10) - 1;
+          const year = parseInt(match[3], 10);
+          const hour = match[4] ? parseInt(match[4], 10) : 0;
+          const minute = match[5] ? parseInt(match[5], 10) : 0;
+          return new Date(year, month, day, hour, minute);
         }
+      }
+      return null;
+    }
 
-        function showApp() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('app-shell').classList.remove('hidden');
-            document.getElementById('app-shell').classList.add('flex');
+    function clearHistoryFilters() {
+      document.getElementById('history-search-number').value = '';
+      document.getElementById('history-date-from').value = '';
+      document.getElementById('history-date-to').value = '';
+      renderHistoryTable();
+    }
 
-            document.getElementById('active-user-display').textContent = currentUser.username;
-            const roleBadge = document.getElementById('active-role-badge');
-            const isAdmin = currentUser.role === 'admin';
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-table-body');
+      const emptyState = document.getElementById('history-empty-state');
+      const searchNum = (document.getElementById('history-search-number')?.value || '').trim().toLowerCase();
+      const fromVal = document.getElementById('history-date-from')?.value || '';
+      const toVal = document.getElementById('history-date-to')?.value || '';
 
-            if (isAdmin) {
-                roleBadge.textContent = 'Administrador';
-                roleBadge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white uppercase';
-            } else {
-                roleBadge.textContent = 'Vendedor';
-                roleBadge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700 text-slate-200 uppercase';
-            }
+      const fromDate = fromVal ? new Date(`${fromVal}T00:00:00`) : null;
+      const toDate = toVal ? new Date(`${toVal}T23:59:59.999`) : null;
 
-            // Aplicar control de permisos en la interfaz
-            document.querySelectorAll('.admin-only').forEach(el => {
-                if (isAdmin) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
-            });
-
-            renderInventoryTable();
-            renderBillingProducts();
-            renderCart();
-            renderHistoryTable();
-            renderUsersTable();
-            updateDashboardStats();
-
-            // Pestaña inicial según el rol del usuario
-            if (isAdmin) {
-                switchTab('inventory');
-            } else {
-                switchTab('billing');
-            }
+      const filtered = appData.receipts.map((rec, originalIdx) => ({ rec, originalIdx })).filter(({ rec }) => {
+        if (searchNum && !String(rec.number || '').toLowerCase().includes(searchNum)) {
+          return false;
         }
-
-        function logout() {
-            sessionStorage.removeItem('ams_v2_session');
-            currentUser = null;
-            cart = [];
-            document.getElementById('login-form').reset();
-            showLogin();
-            showToast('Sesión cerrada correctamente.', 'info');
+        if (fromDate || toDate) {
+          const recDate = parseReceiptDate(rec);
+          if (!recDate) return false;
+          if (fromDate && recDate < fromDate) return false;
+          if (toDate && recDate > toDate) return false;
         }
+        return true;
+      });
 
-        // --- 6. CONFIGURACIÓN DE EVENTOS ---
-        function setupEventListeners() {
-            // Submit del Login estricto
-            document.getElementById('login-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await syncFromCloud();
-                const usernameInput = document.getElementById('login-username').value.trim();
-                const passwordInput = document.getElementById('login-password').value;
+      tbody.innerHTML = '';
 
-                if (!usernameInput || !passwordInput) {
-                    showLoginError('Por favor escribe tu usuario y contraseña.');
-                    return;
-                }
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
 
-                const matchedUser = appData.users.find(
-                    u => u.username.toLowerCase() === usernameInput.toLowerCase() && u.password === passwordInput
-                );
+      filtered.forEach(({ rec, originalIdx }) => {
+        const payBadge = rec.paymentMethod === 'Efectivo'
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700"><i class="fa-solid fa-money-bill-wave"></i> Efectivo</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"><i class="fa-solid fa-building-columns"></i> Transferencia</span>`;
 
-                if (matchedUser) {
-                    currentUser = { username: matchedUser.username, role: matchedUser.role };
-                    sessionStorage.setItem('ams_v2_session', JSON.stringify(currentUser));
-                    document.getElementById('login-error').classList.add('hidden');
-                    showApp();
-                    showToast(`Bienvenido, ${currentUser.username}`, 'success');
-                } else {
-                    showLoginError('Nombre de usuario o contraseña incorrectos.');
-                }
-            });
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-3.5 px-5 font-mono text-xs font-bold text-red-600">${escapeHTML(rec.number)}</td>
+          <td class="py-3.5 px-5 text-xs text-slate-500">${escapeHTML(rec.date)}</td>
+          <td class="py-3.5 px-5">
+            <p class="font-bold text-slate-800 text-xs">${escapeHTML(rec.clientName)}</p>
+            <p class="text-[11px] text-slate-400">${escapeHTML(rec.clientPhone)}</p>
+          </td>
+          <td class="py-3.5 px-5 text-xs font-medium text-slate-700">${escapeHTML(rec.seller)}</td>
+          <td class="py-3.5 px-5">${payBadge}</td>
+          <td class="py-3.5 px-5 text-right font-extrabold text-slate-900">${formatCurrency(rec.total)}</td>
+          <td class="py-3.5 px-5 text-right">
+            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="px-3 py-1.5 bg-slate-900 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition">
+              <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
-            // Mostrar / Ocultar contraseña
-            document.getElementById('toggle-password').addEventListener('click', () => {
-                const passInput = document.getElementById('login-password');
-                const icon = document.querySelector('#toggle-password i');
-                if (passInput.type === 'password') {
-                    passInput.type = 'text';
-                    icon.classList.replace('fa-eye', 'fa-eye-slash');
-                } else {
-                    passInput.type = 'password';
-                    icon.classList.replace('fa-eye-slash', 'fa-eye');
-                }
-            });
+    function viewReceiptByIndex(index) {
+      if (appData.receipts[index]) {
+        openReceiptModal(appData.receipts[index]);
+      }
+    }
 
-            // Añadir Producto al Inventario (Solo Admin)
-            document.getElementById('add-product-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (currentUser?.role !== 'admin') return;
+    function resetReceiptsHistory() {
+      if (currentUser?.role !== 'admin') return;
+      appData.receipts = [];
+      saveAppData();
+      renderHistoryTable();
+      renderSalesReports();
+      showToast('Historial de recibos reiniciado a cero.', 'info');
+    }
 
-                const name = document.getElementById('prod-name').value.trim();
-                const serial = document.getElementById('prod-serial').value.trim().toUpperCase();
-                const price = parseFloat(document.getElementById('prod-price').value);
-                const stock = parseInt(document.getElementById('prod-stock').value, 10);
+    function renderSalesReports() {
+      const refEl = document.getElementById('report-reference-date');
+      const now = new Date();
+      if (refEl) {
+        refEl.textContent = `Corte al ${now.toLocaleDateString('es-NI', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+      }
 
-                if (!name || !serial || isNaN(price) || price <= 0 || isNaN(stock) || stock < 1) {
-                    showToast('Por favor completa todos los campos correctamente.', 'error');
-                    return;
-                }
+      // Inicio de la semana actual (Lunes 00:00:00)
+      const startOfWeek = new Date(now);
+      const dayOfWeek = now.getDay();
+      const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      startOfWeek.setDate(now.getDate() - diffToMonday);
+      startOfWeek.setHours(0, 0, 0, 0);
 
-                const existingIndex = appData.inventory.findIndex(item => item.serial.toUpperCase() === serial);
-                if (existingIndex !== -1) {
-                    showToast(`El número de serie "${serial}" ya existe en el inventario.`, 'error');
-                    return;
-                }
+      // Inicio del mes actual y del año actual
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+      const startOfYear = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
 
-                appData.inventory.unshift({
-                    id: Date.now().toString(),
-                    serial,
-                    name,
-                    price,
-                    stock
-                });
+      let weekTotal = 0, weekCount = 0;
+      let monthTotal = 0, monthCount = 0;
+      let yearTotal = 0, yearCount = 0;
 
-                saveAppData();
-                renderInventoryTable();
-                renderBillingProducts();
-                e.target.reset();
-                document.getElementById('prod-stock').value = 1;
-                showToast('Producto guardado en el inventario.', 'success');
-            });
+      const weekReceipts = [];
+      const monthReceipts = [];
+      const yearReceipts = [];
 
-            // Crear Nuevo Usuario Vendedor (Solo Admin)
-            document.getElementById('add-user-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (currentUser?.role !== 'admin') return;
+      appData.receipts.forEach(rec => {
+        const d = parseReceiptDate(rec);
+        const amount = Number(rec.total) || 0;
+        if (!d) return;
 
-                const username = document.getElementById('new-user-name').value.trim();
-                const password = document.getElementById('new-user-pass').value.trim();
-
-                if (!username || !password) {
-                    showToast('Completa el nombre de usuario y la contraseña.', 'error');
-                    return;
-                }
-
-                const exists = appData.users.some(u => u.username.toLowerCase() === username.toLowerCase());
-                if (exists) {
-                    showToast('Ya existe un usuario con ese nombre.', 'error');
-                    return;
-                }
-
-                appData.users.push({
-                    username,
-                    password,
-                    role: 'seller'
-                });
-
-                saveAppData();
-                renderUsersTable();
-                e.target.reset();
-                showToast(`Usuario vendedor "${username}" creado con éxito.`, 'success');
-            });
-
-            // Buscador en Inventario
-            document.getElementById('inventory-search').addEventListener('input', (e) => {
-                renderInventoryTable(e.target.value);
-            });
-
-            // Buscador en Emisión de Recibo
-            document.getElementById('billing-product-search').addEventListener('input', (e) => {
-                renderBillingProducts(e.target.value);
-            });
+        if (d >= startOfWeek) {
+          weekTotal += amount;
+          weekCount += 1;
+          weekReceipts.push(rec);
         }
-
-        function showLoginError(msg) {
-            const errBox = document.getElementById('login-error');
-            errBox.classList.remove('hidden');
-            document.getElementById('login-error-text').textContent = msg;
+        if (d >= startOfMonth) {
+          monthTotal += amount;
+          monthCount += 1;
+          monthReceipts.push(rec);
         }
-
-        // --- 7. NAVEGACIÓN ENTRE PESTAÑAS ---
-        function switchTab(tabName) {
-            // Bloquear acceso a pestañas administrativas si no es admin
-            if (currentUser?.role !== 'admin' && tabName !== 'billing') {
-                tabName = 'billing';
-            }
-
-            const views = ['inventory', 'billing', 'history', 'users'];
-            views.forEach(v => {
-                const viewEl = document.getElementById(`view-${v}`);
-                const btnEl = document.getElementById(`tab-btn-${v}`);
-                if (viewEl) viewEl.classList.add('hidden');
-                if (btnEl) {
-                    btnEl.classList.remove('border-red-500', 'text-white', 'font-bold');
-                    btnEl.classList.add('border-transparent', 'text-slate-400', 'font-semibold');
-                }
-            });
-
-            const activeView = document.getElementById(`view-${tabName}`);
-            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
-            if (activeView) activeView.classList.remove('hidden');
-            if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-400', 'font-semibold');
-                activeBtn.classList.add('border-red-500', 'text-white', 'font-bold');
-            }
-
-            if (tabName === 'billing') {
-                renderBillingProducts(document.getElementById('billing-product-search').value);
-            } else if (tabName === 'history') {
-                renderHistoryTable();
-            } else if (tabName === 'users') {
-                renderUsersTable();
-            }
+        if (d >= startOfYear) {
+          yearTotal += amount;
+          yearCount += 1;
+          yearReceipts.push(rec);
         }
-
-        // --- 8. GESTIÓN DE INVENTARIO ---
-        function updateDashboardStats() {
-            const totalProducts = appData.inventory.length;
-            const totalUnits = appData.inventory.reduce((sum, item) => sum + item.stock, 0);
-            const totalValue = appData.inventory.reduce((sum, item) => sum + (item.price * item.stock), 0);
-
-            document.getElementById('stat-total-products').textContent = totalProducts;
-            document.getElementById('stat-total-units').textContent = totalUnits;
-            document.getElementById('stat-total-value').textContent = formatCurrency(totalValue);
-            document.getElementById('badge-inventory-count').textContent = totalProducts;
-            document.getElementById('badge-receipts-count').textContent = appData.receipts.length;
-        }
-
-        function renderInventoryTable(filterText = '') {
-            const tbody = document.getElementById('inventory-table-body');
-            const emptyState = document.getElementById('inventory-empty-state');
-            const query = filterText.toLowerCase().trim();
-
-            const filtered = appData.inventory.filter(item =>
-                item.name.toLowerCase().includes(query) ||
-                item.serial.toLowerCase().includes(query)
-            );
-
-            tbody.innerHTML = '';
-
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            emptyState.classList.add('hidden');
-
-            filtered.forEach(item => {
-                const stockBadge = item.stock > 3
-                    ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${item.stock} disp.</span>`
-                    : item.stock > 0
-                        ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">${item.stock} bajo</span>`
-                        : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">Agotado</span>`;
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition';
-                tr.innerHTML = `
-                    <td class="py-3.5 px-5 font-mono text-xs font-bold text-slate-600">${escapeHTML(item.serial)}</td>
-                    <td class="py-3.5 px-5 font-semibold text-slate-800">${escapeHTML(item.name)}</td>
-                    <td class="py-3.5 px-5 text-right font-bold text-slate-900">${formatCurrency(item.price)}</td>
-                    <td class="py-3.5 px-5 text-center">${stockBadge}</td>
-                    <td class="py-3.5 px-5 text-right">
-                        <div class="inline-flex items-center gap-1">
-                            <button onclick="adjustStock('${item.id}', 1)" title="Aumentar stock (+1)"
-                                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-700 text-xs transition">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <button onclick="adjustStock('${item.id}', -1)" title="Reducir stock (-1)"
-                                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 text-xs transition">
-                                <i class="fa-solid fa-minus"></i>
-                            </button>
-                            <button onclick="deleteProduct('${item.id}')" title="Eliminar producto"
-                                class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-red-100 text-slate-600 hover:text-red-600 text-xs transition ml-1">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function adjustStock(id, delta) {
-            if (currentUser?.role !== 'admin') return;
-            const product = appData.inventory.find(p => p.id === id);
-            if (!product || product.stock + delta < 0) return;
-
-            product.stock += delta;
-            saveAppData();
-            renderInventoryTable(document.getElementById('inventory-search').value);
-            renderBillingProducts(document.getElementById('billing-product-search').value);
-        }
-
-        function deleteProduct(id) {
-            if (currentUser?.role !== 'admin') return;
-            appData.inventory = appData.inventory.filter(p => p.id !== id);
-            cart = cart.filter(c => c.id !== id);
-            saveAppData();
-            renderInventoryTable(document.getElementById('inventory-search').value);
-            renderBillingProducts();
-            renderCart();
-            showToast('Producto eliminado del inventario.', 'info');
-        }
-
-        // --- 9. HOJA DE KARDEX (SOLO ADMIN) ---
-        function openKardexModal() {
-            if (currentUser?.role !== 'admin') return;
-
-            const now = new Date();
-            document.getElementById('kardex-date').textContent = now.toLocaleDateString('es-NI', {
-                day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-            document.getElementById('kardex-admin').textContent = currentUser.username;
-
-            const tbody = document.getElementById('kardex-table-body');
-            tbody.innerHTML = '';
-
-            let totalUnits = 0;
-            let totalValue = 0;
-
-            appData.inventory.forEach((item, idx) => {
-                const itemTotal = item.price * item.stock;
-                totalUnits += item.stock;
-                totalValue += itemTotal;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="border border-slate-300 py-2 px-3 text-center text-slate-500">${idx + 1}</td>
-                    <td class="border border-slate-300 py-2 px-3 font-mono font-bold text-slate-700">${escapeHTML(item.serial)}</td>
-                    <td class="border border-slate-300 py-2 px-3 font-medium text-slate-900">${escapeHTML(item.name)}</td>
-                    <td class="border border-slate-300 py-2 px-3 text-center font-bold">${item.stock}</td>
-                    <td class="border border-slate-300 py-2 px-3 text-right">${formatCurrency(item.price)}</td>
-                    <td class="border border-slate-300 py-2 px-3 text-right font-bold">${formatCurrency(itemTotal)}</td>
-                    <td class="border border-slate-300 py-2 px-3"></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('kardex-total-units').textContent = totalUnits;
-            document.getElementById('kardex-total-value').textContent = formatCurrency(totalValue);
-            document.getElementById('kardex-modal').classList.remove('hidden');
-        }
-
-        function closeKardexModal() {
-            document.getElementById('kardex-modal').classList.add('hidden');
-        }
-
-        // --- 10. GESTIÓN DE USUARIOS (SOLO ADMIN) ---
-        function renderUsersTable() {
-            const tbody = document.getElementById('users-table-body');
-            tbody.innerHTML = '';
-
-            appData.users.forEach(user => {
-                const isPrimary = user.role === 'admin';
-                const roleBadge = isPrimary
-                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700"><i class="fa-solid fa-crown"></i> Administrador Total</span>`
-                    : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700"><i class="fa-solid fa-user"></i> Vendedor (Solo Recibos)</span>`;
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition';
-                tr.innerHTML = `
-                    <td class="py-3.5 px-5 font-bold text-slate-800">${escapeHTML(user.username)}</td>
-                    <td class="py-3.5 px-5 font-mono text-xs text-slate-600">${escapeHTML(user.password)}</td>
-                    <td class="py-3.5 px-5">${roleBadge}</td>
-                    <td class="py-3.5 px-5 text-right">
-                        ${isPrimary
-                            ? `<span class="text-xs text-slate-400 italic">Principal</span>`
-                            : `<button onclick="deleteUser('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white rounded-lg text-xs font-semibold transition">
-                                <i class="fa-solid fa-trash mr-1"></i> Eliminar
-                               </button>`
-                        }
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function deleteUser(username) {
-            if (currentUser?.role !== 'admin') return;
-            if (username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase()) return;
-
-            appData.users = appData.users.filter(u => u.username !== username);
-            saveAppData();
-            renderUsersTable();
-            showToast(`Usuario "${username}" eliminado.`, 'info');
-        }
-
-        // --- 11. MÓDULO DE BÚSQUEDA Y EMISIÓN DE RECIBO ---
-        function renderBillingProducts(filterText = '') {
-            const container = document.getElementById('billing-product-list');
-            const query = filterText.toLowerCase().trim();
-
-            const filtered = appData.inventory.filter(item =>
-                item.name.toLowerCase().includes(query) ||
-                item.serial.toLowerCase().includes(query)
-            );
-
-            container.innerHTML = '';
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="p-8 text-center text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                        <p class="text-xs font-medium">No se encontraron productos con "${escapeHTML(filterText)}".</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const inCart = cart.find(c => c.id === item.id);
-                const inCartQty = inCart ? inCart.qty : 0;
-                const available = item.stock - inCartQty;
-                const isOutOfStock = available <= 0;
-
-                const card = document.createElement('div');
-                card.className = `p-3.5 rounded-xl border transition flex items-center justify-between gap-3 ${
-                    isOutOfStock ? 'bg-slate-50 border-slate-200 opacity-60' : 'bg-white border-slate-200 hover:border-red-400 shadow-sm'
-                }`;
-
-                card.innerHTML = `
-                    <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-2 mb-0.5">
-                            <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">${escapeHTML(item.serial)}</span>
-                            <span class="text-[11px] font-semibold ${available > 0 ? 'text-emerald-600' : 'text-red-500'}">
-                                ${available > 0 ? `${available} disponibles` : 'Agotado'}
-                            </span>
-                        </div>
-                        <p class="text-sm font-bold text-slate-800 truncate">${escapeHTML(item.name)}</p>
-                        <p class="text-xs font-extrabold text-red-600 mt-0.5">${formatCurrency(item.price)}</p>
-                    </div>
-                    <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
-                        class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-                            isOutOfStock
-                                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                                : 'bg-slate-900 hover:bg-red-600 text-white shadow-sm'
-                        }">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Agregar</span>
-                    </button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function addToCart(productId) {
-            const product = appData.inventory.find(p => p.id === productId);
-            if (!product) return;
-
-            const existing = cart.find(c => c.id === productId);
-            if (existing) {
-                if (existing.qty >= product.stock) {
-                    showToast('No hay más unidades disponibles en stock.', 'error');
-                    return;
-                }
-                existing.qty += 1;
-            } else {
-                if (product.stock < 1) {
-                    showToast('Producto agotado.', 'error');
-                    return;
-                }
-                cart.push({
-                    id: product.id,
-                    serial: product.serial,
-                    name: product.name,
-                    price: product.price,
-                    qty: 1
-                });
-            }
-
-            renderCart();
-            renderBillingProducts(document.getElementById('billing-product-search').value);
-        }
-
-        function updateCartQty(productId, delta) {
-            const product = appData.inventory.find(p => p.id === productId);
-            const itemIndex = cart.findIndex(c => c.id === productId);
-            if (itemIndex === -1 || !product) return;
-
-            const newQty = cart[itemIndex].qty + delta;
-            if (newQty <= 0) {
-                cart.splice(itemIndex, 1);
-            } else if (newQty > product.stock) {
-                showToast(`Stock máximo disponible: ${product.stock}`, 'error');
-                return;
-            } else {
-                cart[itemIndex].qty = newQty;
-            }
-
-            renderCart();
-            renderBillingProducts(document.getElementById('billing-product-search').value);
-        }
-
-        function clearCart() {
-            cart = [];
-            renderCart();
-            renderBillingProducts(document.getElementById('billing-product-search').value);
-        }
-
-        function renderCart() {
-            const tbody = document.getElementById('cart-items-body');
-            const emptyMsg = document.getElementById('cart-empty-msg');
-            const totalDisplay = document.getElementById('cart-total-display');
-
-            tbody.innerHTML = '';
-
-            if (cart.length === 0) {
-                emptyMsg.classList.remove('hidden');
-                totalDisplay.textContent = formatCurrency(0);
-                return;
-            }
-            emptyMsg.classList.add('hidden');
-
-            let total = 0;
-
-            cart.forEach(item => {
-                const subtotal = item.price * item.qty;
-                total += subtotal;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-2.5 px-3">
-                        <p class="font-bold text-slate-800 text-xs leading-snug">${escapeHTML(item.name)}</p>
-                        <p class="font-mono text-[10px] text-slate-400">${escapeHTML(item.serial)} • ${formatCurrency(item.price)} c/u</p>
-                    </td>
-                    <td class="py-2.5 px-2 text-center">
-                        <div class="inline-flex items-center border border-slate-200 rounded-lg bg-slate-50">
-                            <button type="button" onclick="updateCartQty('${item.id}', -1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:text-red-600">-</button>
-                            <span class="px-2 text-xs font-bold text-slate-800">${item.qty}</span>
-                            <button type="button" onclick="updateCartQty('${item.id}', 1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:text-emerald-600">+</button>
-                        </div>
-                    </td>
-                    <td class="py-2.5 px-3 text-right font-bold text-slate-900 text-xs">${formatCurrency(subtotal)}</td>
-                    <td class="py-2.5 px-2 text-right">
-                        <button type="button" onclick="updateCartQty('${item.id}', -9999)" class="text-slate-400 hover:text-red-600 text-xs">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            totalDisplay.textContent = formatCurrency(total);
-        }
-
-        // --- 12. GENERAR RECIBO DE ENTREGA Y DESCONTAR STOCK ---
-        function generateReceipt() {
-            const clientName = document.getElementById('client-name').value.trim();
-            const clientPhone = document.getElementById('client-phone').value.trim();
-            const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
-
-            if (!clientName) {
-                showToast('Ingresa el nombre del cliente para emitir el recibo.', 'error');
-                document.getElementById('client-name').focus();
-                return;
-            }
-            if (!clientPhone) {
-                showToast('Ingresa el número de teléfono del cliente.', 'error');
-                document.getElementById('client-phone').focus();
-                return;
-            }
-            if (cart.length === 0) {
-                showToast('Agrega al menos un producto al recibo de entrega.', 'error');
-                return;
-            }
-
-            // Descontar del inventario
-            cart.forEach(cartItem => {
-                const invItem = appData.inventory.find(i => i.id === cartItem.id);
-                if (invItem) {
-                    invItem.stock = Math.max(0, invItem.stock - cartItem.qty);
-                }
-            });
-
-            // Calcular total y crear objeto Recibo de Entrega
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const receiptNumber = 'REC-' + String(appData.receipts.length + 1).padStart(4, '0');
-            const now = new Date();
-            const formattedDate = now.toLocaleDateString('es-NI', {
-                day: '2-digit', month: '2-digit', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
-
-            const newReceipt = {
-                number: receiptNumber,
-                date: formattedDate,
-                business: 'Alvir Moto Store',
-                seller: currentUser.username,
-                clientName,
-                clientPhone,
-                paymentMethod,
-                items: JSON.parse(JSON.stringify(cart)),
-                total: totalAmount
-            };
-
-            appData.receipts.unshift(newReceipt);
-            saveAppData();
-
-            // Limpiar formulario y carrito
-            document.getElementById('client-name').value = '';
-            document.getElementById('client-phone').value = '';
-            cart = [];
-            renderCart();
-            renderInventoryTable();
-            renderBillingProducts();
-            renderHistoryTable();
-
-            // Mostrar Recibo de Entrega generado
-            openReceiptModal(newReceipt);
-            showToast(`Recibo de Entrega ${receiptNumber} emitido.`, 'success');
-        }
-
-        // --- 13. MODAL DE RECIBO DE ENTREGA E HISTORIAL ---
-        function openReceiptModal(receipt) {
-            document.getElementById('rec-number').textContent = receipt.number;
-            document.getElementById('rec-date').textContent = receipt.date;
-            document.getElementById('rec-seller').textContent = receipt.seller;
-            document.getElementById('rec-client-name').textContent = receipt.clientName;
-            document.getElementById('rec-client-phone').textContent = receipt.clientPhone;
-            document.getElementById('rec-payment-method').textContent = receipt.paymentMethod;
-            document.getElementById('rec-total').textContent = formatCurrency(receipt.total);
-
-            const itemsList = document.getElementById('rec-items-list');
-            itemsList.innerHTML = '';
-
-            receipt.items.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-2 pr-2">
-                        <p class="font-bold text-slate-800">${escapeHTML(item.name)}</p>
-                        <p class="font-mono text-[10px] text-slate-400">Serie: ${escapeHTML(item.serial)}</p>
-                    </td>
-                    <td class="py-2 text-center font-semibold">${item.qty}</td>
-                    <td class="py-2 text-right text-slate-600">${formatCurrency(item.price)}</td>
-                    <td class="py-2 text-right font-bold text-slate-900">${formatCurrency(item.price * item.qty)}</td>
-                `;
-                itemsList.appendChild(tr);
-            });
-
-            document.getElementById('receipt-modal').classList.remove('hidden');
-        }
-
-        function closeReceiptModal() {
-            document.getElementById('receipt-modal').classList.add('hidden');
-        }
-
-        function renderHistoryTable() {
-            const tbody = document.getElementById('history-table-body');
-            const emptyState = document.getElementById('history-empty-state');
-            tbody.innerHTML = '';
-
-            if (appData.receipts.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            emptyState.classList.add('hidden');
-
-            appData.receipts.forEach((rec, idx) => {
-                const payBadge = rec.paymentMethod === 'Efectivo'
-                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700"><i class="fa-solid fa-money-bill-wave"></i> Efectivo</span>`
-                    : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"><i class="fa-solid fa-building-columns"></i> Transferencia</span>`;
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition';
-                tr.innerHTML = `
-                    <td class="py-3.5 px-5 font-mono text-xs font-bold text-red-600">${escapeHTML(rec.number)}</td>
-                    <td class="py-3.5 px-5 text-xs text-slate-500">${escapeHTML(rec.date)}</td>
-                    <td class="py-3.5 px-5">
-                        <p class="font-bold text-slate-800 text-xs">${escapeHTML(rec.clientName)}</p>
-                        <p class="text-[11px] text-slate-400">${escapeHTML(rec.clientPhone)}</p>
-                    </td>
-                    <td class="py-3.5 px-5 text-xs font-medium text-slate-700">${escapeHTML(rec.seller)}</td>
-                    <td class="py-3.5 px-5">${payBadge}</td>
-                    <td class="py-3.5 px-5 text-right font-extrabold text-slate-900">${formatCurrency(rec.total)}</td>
-                    <td class="py-3.5 px-5 text-right">
-                        <button onclick="viewReceiptByIndex(${idx})" class="px-3 py-1.5 bg-slate-900 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition">
-                            <i class="fa-solid fa-eye mr-1"></i> Ver Recibo
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function viewReceiptByIndex(index) {
-            if (appData.receipts[index]) {
-                openReceiptModal(appData.receipts[index]);
-            }
-        }
-
-        function resetReceiptsHistory() {
-            if (currentUser?.role !== 'admin') return;
-            appData.receipts = [];
-            saveAppData();
-            renderHistoryTable();
-            showToast('Historial de recibos reiniciado a cero.', 'info');
-        }
-
-        // --- IMPRESIÓN SELECTIVA (RECIBO O KARDEX) ---
-        function printDocument(type) {
-            document.body.classList.remove('printing-receipt', 'printing-kardex');
-            document.body.classList.add(type === 'kardex' ? 'printing-kardex' : 'printing-receipt');
-            window.print();
-        }
-
-        // --- UTILIDADES ---
-        function formatCurrency(amount) {
-            return 'C$ ' + Number(amount).toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-
-        function escapeHTML(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-
-            const colors = {
-                success: 'bg-emerald-600 text-white',
-                error: 'bg-red-600 text-white',
-                info: 'bg-slate-900 text-white'
-            };
-
-            const icons = {
-                success: 'fa-circle-check',
-                error: 'fa-circle-exclamation',
-                info: 'fa-circle-info'
-            };
-
-            toast.className = `${colors[type]} px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center gap-2.5 fade-in pointer-events-auto`;
-            toast.innerHTML = `<i class="fa-solid ${icons[type]} text-sm"></i><span>${escapeHTML(message)}</span>`;
-
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3200);
-        }
-    </script>
+      });
+
+      const wTotEl = document.getElementById('report-weekly-total');
+      const wCntEl = document.getElementById('report-weekly-count');
+      const mTotEl = document.getElementById('report-monthly-total');
+      const mCntEl = document.getElementById('report-monthly-count');
+      const yTotEl = document.getElementById('report-annual-total');
+      const yCntEl = document.getElementById('report-annual-count');
+
+      if (wTotEl) wTotEl.textContent = formatCurrency(weekTotal);
+      if (wCntEl) wCntEl.textContent = `${weekCount} ${weekCount === 1 ? 'recibo' : 'recibos'} esta semana`;
+      if (mTotEl) mTotEl.textContent = formatCurrency(monthTotal);
+      if (mCntEl) mCntEl.textContent = `${monthCount} ${monthCount === 1 ? 'recibo' : 'recibos'} este mes`;
+      if (yTotEl) yTotEl.textContent = formatCurrency(yearTotal);
+      if (yCntEl) yCntEl.textContent = `${yearCount} ${yearCount === 1 ? 'recibo' : 'recibos'} este año`;
+
+      const period = document.getElementById('report-period-select')?.value || 'month';
+      let selectedList = monthReceipts;
+      if (period === 'week') selectedList = weekReceipts;
+      else if (period === 'year') selectedList = yearReceipts;
+      else if (period === 'all') selectedList = appData.receipts;
+
+      let cashSum = 0;
+      let transferSum = 0;
+      selectedList.forEach(r => {
+        const val = Number(r.total) || 0;
+        if (r.paymentMethod === 'Transferencia') transferSum += val;
+        else cashSum += val;
+      });
+
+      const cashEl = document.getElementById('report-cash-total');
+      const transferEl = document.getElementById('report-transfer-total');
+      if (cashEl) cashEl.textContent = formatCurrency(cashSum);
+      if (transferEl) transferEl.textContent = formatCurrency(transferSum);
+    }
+
+    // --- IMPRESIÓN SELECTIVA (RECIBO O KARDEX) ---
+    function printDocument(type) {
+      document.body.classList.remove('printing-receipt', 'printing-kardex');
+      document.body.classList.add(type === 'kardex' ? 'printing-kardex' : 'printing-receipt');
+      window.print();
+    }
+
+    // --- UTILIDADES ---
+    function formatCurrency(amount) {
+      return 'C$ ' + Number(amount || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const colors = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white',
+        info: 'bg-slate-900 text-white'
+      };
+
+      const icons = {
+        success: 'fa-circle-check',
+        error: 'fa-circle-exclamation',
+        info: 'fa-circle-info'
+      };
+
+      toast.className = `${colors[type] || colors.info} px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center gap-2.5 fade-in pointer-events-auto`;
+      toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-sm"></i><span>${escapeHTML(message)}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+  </script>
 </body>
 </html>
