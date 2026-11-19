@@ -96,7 +96,7 @@
   <!-- NOTIFICACIÓN FLOTANTE -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- 1. PANTALLA DE INICIO DE SESIÓN ESTRICTA -->
+  <!-- 1. PANTALLA DE INICIO DE SESIÓN (INTACTA) -->
   <section id="login-screen" class="min-h-screen flex items-center justify-center bg-zinc-950 p-4">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-zinc-200/90 fade-in">
       <!-- Cabecera Minimalista -->
@@ -152,51 +152,51 @@
     </div>
   </section>
 
-  <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN) -->
-  <div id="app-shell" class="hidden flex-col min-h-screen">
+  <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN) - COLORES INVERTIDOS (FONDO OSCURO / TARJETAS Y BOTONES PRINCIPALES CLAROS) -->
+  <div id="app-shell" class="hidden flex-col min-h-screen bg-zinc-950 text-zinc-100 selection:bg-rose-900/60 selection:text-rose-100">
 
     <!-- Fondo oscuro para menú lateral en móvil -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-zinc-950/50 backdrop-blur-[2px] z-40 hidden lg:hidden"></div>
+    <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/75 backdrop-blur-[2px] z-40 hidden lg:hidden"></div>
 
-    <!-- Barra Superior Limpia y Minimalista -->
-    <header class="bg-white/95 backdrop-blur-md text-zinc-900 sticky top-0 z-30 border-b border-zinc-200/90">
+    <!-- Barra Superior Invertida -->
+    <header class="bg-zinc-950/95 backdrop-blur-md text-white sticky top-0 z-30 border-b border-zinc-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         <!-- Izquierda: Botón Menú + Silueta Deportiva + Marca -->
         <div class="flex items-center gap-3">
           <button type="button" id="menu-toggle-btn" onclick="toggleSidebar()"
-            class="w-10 h-10 rounded-xl bg-zinc-100 hover:bg-zinc-900 text-zinc-700 hover:text-white border border-zinc-200 flex items-center justify-center transition"
+            class="w-10 h-10 rounded-xl bg-zinc-900 hover:bg-white text-zinc-200 hover:text-zinc-950 border border-zinc-800 flex items-center justify-center transition"
             title="Abrir menú">
             <i class="fa-solid fa-bars text-sm"></i>
           </button>
 
-          <div class="w-11 h-10 bg-zinc-950 rounded-xl flex items-center justify-center text-rose-500 shrink-0">
+          <div class="w-11 h-10 bg-white rounded-xl flex items-center justify-center text-rose-600 shrink-0">
             <svg class="w-9 h-5" viewBox="0 0 64 36" fill="currentColor" aria-label="Alvir Moto Store">
               <use href="#sport-moto-silhouette"></use>
             </svg>
           </div>
           <div>
-            <h1 class="text-base sm:text-lg font-extrabold tracking-tight leading-none text-zinc-950">Alvir Moto Store</h1>
-            <span class="text-[11px] text-zinc-500 font-medium">Gestión limpia de inventario y recibos</span>
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight leading-none text-white">Alvir Moto Store</h1>
+            <span class="text-[11px] text-zinc-400 font-medium">Gestión limpia de inventario y recibos</span>
           </div>
         </div>
 
         <!-- Derecha: Usuario Activo y Botón Salir -->
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <div class="hidden sm:flex items-center gap-2.5 bg-zinc-50 px-3 py-1.5 rounded-xl border border-zinc-200/80">
-            <div class="w-7 h-7 rounded-lg bg-rose-50 border border-rose-200/60 flex items-center justify-center text-rose-600">
+          <div class="hidden sm:flex items-center gap-2.5 bg-zinc-900 px-3 py-1.5 rounded-xl border border-zinc-800">
+            <div class="w-7 h-7 rounded-lg bg-rose-950/70 border border-rose-800/60 flex items-center justify-center text-rose-400">
               <i class="fa-solid fa-user text-xs"></i>
             </div>
             <div class="text-left">
               <div class="flex items-center gap-1.5 leading-none">
                 <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">Atendido por</span>
-                <span id="active-role-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-900 text-white uppercase">Admin</span>
+                <span id="active-role-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white text-zinc-950 uppercase">Admin</span>
               </div>
-              <p id="active-user-display" class="text-xs font-bold text-zinc-900 mt-0.5">vendedor Alvir Moto Store</p>
+              <p id="active-user-display" class="text-xs font-bold text-white mt-0.5">vendedor Alvir Moto Store</p>
             </div>
           </div>
 
           <button type="button" onclick="logout()"
-            class="bg-zinc-100 hover:bg-rose-600 border border-zinc-200 hover:border-rose-600 text-zinc-700 hover:text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+            class="bg-zinc-900 hover:bg-rose-600 border border-zinc-800 hover:border-rose-600 text-zinc-200 hover:text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Salir</span>
           </button>
@@ -205,44 +205,44 @@
     </header>
 
     <!-- Contenedor Principal: Menú Lateral Izquierdo + Área de Contenido -->
-    <div class="flex-1 flex max-w-7xl w-full mx-auto relative">
+    <div class="flex-1 flex max-w-7xl w-full mx-auto relative bg-zinc-950">
 
       <!-- MENÚ LATERAL DESPLEGABLE (IZQUIERDA) -->
       <aside id="left-sidebar"
-        class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-white text-zinc-700 border-r border-zinc-200/90 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out flex flex-col justify-between shrink-0">
+        class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-zinc-950 text-zinc-300 border-r border-zinc-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out flex flex-col justify-between shrink-0">
         <div class="p-4 space-y-4 overflow-y-auto">
           <!-- Encabezado del Menú Lateral -->
-          <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+          <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
             <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400">Menú Principal</span>
-            <button type="button" onclick="toggleSidebar(false)" class="lg:hidden w-8 h-8 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 flex items-center justify-center">
+            <button type="button" onclick="toggleSidebar(false)" class="lg:hidden w-8 h-8 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 flex items-center justify-center">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
           <!-- Tarjeta de Usuario en Menú Lateral (móvil) -->
-          <div class="sm:hidden bg-zinc-50 p-3 rounded-xl border border-zinc-200/80 flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-lg bg-rose-50 border border-rose-200/60 flex items-center justify-center text-rose-600 shrink-0">
+          <div class="sm:hidden bg-zinc-900 p-3 rounded-xl border border-zinc-800 flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-lg bg-rose-950/70 border border-rose-800/60 flex items-center justify-center text-rose-400 shrink-0">
               <i class="fa-solid fa-user text-sm"></i>
             </div>
             <div class="min-w-0">
               <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold block">Atendido por</span>
-              <p id="sidebar-user-display" class="text-xs font-bold text-zinc-900 truncate">vendedor Alvir Moto Store</p>
+              <p id="sidebar-user-display" class="text-xs font-bold text-white truncate">vendedor Alvir Moto Store</p>
             </div>
           </div>
 
-          <!-- Opciones de Navegación Separadas -->
+          <!-- Opciones de Navegación Separadas (controladas por permisos granulares) -->
           <nav class="space-y-1">
             <button type="button" id="tab-btn-inventory" onclick="switchTab('inventory')"
-              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left bg-zinc-950 text-white">
+              class="nav-item perm-inventory w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left bg-white text-zinc-950">
               <span class="flex items-center gap-3">
-                <i class="fa-solid fa-boxes-stacked w-4 text-center text-rose-400"></i>
-                <span>Inventario y Kardex</span>
+                <i class="fa-solid fa-boxes-stacked w-4 text-center text-rose-600"></i>
+                <span>Inventario</span>
               </span>
-              <span id="badge-inventory-count" class="bg-white/15 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+              <span id="badge-inventory-count" class="bg-zinc-900 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
             </button>
 
             <button type="button" id="tab-btn-billing" onclick="switchTab('billing')"
-              class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950">
+              class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-300 hover:bg-zinc-900 hover:text-white">
               <span class="flex items-center gap-3">
                 <i class="fa-solid fa-receipt w-4 text-center"></i>
                 <span>Emisión de Recibos</span>
@@ -250,16 +250,16 @@
             </button>
 
             <button type="button" id="tab-btn-history" onclick="switchTab('history')"
-              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950">
+              class="nav-item perm-history w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-300 hover:bg-zinc-900 hover:text-white">
               <span class="flex items-center gap-3">
                 <i class="fa-solid fa-clock-rotate-left w-4 text-center"></i>
                 <span>Historial de Recibos</span>
               </span>
-              <span id="badge-receipts-count" class="bg-zinc-100 text-zinc-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+              <span id="badge-receipts-count" class="bg-zinc-800 text-zinc-200 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
             </button>
 
             <button type="button" id="tab-btn-reports" onclick="switchTab('reports')"
-              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950">
+              class="nav-item perm-reports w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-300 hover:bg-zinc-900 hover:text-white">
               <span class="flex items-center gap-3">
                 <i class="fa-solid fa-chart-line w-4 text-center"></i>
                 <span>Reportes de Ventas</span>
@@ -267,105 +267,105 @@
             </button>
 
             <button type="button" id="tab-btn-users" onclick="switchTab('users')"
-              class="nav-item admin-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950">
+              class="nav-item owner-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-300 hover:bg-zinc-900 hover:text-white">
               <span class="flex items-center gap-3">
                 <i class="fa-solid fa-users-gear w-4 text-center"></i>
-                <span>Gestión de Usuarios</span>
+                <span>Gestión de Perfiles</span>
               </span>
             </button>
           </nav>
         </div>
 
         <!-- Pie del Menú Lateral -->
-        <div class="p-4 border-t border-zinc-100 text-[11px] text-zinc-400 flex items-center justify-between">
-          <span class="font-semibold text-zinc-600">Alvir Moto Store</span>
+        <div class="p-4 border-t border-zinc-800 text-[11px] text-zinc-400 flex items-center justify-between">
+          <span class="font-semibold text-zinc-200">Alvir Moto Store</span>
           <span>Sync Activo</span>
         </div>
       </aside>
 
       <!-- CONTENIDO PRINCIPAL -->
-      <main class="flex-1 max-w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 min-w-0">
+      <main class="flex-1 max-w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 min-w-0 bg-zinc-950">
 
-        <!-- PESTAÑA A: INVENTARIO Y KARDEX (SOLO ADMIN) -->
-        <div id="view-inventory" class="admin-only fade-in space-y-6">
-          <!-- Tarjetas de Resumen Minimalistas + Botón Kardex -->
+        <!-- PESTAÑA A: INVENTARIO Y HOJA DE KARDEX -->
+        <div id="view-inventory" class="perm-inventory fade-in space-y-6">
+          <!-- Tarjetas de Resumen + Botón Kardex -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-zinc-200/90 flex items-center gap-4">
-              <div class="w-11 h-11 rounded-xl bg-zinc-100 text-zinc-700 flex items-center justify-center text-lg shrink-0">
+            <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-zinc-800 text-zinc-200 flex items-center justify-center text-lg shrink-0">
                 <i class="fa-solid fa-tags"></i>
               </div>
               <div>
                 <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Productos</p>
-                <p id="stat-total-products" class="text-2xl font-extrabold text-zinc-950">0</p>
+                <p id="stat-total-products" class="text-2xl font-extrabold text-white">0</p>
               </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl border border-zinc-200/90 flex items-center gap-4">
-              <div class="w-11 h-11 rounded-xl bg-zinc-100 text-zinc-700 flex items-center justify-center text-lg shrink-0">
+            <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-zinc-800 text-zinc-200 flex items-center justify-center text-lg shrink-0">
                 <i class="fa-solid fa-cubes"></i>
               </div>
               <div>
                 <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Unidades en Stock</p>
-                <p id="stat-total-units" class="text-2xl font-extrabold text-zinc-950">0</p>
+                <p id="stat-total-units" class="text-2xl font-extrabold text-white">0</p>
               </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl border border-zinc-200/90 flex items-center gap-4">
-              <div class="w-11 h-11 rounded-xl bg-zinc-100 text-zinc-700 flex items-center justify-center text-lg shrink-0">
+            <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-zinc-800 text-zinc-200 flex items-center justify-center text-lg shrink-0">
                 <i class="fa-solid fa-sack-dollar"></i>
               </div>
               <div>
                 <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Valor Total</p>
-                <p id="stat-total-value" class="text-xl font-extrabold text-zinc-950">C$ 0.00</p>
+                <p id="stat-total-value" class="text-xl font-extrabold text-white">C$ 0.00</p>
               </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl border border-zinc-200/90 flex flex-col justify-center">
-              <button type="button" onclick="openKardexModal()" class="w-full py-3 px-4 bg-zinc-950 hover:bg-rose-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+            <div id="kardex-action-card" class="perm-kardex bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex flex-col justify-center">
+              <button type="button" onclick="openKardexModal()" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
                 <i class="fa-solid fa-print text-sm"></i>
-                <span>Imprimir Kardex</span>
+                <span>Hoja de Kardex</span>
               </button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Formulario para Añadir Nuevo Producto (sin "1" prellenado en unidades) -->
+            <!-- Formulario para Añadir Nuevo Producto -->
             <div class="lg:col-span-4">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 p-6 lg:sticky lg:top-24">
-                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-zinc-100">
-                  <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 lg:sticky lg:top-24">
+                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-zinc-800">
+                  <div class="w-8 h-8 rounded-lg bg-rose-950/70 text-rose-400 flex items-center justify-center">
                     <i class="fa-solid fa-plus text-xs"></i>
                   </div>
-                  <h2 class="text-base font-extrabold text-zinc-950">Añadir Producto Nuevo</h2>
+                  <h2 class="text-base font-extrabold text-white">Añadir Producto Nuevo</h2>
                 </div>
 
                 <form id="add-product-form" class="space-y-4">
                   <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Nombre del Producto *</label>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre del Producto *</label>
                     <input type="text" id="prod-name" required placeholder="Ej. Casco Integral LS2 Negro"
-                      class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                      class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
 
                   <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Número de Serie / Código (Opcional)</label>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Número de Serie / Código (Opcional)</label>
                     <input type="text" id="prod-serial" placeholder="Déjalo vacío si no tiene serie"
-                      class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                      class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
 
                   <div class="grid grid-cols-2 gap-3">
                     <div>
-                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Precio (C$) *</label>
+                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio (C$) *</label>
                       <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00"
-                        class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                        class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                     </div>
                     <div>
-                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Unidades *</label>
+                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades *</label>
                       <input type="number" id="prod-stock" required min="0" step="1" placeholder="0"
-                        class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                        class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                     </div>
                   </div>
 
-                  <button type="submit" class="w-full py-3 px-4 bg-zinc-950 hover:bg-rose-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm mt-2">
+                  <button type="submit" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm mt-2">
                     <i class="fa-solid fa-floppy-disk text-xs"></i>
                     <span>Guardar en Inventario</span>
                   </button>
@@ -375,25 +375,25 @@
 
             <!-- Tabla de Inventario Actual con Selector Desplegable de Acciones -->
             <div class="lg:col-span-8">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 overflow-hidden">
-                <div class="p-6 border-b border-zinc-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h2 class="text-base font-extrabold text-zinc-950">Inventario Disponible</h2>
-                    <p class="text-xs text-zinc-500">Toca el selector de acciones en cada producto para administrar sin borrar por accidente</p>
+                    <h2 class="text-base font-extrabold text-white">Inventario Disponible</h2>
+                    <p class="text-xs text-zinc-400">Toca el selector de acciones en cada producto para administrar sin borrar por accidente</p>
                   </div>
                   <div class="relative w-full sm:w-72">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-400">
                       <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </span>
                     <input type="text" id="inventory-search" placeholder="Buscar por nombre o serie..."
-                      class="w-full pl-9 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                      class="w-full pl-9 pr-3 py-2 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
                 </div>
 
                 <div class="overflow-x-auto">
                   <table class="w-full text-left border-collapse">
                     <thead>
-                      <tr class="bg-zinc-50/80 border-b border-zinc-200/80 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                      <tr class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
                         <th class="py-3.5 px-5">N° Serie</th>
                         <th class="py-3.5 px-5">Producto</th>
                         <th class="py-3.5 px-5 text-right">Precio</th>
@@ -401,7 +401,7 @@
                         <th class="py-3.5 px-5 text-right">Acciones</th>
                       </tr>
                     </thead>
-                    <tbody id="inventory-table-body" class="divide-y divide-zinc-100 text-sm">
+                    <tbody id="inventory-table-body" class="divide-y divide-zinc-800/80 text-sm">
                       <!-- Filas generadas dinámicamente -->
                     </tbody>
                   </table>
@@ -421,14 +421,14 @@
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Columna Izquierda: Buscador Rápido de Productos y Precios -->
             <div class="lg:col-span-6 space-y-6">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 p-6">
-                <div class="flex items-center gap-2.5 pb-4 mb-4 border-b border-zinc-100">
-                  <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+                <div class="flex items-center gap-2.5 pb-4 mb-4 border-b border-zinc-800">
+                  <div class="w-8 h-8 rounded-lg bg-rose-950/70 text-rose-400 flex items-center justify-center">
                     <i class="fa-solid fa-search text-xs"></i>
                   </div>
                   <div>
-                    <h2 class="text-base font-extrabold text-zinc-950">Buscar Producto y Consultar Precio</h2>
-                    <p class="text-xs text-zinc-500">Busca por número de serie o nombre del artículo para agregarlo</p>
+                    <h2 class="text-base font-extrabold text-white">Buscar Producto y Consultar Precio</h2>
+                    <p class="text-xs text-zinc-400">Busca por número de serie o nombre del artículo para agregarlo</p>
                   </div>
                 </div>
 
@@ -437,7 +437,7 @@
                     <i class="fa-solid fa-barcode text-xs"></i>
                   </span>
                   <input type="text" id="billing-product-search" placeholder="Escribe N° de serie o nombre del producto..."
-                    class="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                    class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                 </div>
 
                 <div id="billing-product-list" class="space-y-2.5 max-h-[430px] overflow-y-auto pr-1">
@@ -448,32 +448,32 @@
 
             <!-- Columna Derecha: Datos del Cliente, Detalle y Pago -->
             <div class="lg:col-span-6">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 p-6 space-y-5">
-                <div class="flex items-center justify-between pb-4 border-b border-zinc-100">
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 space-y-5">
+                <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-zinc-950 text-white flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg bg-white text-zinc-950 flex items-center justify-center">
                       <i class="fa-solid fa-receipt text-xs"></i>
                     </div>
-                    <h2 class="text-base font-extrabold text-zinc-950">Nuevo Recibo de Compra / Entrega</h2>
+                    <h2 class="text-base font-extrabold text-white">Nuevo Recibo de Compra / Entrega</h2>
                   </div>
-                  <span class="text-[11px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-600 px-3 py-1 rounded-full">Alvir Moto Store</span>
+                  <span class="text-[11px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">Alvir Moto Store</span>
                 </div>
 
                 <!-- Datos del Cliente -->
-                <div class="bg-zinc-50 p-4 rounded-xl border border-zinc-200/80 space-y-3">
-                  <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-pen text-rose-600"></i> Datos del Cliente
+                <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
+                  <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-pen text-rose-400"></i> Datos del Cliente
                   </h3>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label class="block text-xs font-semibold text-zinc-600 mb-1">Nombre del Cliente *</label>
+                      <label class="block text-xs font-semibold text-zinc-300 mb-1">Nombre del Cliente *</label>
                       <input type="text" id="client-name" required placeholder="Ej. Carlos Mendoza"
-                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                        class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                     </div>
                     <div>
-                      <label class="block text-xs font-semibold text-zinc-600 mb-1">Número de Teléfono *</label>
+                      <label class="block text-xs font-semibold text-zinc-300 mb-1">Número de Teléfono *</label>
                       <input type="tel" id="client-phone" required placeholder="Ej. 8888-9999"
-                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                        class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                     </div>
                   </div>
                 </div>
@@ -481,12 +481,12 @@
                 <!-- Productos Seleccionados en el Recibo -->
                 <div>
                   <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Detalle de Entrega</h3>
-                    <button type="button" onclick="clearCart()" class="text-xs text-rose-600 hover:underline font-semibold">Limpiar lista</button>
+                    <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Detalle de Entrega</h3>
+                    <button type="button" onclick="clearCart()" class="text-xs text-rose-400 hover:underline font-semibold">Limpiar lista</button>
                   </div>
-                  <div class="border border-zinc-200/80 rounded-xl overflow-hidden">
+                  <div class="border border-zinc-800 rounded-xl overflow-hidden">
                     <table class="w-full text-left text-sm">
-                      <thead class="bg-zinc-50 border-b border-zinc-200/80 text-[11px] uppercase text-zinc-400">
+                      <thead class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] uppercase text-zinc-400">
                         <tr>
                           <th class="py-2.5 px-3">Producto / Serie</th>
                           <th class="py-2.5 px-2 text-center">Cant.</th>
@@ -494,7 +494,7 @@
                           <th class="py-2.5 px-2"></th>
                         </tr>
                       </thead>
-                      <tbody id="cart-items-body" class="divide-y divide-zinc-100">
+                      <tbody id="cart-items-body" class="divide-y divide-zinc-800/80">
                         <!-- Items en carrito -->
                       </tbody>
                     </table>
@@ -506,18 +506,18 @@
 
                 <!-- Método de Pago -->
                 <div>
-                  <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Método de Pago *</label>
+                  <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Método de Pago *</label>
                   <div class="grid grid-cols-2 gap-3">
                     <label class="cursor-pointer">
                       <input type="radio" name="payment-method" value="Efectivo" checked class="peer sr-only" />
-                      <div class="p-3 rounded-xl border border-zinc-200 peer-checked:border-zinc-950 peer-checked:bg-zinc-950 flex items-center justify-center gap-2 font-bold text-xs text-zinc-700 peer-checked:text-white transition">
+                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-white peer-checked:bg-white flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-zinc-950 transition">
                         <i class="fa-solid fa-money-bill-wave text-emerald-500"></i>
                         <span>Efectivo</span>
                       </div>
                     </label>
                     <label class="cursor-pointer">
                       <input type="radio" name="payment-method" value="Transferencia" class="peer sr-only" />
-                      <div class="p-3 rounded-xl border border-zinc-200 peer-checked:border-zinc-950 peer-checked:bg-zinc-950 flex items-center justify-center gap-2 font-bold text-xs text-zinc-700 peer-checked:text-white transition">
+                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-white peer-checked:bg-white flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-zinc-950 transition">
                         <i class="fa-solid fa-building-columns text-sky-500"></i>
                         <span>Transferencia</span>
                       </div>
@@ -526,10 +526,10 @@
                 </div>
 
                 <!-- Total y Botón Emitir Recibo -->
-                <div class="pt-4 border-t border-zinc-200/80">
+                <div class="pt-4 border-t border-zinc-800">
                   <div class="flex items-center justify-between mb-4">
-                    <span class="text-xs font-bold uppercase tracking-wider text-zinc-500">Total a Pagar:</span>
-                    <span id="cart-total-display" class="text-2xl font-extrabold text-zinc-950">C$ 0.00</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-zinc-400">Total a Pagar:</span>
+                    <span id="cart-total-display" class="text-2xl font-extrabold text-white">C$ 0.00</span>
                   </div>
 
                   <button type="button" onclick="generateReceipt()" class="w-full py-3.5 px-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm">
@@ -542,21 +542,21 @@
           </div>
         </div>
 
-        <!-- PESTAÑA C: HISTORIAL DE RECIBOS (SOLO ADMIN) -->
-        <div id="view-history" class="admin-only hidden fade-in">
-          <div class="bg-white rounded-2xl border border-zinc-200/90 overflow-hidden">
-            <div class="p-6 border-b border-zinc-100 flex flex-col gap-4">
+        <!-- PESTAÑA C: HISTORIAL DE RECIBOS -->
+        <div id="view-history" class="perm-history hidden fade-in">
+          <div class="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+            <div class="p-6 border-b border-zinc-800 flex flex-col gap-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 class="text-base font-extrabold text-zinc-950">Historial de Recibos de Compra / Entrega</h2>
-                  <p class="text-xs text-zinc-500">Consulta o reimprime comprobantes guardados por número de recibo o rango de fechas</p>
+                  <h2 class="text-base font-extrabold text-white">Historial de Recibos de Compra / Entrega</h2>
+                  <p class="text-xs text-zinc-400">Consulta o reimprime comprobantes guardados por número de recibo o rango de fechas</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                  <button type="button" onclick="clearHistoryFilters()" class="px-3.5 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                  <button type="button" onclick="clearHistoryFilters()" class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
                     <i class="fa-solid fa-filter-circle-xmark"></i>
                     <span>Limpiar Filtros</span>
                   </button>
-                  <button type="button" onclick="resetReceiptsHistory()" class="px-3.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-600 hover:text-white border border-rose-200/70 rounded-xl text-xs font-bold transition flex items-center gap-2 self-start sm:self-auto">
+                  <button type="button" onclick="resetReceiptsHistory()" class="px-3.5 py-2 bg-rose-950/70 text-rose-300 hover:bg-rose-600 hover:text-white border border-rose-800/60 rounded-xl text-xs font-bold transition flex items-center gap-2 self-start sm:self-auto">
                     <i class="fa-solid fa-rotate-left"></i>
                     <span>Reiniciar Historial a Cero</span>
                   </button>
@@ -564,28 +564,28 @@
               </div>
 
               <!-- Filtros: Buscar por N° de Recibo + Desde / Hasta -->
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-zinc-50 p-4 rounded-xl border border-zinc-200/80">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-zinc-950/70 p-4 rounded-xl border border-zinc-800">
                 <div>
-                  <label for="history-search-number" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Buscar N° de Recibo</label>
+                  <label for="history-search-number" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Buscar N° de Recibo</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-400">
                       <i class="fa-solid fa-hashtag text-xs"></i>
                     </span>
                     <input type="text" id="history-search-number" oninput="renderHistoryTable()" placeholder="Ej. REC-0001"
-                      class="w-full pl-8 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                      class="w-full pl-8 pr-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                   </div>
                 </div>
 
                 <div>
-                  <label for="history-date-from" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Desde (Fecha)</label>
+                  <label for="history-date-from" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Desde (Fecha)</label>
                   <input type="date" id="history-date-from" onchange="renderHistoryTable()"
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                    class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                 </div>
 
                 <div>
-                  <label for="history-date-to" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Hasta (Fecha)</label>
+                  <label for="history-date-to" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Hasta (Fecha)</label>
                   <input type="date" id="history-date-to" onchange="renderHistoryTable()"
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                    class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                 </div>
               </div>
             </div>
@@ -593,7 +593,7 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-zinc-50/80 border-b border-zinc-200/80 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                  <tr class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
                     <th class="py-3.5 px-5">N° Recibo</th>
                     <th class="py-3.5 px-5">Fecha</th>
                     <th class="py-3.5 px-5">Cliente</th>
@@ -603,7 +603,7 @@
                     <th class="py-3.5 px-5 text-right">Comprobante</th>
                   </tr>
                 </thead>
-                <tbody id="history-table-body" class="divide-y divide-zinc-100 text-sm">
+                <tbody id="history-table-body" class="divide-y divide-zinc-800/80 text-sm">
                   <!-- Historial dinámico -->
                 </tbody>
               </table>
@@ -616,53 +616,53 @@
           </div>
         </div>
 
-        <!-- PESTAÑA D: REPORTES DE VENTAS SEMANAL, MENSUAL Y ANUAL (SOLO ADMIN) -->
-        <div id="view-reports" class="admin-only hidden fade-in space-y-6">
-          <div class="bg-white rounded-2xl border border-zinc-200/90 p-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-zinc-100">
+        <!-- PESTAÑA D: REPORTES DE VENTAS SEMANAL, MENSUAL Y ANUAL -->
+        <div id="view-reports" class="perm-reports hidden fade-in space-y-6">
+          <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-zinc-800">
               <div>
-                <h2 class="text-base font-extrabold text-zinc-950">Reportes de Ventas</h2>
-                <p class="text-xs text-zinc-500">Resumen acumulado de dinero vendido según los recibos registrados</p>
+                <h2 class="text-base font-extrabold text-white">Reportes de Ventas</h2>
+                <p class="text-xs text-zinc-400">Resumen acumulado de dinero vendido según los recibos registrados</p>
               </div>
-              <span id="report-reference-date" class="text-xs font-semibold bg-zinc-100 text-zinc-600 px-3 py-1.5 rounded-full"></span>
+              <span id="report-reference-date" class="text-xs font-semibold bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-full"></span>
             </div>
 
             <!-- 3 Tarjetas Principales: Semanal, Mensual, Anual -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div class="p-5 rounded-2xl border border-zinc-200/90 bg-zinc-50/60">
+              <div class="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/70">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-500">Venta Semanal</span>
-                  <i class="fa-solid fa-calendar-week text-zinc-400 text-xs"></i>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400">Venta Semanal</span>
+                  <i class="fa-solid fa-calendar-week text-zinc-500 text-xs"></i>
                 </div>
-                <p id="report-weekly-total" class="text-2xl font-extrabold text-zinc-950">C$ 0.00</p>
-                <p id="report-weekly-count" class="text-xs text-zinc-500 mt-1">0 recibos esta semana</p>
+                <p id="report-weekly-total" class="text-2xl font-extrabold text-white">C$ 0.00</p>
+                <p id="report-weekly-count" class="text-xs text-zinc-400 mt-1">0 recibos esta semana</p>
               </div>
 
-              <div class="p-5 rounded-2xl border border-zinc-200/90 bg-zinc-50/60">
+              <div class="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/70">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-500">Venta Mensual</span>
-                  <i class="fa-solid fa-calendar-days text-zinc-400 text-xs"></i>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400">Venta Mensual</span>
+                  <i class="fa-solid fa-calendar-days text-zinc-500 text-xs"></i>
                 </div>
-                <p id="report-monthly-total" class="text-2xl font-extrabold text-zinc-950">C$ 0.00</p>
-                <p id="report-monthly-count" class="text-xs text-zinc-500 mt-1">0 recibos este mes</p>
+                <p id="report-monthly-total" class="text-2xl font-extrabold text-white">C$ 0.00</p>
+                <p id="report-monthly-count" class="text-xs text-zinc-400 mt-1">0 recibos este mes</p>
               </div>
 
-              <div class="p-5 rounded-2xl border border-zinc-200/90 bg-zinc-50/60">
+              <div class="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/70">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-500">Venta Anual</span>
-                  <i class="fa-solid fa-calendar text-zinc-400 text-xs"></i>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400">Venta Anual</span>
+                  <i class="fa-solid fa-calendar text-zinc-500 text-xs"></i>
                 </div>
-                <p id="report-annual-total" class="text-2xl font-extrabold text-zinc-950">C$ 0.00</p>
-                <p id="report-annual-count" class="text-xs text-zinc-500 mt-1">0 recibos este año</p>
+                <p id="report-annual-total" class="text-2xl font-extrabold text-white">C$ 0.00</p>
+                <p id="report-annual-count" class="text-xs text-zinc-400 mt-1">0 recibos este año</p>
               </div>
             </div>
 
             <!-- Desglose por Método de Pago en el Período Seleccionado -->
-            <div class="bg-zinc-50 rounded-xl border border-zinc-200/80 p-4">
+            <div class="bg-zinc-950/70 rounded-xl border border-zinc-800 p-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                <h3 class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-500">Desglose por Método de Pago</h3>
+                <h3 class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400">Desglose por Método de Pago</h3>
                 <select id="report-period-select" onchange="renderSalesReports()"
-                  class="px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-bold text-zinc-700 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                  class="px-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-lg text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-rose-500">
                   <option value="week">Semana actual</option>
                   <option value="month" selected>Mes actual</option>
                   <option value="year">Año actual</option>
@@ -671,86 +671,125 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="bg-white p-3.5 rounded-xl border border-zinc-200/80 flex items-center justify-between">
-                  <span class="text-xs font-bold text-zinc-600 flex items-center gap-2">
-                    <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
+                <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800 flex items-center justify-between">
+                  <span class="text-xs font-bold text-zinc-300 flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-wave text-emerald-500"></i>
                     <span>Efectivo</span>
                   </span>
-                  <span id="report-cash-total" class="text-sm font-extrabold text-zinc-950">C$ 0.00</span>
+                  <span id="report-cash-total" class="text-sm font-extrabold text-white">C$ 0.00</span>
                 </div>
-                <div class="bg-white p-3.5 rounded-xl border border-zinc-200/80 flex items-center justify-between">
-                  <span class="text-xs font-bold text-zinc-600 flex items-center gap-2">
-                    <i class="fa-solid fa-building-columns text-sky-600"></i>
+                <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800 flex items-center justify-between">
+                  <span class="text-xs font-bold text-zinc-300 flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns text-sky-500"></i>
                     <span>Transferencia</span>
                   </span>
-                  <span id="report-transfer-total" class="text-sm font-extrabold text-zinc-950">C$ 0.00</span>
+                  <span id="report-transfer-total" class="text-sm font-extrabold text-white">C$ 0.00</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- PESTAÑA E: GESTIÓN DE USUARIOS (SOLO ADMIN) -->
-        <div id="view-users" class="admin-only hidden fade-in">
+        <!-- PESTAÑA E: GESTIÓN DE PERFILES Y PERMISOS (SOLO PERFIL PRINCIPAL) -->
+        <div id="view-users" class="owner-only hidden fade-in">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Formulario para crear nuevo vendedor -->
+            <!-- Formulario para crear nuevo perfil con permisos configurables -->
             <div class="lg:col-span-5">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 p-6">
-                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-zinc-100">
-                  <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+                <div class="flex items-center gap-2.5 pb-4 mb-5 border-b border-zinc-800">
+                  <div class="w-8 h-8 rounded-lg bg-rose-950/70 text-rose-400 flex items-center justify-center">
                     <i class="fa-solid fa-user-plus text-xs"></i>
                   </div>
                   <div>
-                    <h2 class="text-base font-extrabold text-zinc-950">Crear Nuevo Usuario Vendedor</h2>
-                    <p class="text-xs text-zinc-500">Acceso limitado solo a búsqueda de precios y recibos</p>
+                    <h2 class="text-base font-extrabold text-white">Crear Perfil y Permisos</h2>
+                    <p class="text-xs text-zinc-400">Solo tú puedes crear perfiles; elige qué opciones habilitar</p>
                   </div>
                 </div>
 
                 <form id="add-user-form" class="space-y-4">
                   <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Nombre de Usuario *</label>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre de Usuario *</label>
                     <input type="text" id="new-user-name" required autocomplete="off" placeholder="Ej. Juan Pérez"
-                      class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                      class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
 
                   <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Contraseña *</label>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Contraseña *</label>
                     <input type="text" id="new-user-pass" required autocomplete="off" placeholder="Asigna una contraseña"
-                      class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white transition" />
+                      class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
 
-                  <div class="bg-zinc-50 border border-zinc-200/80 rounded-xl p-3 text-xs text-zinc-600 flex items-start gap-2">
-                    <i class="fa-solid fa-shield-halved mt-0.5 text-zinc-500"></i>
-                    <span>Los vendedores pueden consultar precios, emitir recibos y ver su nombre como vendedor, sin acceso a inventario ni Kardex.</span>
+                  <!-- Selector de Permisos para el Perfil -->
+                  <div class="bg-zinc-950/70 border border-zinc-800 rounded-xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-300">Permisos del Perfil</span>
+                      <span class="text-[10px] text-zinc-400">Emisión de recibos siempre activa</span>
+                    </div>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 cursor-pointer hover:border-zinc-700 transition">
+                      <span class="flex items-center gap-2.5 text-xs font-semibold text-zinc-200">
+                        <i class="fa-solid fa-boxes-stacked text-rose-400 w-4 text-center"></i>
+                        <span>Acceso a Inventario</span>
+                      </span>
+                      <input type="checkbox" id="perm-check-inventory" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 cursor-pointer hover:border-zinc-700 transition">
+                      <span class="flex items-center gap-2.5 text-xs font-semibold text-zinc-200">
+                        <i class="fa-solid fa-file-lines text-rose-400 w-4 text-center"></i>
+                        <span>Permiso para Hoja de Kardex</span>
+                      </span>
+                      <input type="checkbox" id="perm-check-kardex" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 cursor-pointer hover:border-zinc-700 transition">
+                      <span class="flex items-center gap-2.5 text-xs font-semibold text-zinc-200">
+                        <i class="fa-solid fa-clock-rotate-left text-rose-400 w-4 text-center"></i>
+                        <span>Acceso a Historial de Recibos</span>
+                      </span>
+                      <input type="checkbox" id="perm-check-history" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 cursor-pointer hover:border-zinc-700 transition">
+                      <span class="flex items-center gap-2.5 text-xs font-semibold text-zinc-200">
+                        <i class="fa-solid fa-chart-line text-rose-400 w-4 text-center"></i>
+                        <span>Acceso a Reportes de Ventas</span>
+                      </span>
+                      <input type="checkbox" id="perm-check-reports" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    </label>
+
+                    <p class="text-[11px] text-zinc-400 pt-1">
+                      Si dejas todo desmarcado, el perfil queda como vendedor normal. La creación de perfiles es exclusiva de tu cuenta.
+                    </p>
                   </div>
 
-                  <button type="submit" class="w-full py-3 px-4 bg-zinc-950 hover:bg-rose-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm">
+                  <button type="submit" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm">
                     <i class="fa-solid fa-user-check text-xs"></i>
-                    <span>Crear Usuario Vendedor</span>
+                    <span>Guardar Perfil</span>
                   </button>
                 </form>
               </div>
             </div>
 
-            <!-- Lista de Usuarios Registrados -->
+            <!-- Lista de Perfiles Registrados -->
             <div class="lg:col-span-7">
-              <div class="bg-white rounded-2xl border border-zinc-200/90 overflow-hidden">
-                <div class="p-6 border-b border-zinc-100">
-                  <h2 class="text-base font-extrabold text-zinc-950">Usuarios Autorizados del Sistema</h2>
-                  <p class="text-xs text-zinc-500">Administra las cuentas de acceso a Alvir Moto Store</p>
+              <div class="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                <div class="p-6 border-b border-zinc-800">
+                  <h2 class="text-base font-extrabold text-white">Perfiles Autorizados del Sistema</h2>
+                  <p class="text-xs text-zinc-400">Revisa o ajusta los permisos asignados a cada perfil creado</p>
                 </div>
 
                 <div class="overflow-x-auto">
                   <table class="w-full text-left border-collapse">
                     <thead>
-                      <tr class="bg-zinc-50/80 border-b border-zinc-200/80 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                      <tr class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
                         <th class="py-3.5 px-5">Usuario</th>
                         <th class="py-3.5 px-5">Contraseña</th>
-                        <th class="py-3.5 px-5">Rol / Permisos</th>
+                        <th class="py-3.5 px-5">Permisos</th>
                         <th class="py-3.5 px-5 text-right">Acciones</th>
                       </tr>
                     </thead>
-                    <tbody id="users-table-body" class="divide-y divide-zinc-100 text-sm">
+                    <tbody id="users-table-body" class="divide-y divide-zinc-800/80 text-sm">
                       <!-- Usuarios generados dinámicamente -->
                     </tbody>
                   </table>
@@ -764,12 +803,71 @@
     </div>
   </div>
 
+  <!-- MODAL PARA EDITAR PERMISOS DE UN PERFIL SECUNDARIO -->
+  <div id="edit-user-perms-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-zinc-800 fade-in">
+      <div class="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-extrabold text-white">Permisos del Perfil</h3>
+          <p id="perms-modal-username" class="text-xs text-zinc-400"></p>
+        </div>
+        <button type="button" onclick="closeUserPermsModal()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+      <form id="edit-user-perms-form" class="p-6 space-y-3">
+        <input type="hidden" id="perms-target-username" />
+
+        <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+          <span class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+            <i class="fa-solid fa-boxes-stacked text-rose-400 w-4 text-center"></i>
+            <span>Acceso a Inventario</span>
+          </span>
+          <input type="checkbox" id="modal-perm-inventory" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+        </label>
+
+        <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+          <span class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+            <i class="fa-solid fa-file-lines text-rose-400 w-4 text-center"></i>
+            <span>Permiso para Hoja de Kardex</span>
+          </span>
+          <input type="checkbox" id="modal-perm-kardex" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+        </label>
+
+        <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+          <span class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+            <i class="fa-solid fa-clock-rotate-left text-rose-400 w-4 text-center"></i>
+            <span>Acceso a Historial de Recibos</span>
+          </span>
+          <input type="checkbox" id="modal-perm-history" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+        </label>
+
+        <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+          <span class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-rose-400 w-4 text-center"></i>
+            <span>Acceso a Reportes de Ventas</span>
+          </span>
+          <input type="checkbox" id="modal-perm-reports" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+        </label>
+
+        <div class="pt-3 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeUserPermsModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="px-4 py-2.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-xl transition">
+            Guardar Permisos
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL DE EDICIÓN RÁPIDA DE PRODUCTO (NOMBRE / PRECIO / UNIDADES) -->
-  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/60 backdrop-blur-[2px] flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-zinc-200 fade-in">
-      <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
-        <h3 id="edit-modal-title" class="text-base font-extrabold text-zinc-950">Editar Producto</h3>
-        <button type="button" onclick="closeEditProductModal()" class="w-8 h-8 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 flex items-center justify-center">
+  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-zinc-800 fade-in">
+      <div class="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+        <h3 id="edit-modal-title" class="text-base font-extrabold text-white">Editar Producto</h3>
+        <button type="button" onclick="closeEditProductModal()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
@@ -778,28 +876,28 @@
         <input type="hidden" id="edit-prod-mode" />
 
         <div id="edit-field-name-wrap">
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Nombre del Producto</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre del Producto</label>
           <input type="text" id="edit-prod-name" required
-            class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white" />
+            class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
         </div>
 
         <div id="edit-field-price-wrap">
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Precio (C$)</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio (C$)</label>
           <input type="number" id="edit-prod-price" min="0.01" step="0.01"
-            class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white" />
+            class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
         </div>
 
         <div id="edit-field-stock-wrap">
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Unidades en Stock</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades en Stock</label>
           <input type="number" id="edit-prod-stock" min="0" step="1"
-            class="w-full px-3.5 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white" />
+            class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeEditProductModal()" class="px-4 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-bold rounded-xl transition">
+          <button type="button" onclick="closeEditProductModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
             Cancelar
           </button>
-          <button type="submit" class="px-4 py-2.5 bg-zinc-950 hover:bg-rose-600 text-white text-xs font-bold rounded-xl transition">
+          <button type="submit" class="px-4 py-2.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-xl transition">
             Guardar Cambios
           </button>
         </div>
@@ -808,17 +906,17 @@
   </div>
 
   <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR PRODUCTO -->
-  <div id="confirm-delete-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/60 backdrop-blur-[2px] flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl overflow-hidden border border-zinc-200 p-6 fade-in space-y-4">
-      <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
+  <div id="confirm-delete-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-sm rounded-2xl shadow-xl overflow-hidden border border-zinc-800 p-6 fade-in space-y-4">
+      <div class="w-11 h-11 rounded-xl bg-rose-950/70 text-rose-400 flex items-center justify-center text-lg">
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
       <div>
-        <h3 class="text-base font-extrabold text-zinc-950">¿Eliminar este producto?</h3>
-        <p id="confirm-delete-name" class="text-xs text-zinc-500 mt-1">Esta acción quitará el artículo del inventario actual.</p>
+        <h3 class="text-base font-extrabold text-white">¿Eliminar este producto?</h3>
+        <p id="confirm-delete-name" class="text-xs text-zinc-400 mt-1">Esta acción quitará el artículo del inventario actual.</p>
       </div>
       <div class="flex items-center justify-end gap-2 pt-2">
-        <button type="button" onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-bold rounded-xl transition">
+        <button type="button" onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
           Cancelar
         </button>
         <button type="button" id="confirm-delete-btn" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition">
@@ -829,7 +927,7 @@
   </div>
 
   <!-- 3. MODAL DE RECIBO DE ENTREGA (IMPRIMIBLE) -->
-  <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
+  <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 fade-in my-auto">
       <div id="printable-receipt" class="p-8 bg-white text-zinc-800">
         <div class="text-center border-b-2 border-zinc-950 pb-4 mb-5">
@@ -911,7 +1009,7 @@
   </div>
 
   <!-- 4. MODAL HOJA DE KARDEX / INVENTARIO -->
-  <div id="kardex-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/70 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
+  <div id="kardex-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 fade-in my-auto">
       <div id="printable-kardex" class="p-8 bg-white text-zinc-800">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-zinc-950 pb-4 mb-5 gap-3">
@@ -981,7 +1079,7 @@
 
   <!-- LÓGICA JAVASCRIPT DE LA APLICACIÓN -->
   <script>
-    const STORAGE_KEY = 'alvir_moto_store_v2';
+    const STORAGE_KEY = 'alvir_moto_store_v3';
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9Zc2S-HQK42JTnOvYs4mwVvkTXcT-3Fo",
@@ -995,7 +1093,7 @@
 
     let db = null;
     const CLOUD_COLLECTION = 'stores';
-    const CLOUD_DOC_ID = 'alvir_moto_store_v2';
+    const CLOUD_DOC_ID = 'alvir_moto_store_v3';
 
     try {
       if (typeof firebase !== 'undefined') {
@@ -1011,7 +1109,13 @@
     const PRIMARY_ADMIN = {
       username: "vendedor Alvir Moto Store",
       password: "12344321",
-      role: "admin"
+      role: "admin",
+      permissions: {
+        inventory: true,
+        kardex: true,
+        history: true,
+        reports: true
+      }
     };
 
     const DEFAULT_INVENTORY = [
@@ -1032,12 +1136,44 @@
     let openActionMenuId = null;
     let pendingDeleteId = null;
 
+    function normalizePermissions(user) {
+      const isPrimary = user && user.username && user.username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase();
+      if (isPrimary) {
+        return {
+          inventory: true,
+          kardex: true,
+          history: true,
+          reports: true
+        };
+      }
+      const rawPerms = (user && user.permissions && typeof user.permissions === 'object') ? user.permissions : {};
+      // Compatibilidad si un perfil antiguo tenía role === 'admin'
+      const legacyAdmin = user && user.role === 'admin' && !user.permissions;
+      return {
+        inventory: Boolean(rawPerms.inventory ?? legacyAdmin),
+        kardex: Boolean(rawPerms.kardex ?? legacyAdmin),
+        history: Boolean(rawPerms.history ?? legacyAdmin),
+        reports: Boolean(rawPerms.reports ?? legacyAdmin)
+      };
+    }
+
+    function isPrimaryOwner(user) {
+      return Boolean(user && user.username && user.username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase());
+    }
+
     function applyParsedAppData(parsed) {
       if (!parsed || typeof parsed !== 'object') return;
       appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
       appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
       const secondaryUsers = Array.isArray(parsed.users)
-        ? parsed.users.filter(u => u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
+        ? parsed.users
+            .filter(u => u && u.username && u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
+            .map(u => ({
+              username: u.username,
+              password: u.password,
+              role: 'seller',
+              permissions: normalizePermissions(u)
+            }))
         : [];
       appData.users = [PRIMARY_ADMIN, ...secondaryUsers];
     }
@@ -1052,6 +1188,16 @@
           localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
           updateDashboardStats();
           if (currentUser) {
+            const freshUser = appData.users.find(u => u.username.toLowerCase() === currentUser.username.toLowerCase());
+            if (freshUser) {
+              currentUser = {
+                username: freshUser.username,
+                role: freshUser.role,
+                isOwner: isPrimaryOwner(freshUser),
+                permissions: normalizePermissions(freshUser)
+              };
+            }
+            applyUserAccessControls();
             renderInventoryTable(document.getElementById('inventory-search')?.value || '');
             renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
             renderHistoryTable();
@@ -1105,13 +1251,18 @@
     }
 
     function checkSession() {
-      const savedSession = sessionStorage.getItem('ams_v2_session');
+      const savedSession = sessionStorage.getItem('ams_v3_session');
       if (savedSession) {
         try {
           const parsedUser = JSON.parse(savedSession);
           const validUser = appData.users.find(u => u.username === parsedUser.username);
           if (validUser) {
-            currentUser = { username: validUser.username, role: validUser.role };
+            currentUser = {
+              username: validUser.username,
+              role: validUser.role,
+              isOwner: isPrimaryOwner(validUser),
+              permissions: normalizePermissions(validUser)
+            };
             showApp();
             return;
           }
@@ -1127,31 +1278,59 @@
       toggleSidebar(false);
     }
 
+    function applyUserAccessControls() {
+      if (!currentUser) return;
+      const perms = currentUser.permissions || {};
+      const isOwner = Boolean(currentUser.isOwner);
+
+      document.getElementById('active-user-display').textContent = currentUser.username;
+      document.getElementById('sidebar-user-display').textContent = currentUser.username;
+      const roleBadge = document.getElementById('active-role-badge');
+
+      if (isOwner) {
+        roleBadge.textContent = 'Principal';
+        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-white text-zinc-950 uppercase";
+      } else {
+        const hasExtra = perms.inventory || perms.kardex || perms.history || perms.reports;
+        roleBadge.textContent = hasExtra ? 'Perfil Personalizado' : 'Vendedor';
+        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200 uppercase";
+      }
+
+      document.querySelectorAll('.owner-only').forEach(el => {
+        el.classList.toggle('hidden', !isOwner);
+      });
+
+      document.querySelectorAll('.perm-inventory').forEach(el => {
+        el.classList.toggle('hidden', !perms.inventory);
+      });
+
+      document.querySelectorAll('.perm-kardex').forEach(el => {
+        el.classList.toggle('hidden', !(perms.inventory && perms.kardex));
+      });
+
+      document.querySelectorAll('.perm-history').forEach(el => {
+        el.classList.toggle('hidden', !perms.history);
+      });
+
+      document.querySelectorAll('.perm-reports').forEach(el => {
+        el.classList.toggle('hidden', !perms.reports);
+      });
+    }
+
+    function getDefaultTabForUser() {
+      if (!currentUser) return 'billing';
+      if (currentUser.permissions?.inventory) return 'inventory';
+      if (currentUser.permissions?.history) return 'history';
+      if (currentUser.permissions?.reports) return 'reports';
+      return 'billing';
+    }
+
     function showApp() {
       document.getElementById('login-screen').classList.add('hidden');
       document.getElementById('app-shell').classList.remove('hidden');
       document.getElementById('app-shell').classList.add('flex');
 
-      document.getElementById('active-user-display').textContent = currentUser.username;
-      document.getElementById('sidebar-user-display').textContent = currentUser.username;
-      const roleBadge = document.getElementById('active-role-badge');
-      const isAdmin = currentUser.role === 'admin';
-
-      if (isAdmin) {
-        roleBadge.textContent = 'Administrador';
-        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-900 text-white uppercase";
-      } else {
-        roleBadge.textContent = 'Vendedor';
-        roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-200 text-zinc-800 uppercase";
-      }
-
-      document.querySelectorAll('.admin-only').forEach(el => {
-        if (isAdmin) {
-          el.classList.remove('hidden');
-        } else {
-          el.classList.add('hidden');
-        }
-      });
+      applyUserAccessControls();
 
       renderInventoryTable();
       renderBillingProducts();
@@ -1161,15 +1340,11 @@
       renderSalesReports();
       updateDashboardStats();
 
-      if (isAdmin) {
-        switchTab('inventory');
-      } else {
-        switchTab('billing');
-      }
+      switchTab(getDefaultTabForUser());
     }
 
     function logout() {
-      sessionStorage.removeItem('ams_v2_session');
+      sessionStorage.removeItem('ams_v3_session');
       currentUser = null;
       cart = [];
       openActionMenuId = null;
@@ -1221,8 +1396,13 @@
         );
 
         if (matchedUser) {
-          currentUser = { username: matchedUser.username, role: matchedUser.role };
-          sessionStorage.setItem('ams_v2_session', JSON.stringify(currentUser));
+          currentUser = {
+            username: matchedUser.username,
+            role: matchedUser.role,
+            isOwner: isPrimaryOwner(matchedUser),
+            permissions: normalizePermissions(matchedUser)
+          };
+          sessionStorage.setItem('ams_v3_session', JSON.stringify(currentUser));
           document.getElementById('login-error').classList.add('hidden');
           showApp();
           showToast(`Bienvenido, ${currentUser.username}`, 'success');
@@ -1243,10 +1423,10 @@
         }
       });
 
-      // Añadir Producto (unidades vacías por defecto; permite 0 o más unidades y serie opcional)
+      // Añadir Producto (permite 0 o más unidades y serie opcional)
       document.getElementById('add-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        if (currentUser?.role !== 'admin') return;
+        if (!currentUser?.permissions?.inventory) return;
 
         const name = document.getElementById('prod-name').value.trim();
         const rawSerial = document.getElementById('prod-serial').value.trim().toUpperCase();
@@ -1286,7 +1466,7 @@
       // Guardar edición rápida de producto
       document.getElementById('edit-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        if (currentUser?.role !== 'admin') return;
+        if (!currentUser?.permissions?.inventory) return;
 
         const id = document.getElementById('edit-prod-id').value;
         const mode = document.getElementById('edit-prod-mode').value;
@@ -1323,7 +1503,7 @@
 
       // Confirmar eliminación desde modal
       document.getElementById('confirm-delete-btn').addEventListener('click', () => {
-        if (currentUser?.role !== 'admin' || !pendingDeleteId) return;
+        if (!currentUser?.permissions?.inventory || !pendingDeleteId) return;
         const id = pendingDeleteId;
         pendingDeleteId = null;
         closeConfirmDeleteModal();
@@ -1337,9 +1517,13 @@
         showToast('Producto eliminado del inventario.', 'info');
       });
 
+      // Crear nuevo perfil con permisos seleccionables (solo dueño principal)
       document.getElementById('add-user-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        if (currentUser?.role !== 'admin') return;
+        if (!currentUser?.isOwner) {
+          showToast('Solo el perfil principal puede crear otros perfiles.', 'error');
+          return;
+        }
 
         const username = document.getElementById('new-user-name').value.trim();
         const password = document.getElementById('new-user-pass').value.trim();
@@ -1351,20 +1535,53 @@
 
         const exists = appData.users.some(u => u.username.toLowerCase() === username.toLowerCase());
         if (exists) {
-          showToast('Ya existe un usuario con ese nombre.', 'error');
+          showToast('Ya existe un perfil con ese nombre.', 'error');
           return;
         }
+
+        const allowInventory = document.getElementById('perm-check-inventory').checked;
+        const allowKardex = document.getElementById('perm-check-kardex').checked;
+        const allowHistory = document.getElementById('perm-check-history').checked;
+        const allowReports = document.getElementById('perm-check-reports').checked;
 
         appData.users.push({
           username,
           password,
-          role: 'seller'
+          role: 'seller',
+          permissions: {
+            inventory: allowInventory,
+            kardex: allowKardex,
+            history: allowHistory,
+            reports: allowReports
+          }
         });
 
         saveAppData();
         renderUsersTable();
         e.target.reset();
-        showToast(`Usuario vendedor "${username}" creado con éxito.`, 'success');
+        showToast(`Perfil "${username}" creado con éxito.`, 'success');
+      });
+
+      // Guardar cambios de permisos en modal
+      document.getElementById('edit-user-perms-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!currentUser?.isOwner) return;
+
+        const targetName = document.getElementById('perms-target-username').value;
+        const userObj = appData.users.find(u => u.username === targetName && !isPrimaryOwner(u));
+        if (!userObj) return;
+
+        userObj.permissions = {
+          inventory: document.getElementById('modal-perm-inventory').checked,
+          kardex: document.getElementById('modal-perm-kardex').checked,
+          history: document.getElementById('modal-perm-history').checked,
+          reports: document.getElementById('modal-perm-reports').checked
+        };
+
+        saveAppData();
+        closeUserPermsModal();
+        renderUsersTable();
+        showToast(`Permisos actualizados para "${userObj.username}".`, 'success');
       });
 
       document.getElementById('inventory-search').addEventListener('input', (e) => {
@@ -1382,10 +1599,19 @@
       document.getElementById('login-error-text').textContent = msg;
     }
 
+    function canAccessTab(tabName) {
+      if (!currentUser) return false;
+      if (tabName === 'billing') return true;
+      if (tabName === 'users') return Boolean(currentUser.isOwner);
+      if (tabName === 'inventory') return Boolean(currentUser.permissions?.inventory);
+      if (tabName === 'history') return Boolean(currentUser.permissions?.history);
+      if (tabName === 'reports') return Boolean(currentUser.permissions?.reports);
+      return false;
+    }
+
     function switchTab(tabName) {
-      const adminTabs = ['inventory', 'history', 'reports', 'users'];
-      if (currentUser?.role !== 'admin' && adminTabs.includes(tabName)) {
-        tabName = 'billing';
+      if (!canAccessTab(tabName)) {
+        tabName = getDefaultTabForUser();
       }
 
       const views = ['inventory', 'billing', 'history', 'reports', 'users'];
@@ -1394,8 +1620,8 @@
         const btnEl = document.getElementById(`tab-btn-${v}`);
         if (viewEl) viewEl.classList.add('hidden');
         if (btnEl) {
-          btnEl.classList.remove('bg-zinc-950', 'text-white');
-          btnEl.classList.add('text-zinc-600', 'hover:bg-zinc-100', 'hover:text-zinc-950');
+          btnEl.classList.remove('bg-white', 'text-zinc-950');
+          btnEl.classList.add('text-zinc-300', 'hover:bg-zinc-900', 'hover:text-white');
         }
       });
 
@@ -1403,8 +1629,8 @@
       const activeBtn = document.getElementById(`tab-btn-${tabName}`);
       if (activeView) activeView.classList.remove('hidden');
       if (activeBtn) {
-        activeBtn.classList.remove('text-zinc-600', 'hover:bg-zinc-100', 'hover:text-zinc-950');
-        activeBtn.classList.add('bg-zinc-950', 'text-white');
+        activeBtn.classList.remove('text-zinc-300', 'hover:bg-zinc-900', 'hover:text-white');
+        activeBtn.classList.add('bg-white', 'text-zinc-950');
       }
 
       if (tabName === 'billing') {
@@ -1460,58 +1686,58 @@
       filtered.forEach(item => {
         const isZero = item.stock <= 0;
         const stockBadge = item.stock > 3
-          ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">${item.stock} und.</span>`
+          ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-800/50">${item.stock} und.</span>`
           : item.stock > 0
-            ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700">${item.stock} und.</span>`
-            : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700">0 und.</span>`;
+            ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950/80 text-amber-300 border border-amber-800/50">${item.stock} und.</span>`
+            : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950/80 text-rose-300 border border-rose-800/50">0 und.</span>`;
 
         const isMenuOpen = openActionMenuId === item.id;
 
         const tr = document.createElement('tr');
-        tr.className = `transition ${isZero ? 'bg-zinc-50/70' : 'hover:bg-zinc-50/70'}`;
+        tr.className = `transition ${isZero ? 'bg-zinc-950/50' : 'hover:bg-zinc-800/40'}`;
         tr.innerHTML = `
-          <td class="py-3.5 px-5 font-mono text-xs font-semibold text-zinc-500">${escapeHTML(item.serial || 'S/N')}</td>
-          <td class="py-3.5 px-5 font-semibold text-zinc-900">${escapeHTML(item.name)}</td>
-          <td class="py-3.5 px-5 text-right font-bold text-zinc-900">${formatCurrency(item.price)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs font-semibold text-zinc-400">${escapeHTML(item.serial || 'S/N')}</td>
+          <td class="py-3.5 px-5 font-semibold text-white">${escapeHTML(item.name)}</td>
+          <td class="py-3.5 px-5 text-right font-bold text-zinc-100">${formatCurrency(item.price)}</td>
           <td class="py-3.5 px-5 text-center">${stockBadge}</td>
           <td class="py-3.5 px-5 text-right">
             <div class="relative inline-block text-left action-menu-wrapper">
               <button type="button" onclick="toggleProductActionMenu('${item.id}', event)"
                 class="inline-flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition ${
                   isMenuOpen
-                    ? 'bg-zinc-950 text-white border-zinc-950'
-                    : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
+                    ? 'bg-white text-zinc-950 border-white'
+                    : 'bg-zinc-950 hover:bg-zinc-800 text-zinc-200 border-zinc-700'
                 }">
                 <span>Acciones</span>
                 <i class="fa-solid fa-chevron-${isMenuOpen ? 'up' : 'down'} text-[10px]"></i>
               </button>
 
               ${isMenuOpen ? `
-                <div onclick="event.stopPropagation()" class="absolute right-0 mt-1.5 w-52 bg-white rounded-xl shadow-xl border border-zinc-200 py-1.5 z-30 text-left fade-in">
+                <div onclick="event.stopPropagation()" class="absolute right-0 mt-1.5 w-52 bg-zinc-900 rounded-xl shadow-2xl border border-zinc-700 py-1.5 z-30 text-left fade-in">
                   <button type="button" onclick="openEditProductModal('${item.id}', 'all')"
-                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2.5">
+                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 flex items-center gap-2.5">
                     <i class="fa-solid fa-pen text-zinc-400 w-3.5"></i>
                     <span>Cambiar nombre</span>
                   </button>
                   <button type="button" onclick="openEditProductModal('${item.id}', 'price')"
-                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2.5">
+                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 flex items-center gap-2.5">
                     <i class="fa-solid fa-tag text-zinc-400 w-3.5"></i>
                     <span>Cambiar precio</span>
                   </button>
                   <button type="button" onclick="openEditProductModal('${item.id}', 'stock')"
-                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2.5">
+                    class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 flex items-center gap-2.5">
                     <i class="fa-solid fa-layer-group text-zinc-400 w-3.5"></i>
                     <span>Ajustar / añadir unidades</span>
                   </button>
                   <button type="button" onclick="markProductZero('${item.id}')"
-                    class="w-full px-3.5 py-2 text-xs font-semibold text-amber-700 hover:bg-amber-50 flex items-center gap-2.5">
-                    <i class="fa-solid fa-ban text-amber-500 w-3.5"></i>
+                    class="w-full px-3.5 py-2 text-xs font-semibold text-amber-300 hover:bg-zinc-800 flex items-center gap-2.5">
+                    <i class="fa-solid fa-ban text-amber-400 w-3.5"></i>
                     <span>Marcar con 0 unidades</span>
                   </button>
-                  <div class="my-1 border-t border-zinc-100"></div>
+                  <div class="my-1 border-t border-zinc-800"></div>
                   <button type="button" onclick="requestDeleteProduct('${item.id}')"
-                    class="w-full px-3.5 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5">
-                    <i class="fa-solid fa-trash text-rose-500 w-3.5"></i>
+                    class="w-full px-3.5 py-2 text-xs font-bold text-rose-400 hover:bg-zinc-800 flex items-center gap-2.5">
+                    <i class="fa-solid fa-trash text-rose-400 w-3.5"></i>
                     <span>Eliminar producto</span>
                   </button>
                 </div>
@@ -1551,7 +1777,7 @@
 
     function markProductZero(id) {
       openActionMenuId = null;
-      if (currentUser?.role !== 'admin') return;
+      if (!currentUser?.permissions?.inventory) return;
       const product = appData.inventory.find(p => p.id === id);
       if (!product) return;
 
@@ -1580,7 +1806,10 @@
     }
 
     function openKardexModal() {
-      if (currentUser?.role !== 'admin') return;
+      if (!currentUser?.permissions?.inventory || !currentUser?.permissions?.kardex) {
+        showToast('No tienes permiso para abrir la Hoja de Kardex.', 'error');
+        return;
+      }
 
       const now = new Date();
       document.getElementById('kardex-date').textContent = now.toLocaleDateString('es-NI', {
@@ -1621,28 +1850,45 @@
       document.getElementById('kardex-modal').classList.add('hidden');
     }
 
+    function formatPermissionChips(perms) {
+      const active = [];
+      active.push('<span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 text-[11px] font-semibold">Recibos</span>');
+      if (perms.inventory) active.push('<span class="px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-800/50 text-[11px] font-semibold">Inventario</span>');
+      if (perms.kardex) active.push('<span class="px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/50 text-[11px] font-semibold">Kardex</span>');
+      if (perms.history) active.push('<span class="px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-800/50 text-[11px] font-semibold">Historial</span>');
+      if (perms.reports) active.push('<span class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/50 text-[11px] font-semibold">Reportes</span>');
+      return `<div class="flex flex-wrap gap-1">${active.join('')}</div>`;
+    }
+
     function renderUsersTable() {
       const tbody = document.getElementById('users-table-body');
       tbody.innerHTML = '';
 
       appData.users.forEach(user => {
-        const isPrimary = user.username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase();
+        const isPrimary = isPrimaryOwner(user);
+        const perms = normalizePermissions(user);
+
         const roleBadge = isPrimary
-          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-zinc-950 text-white"><i class="fa-solid fa-crown text-amber-400"></i> Administrador Total</span>`
-          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-700"><i class="fa-solid fa-user"></i> Vendedor (Solo Recibos)</span>`;
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-white text-zinc-950 mb-1"><i class="fa-solid fa-crown text-rose-600"></i> Principal (Total)</span>`
+          : formatPermissionChips(perms);
 
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-zinc-50/70 transition';
+        tr.className = 'hover:bg-zinc-800/40 transition';
         tr.innerHTML = `
-          <td class="py-3.5 px-5 font-bold text-zinc-900">${escapeHTML(user.username)}</td>
-          <td class="py-3.5 px-5 font-mono text-xs text-zinc-600">${escapeHTML(user.password)}</td>
+          <td class="py-3.5 px-5 font-bold text-white">${escapeHTML(user.username)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs text-zinc-400">${escapeHTML(user.password)}</td>
           <td class="py-3.5 px-5">${roleBadge}</td>
           <td class="py-3.5 px-5 text-right">
             ${isPrimary
-              ? `<span class="text-xs text-zinc-400 italic">Principal</span>`
-              : `<button type="button" onclick="deleteUser('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-lg text-xs font-semibold transition">
-                   <i class="fa-solid fa-trash mr-1"></i>Eliminar
-                 </button>`
+              ? `<span class="text-xs text-zinc-500 italic">Dueño</span>`
+              : `<div class="inline-flex items-center gap-1.5">
+                   <button type="button" onclick="openUserPermsModal('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-zinc-800 hover:bg-white text-zinc-200 hover:text-zinc-950 rounded-lg text-xs font-semibold transition">
+                     <i class="fa-solid fa-sliders mr-1"></i>Permisos
+                   </button>
+                   <button type="button" onclick="deleteUser('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-rose-950/70 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg text-xs font-semibold transition">
+                     <i class="fa-solid fa-trash"></i>
+                   </button>
+                 </div>`
             }
           </td>
         `;
@@ -1650,14 +1896,34 @@
       });
     }
 
+    function openUserPermsModal(username) {
+      if (!currentUser?.isOwner) return;
+      const userObj = appData.users.find(u => u.username === username && !isPrimaryOwner(u));
+      if (!userObj) return;
+      const perms = normalizePermissions(userObj);
+
+      document.getElementById('perms-target-username').value = userObj.username;
+      document.getElementById('perms-modal-username').textContent = `Perfil: ${userObj.username}`;
+      document.getElementById('modal-perm-inventory').checked = Boolean(perms.inventory);
+      document.getElementById('modal-perm-kardex').checked = Boolean(perms.kardex);
+      document.getElementById('modal-perm-history').checked = Boolean(perms.history);
+      document.getElementById('modal-perm-reports').checked = Boolean(perms.reports);
+
+      document.getElementById('edit-user-perms-modal').classList.remove('hidden');
+    }
+
+    function closeUserPermsModal() {
+      document.getElementById('edit-user-perms-modal').classList.add('hidden');
+    }
+
     function deleteUser(username) {
-      if (currentUser?.role !== 'admin') return;
+      if (!currentUser?.isOwner) return;
       if (username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase()) return;
 
       appData.users = appData.users.filter(u => u.username !== username);
       saveAppData();
       renderUsersTable();
-      showToast(`Usuario "${username}" eliminado.`, 'info');
+      showToast(`Perfil "${username}" eliminado.`, 'info');
     }
 
     function renderBillingProducts(filterText = '') {
@@ -1674,7 +1940,7 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="p-8 text-center text-zinc-400 bg-zinc-50 rounded-xl border border-dashed border-zinc-200">
+          <div class="p-8 text-center text-zinc-400 bg-zinc-950/70 rounded-xl border border-dashed border-zinc-800">
             <p class="text-sm font-medium">No se encontraron productos con "${escapeHTML(filterText)}".</p>
           </div>
         `;
@@ -1689,25 +1955,25 @@
 
         const card = document.createElement('div');
         card.className = `p-3.5 rounded-xl border transition flex items-center justify-between gap-3 ${
-          isOutOfStock ? 'bg-zinc-50 border-zinc-200/80 opacity-60' : 'bg-white border-zinc-200/90 hover:border-zinc-900'
+          isOutOfStock ? 'bg-zinc-950/50 border-zinc-800 opacity-60' : 'bg-zinc-950/80 border-zinc-800 hover:border-zinc-600'
         }`;
 
         card.innerHTML = `
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2 mb-0.5">
-              <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700">${escapeHTML(item.serial || 'S/N')}</span>
-              <span class="text-[11px] font-semibold ${available > 0 ? 'text-emerald-600' : 'text-rose-600'}">
+              <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-zinc-800 text-zinc-200">${escapeHTML(item.serial || 'S/N')}</span>
+              <span class="text-[11px] font-semibold ${available > 0 ? 'text-emerald-400' : 'text-rose-400'}">
                 ${available > 0 ? `${available} disponibles` : '0 disponibles'}
               </span>
             </div>
-            <p class="text-sm font-bold text-zinc-900 truncate">${escapeHTML(item.name)}</p>
-            <p class="text-xs font-extrabold text-rose-600 mt-0.5">${formatCurrency(item.price)}</p>
+            <p class="text-sm font-bold text-white truncate">${escapeHTML(item.name)}</p>
+            <p class="text-xs font-extrabold text-rose-400 mt-0.5">${formatCurrency(item.price)}</p>
           </div>
           <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
             class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
               isOutOfStock
-                ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed'
-                : 'bg-zinc-950 hover:bg-rose-600 text-white'
+                ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                : 'bg-white hover:bg-rose-600 text-zinc-950 hover:text-white'
             }">
             <i class="fa-solid fa-plus"></i>
             <span>Agregar</span>
@@ -1794,19 +2060,19 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="py-2.5 px-3">
-            <p class="font-bold text-zinc-900 text-xs leading-snug">${escapeHTML(item.name)}</p>
+            <p class="font-bold text-white text-xs leading-snug">${escapeHTML(item.name)}</p>
             <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(item.serial || 'S/N')} · ${formatCurrency(item.price)} c/u</p>
           </td>
           <td class="py-2.5 px-2 text-center">
-            <div class="inline-flex items-center border border-zinc-200 rounded-lg bg-zinc-50">
-              <button type="button" onclick="updateCartQty('${item.id}', -1)" class="px-2 py-1 text-xs font-bold text-zinc-600 hover:text-rose-600">-</button>
-              <span class="px-2 text-xs font-bold text-zinc-900">${item.qty}</span>
-              <button type="button" onclick="updateCartQty('${item.id}', 1)" class="px-2 py-1 text-xs font-bold text-zinc-600 hover:text-emerald-600">+</button>
+            <div class="inline-flex items-center border border-zinc-700 rounded-lg bg-zinc-950">
+              <button type="button" onclick="updateCartQty('${item.id}', -1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-rose-400">-</button>
+              <span class="px-2 text-xs font-bold text-white">${item.qty}</span>
+              <button type="button" onclick="updateCartQty('${item.id}', 1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-emerald-400">+</button>
             </div>
           </td>
-          <td class="py-2.5 px-3 text-right font-bold text-zinc-900 text-xs">${formatCurrency(subtotal)}</td>
+          <td class="py-2.5 px-3 text-right font-bold text-white text-xs">${formatCurrency(subtotal)}</td>
           <td class="py-2.5 px-2 text-right">
-            <button type="button" onclick="updateCartQty('${item.id}', -9999)" class="text-zinc-400 hover:text-rose-600 text-xs">
+            <button type="button" onclick="updateCartQty('${item.id}', -9999)" class="text-zinc-400 hover:text-rose-400 text-xs">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </td>
@@ -1976,23 +2242,23 @@
 
       filtered.forEach(({ rec, originalIdx }) => {
         const payBadge = rec.paymentMethod === 'Efectivo'
-          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700"><i class="fa-solid fa-money-bill-wave"></i> Efectivo</span>`
-          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700"><i class="fa-solid fa-building-columns"></i> Transferencia</span>`;
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-800/50"><i class="fa-solid fa-money-bill-wave"></i> Efectivo</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-950/80 text-sky-300 border border-sky-800/50"><i class="fa-solid fa-building-columns"></i> Transferencia</span>`;
 
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-zinc-50/70 transition';
+        tr.className = 'hover:bg-zinc-800/40 transition';
         tr.innerHTML = `
-          <td class="py-3.5 px-5 font-mono text-xs font-bold text-rose-600">${escapeHTML(rec.number)}</td>
-          <td class="py-3.5 px-5 text-xs text-zinc-500">${escapeHTML(rec.date)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs font-bold text-rose-400">${escapeHTML(rec.number)}</td>
+          <td class="py-3.5 px-5 text-xs text-zinc-400">${escapeHTML(rec.date)}</td>
           <td class="py-3.5 px-5">
-            <p class="font-bold text-zinc-900 text-xs">${escapeHTML(rec.clientName)}</p>
+            <p class="font-bold text-white text-xs">${escapeHTML(rec.clientName)}</p>
             <p class="text-[11px] text-zinc-400">${escapeHTML(rec.clientPhone)}</p>
           </td>
-          <td class="py-3.5 px-5 text-xs font-medium text-zinc-700">${escapeHTML(rec.seller)}</td>
+          <td class="py-3.5 px-5 text-xs font-medium text-zinc-300">${escapeHTML(rec.seller)}</td>
           <td class="py-3.5 px-5">${payBadge}</td>
-          <td class="py-3.5 px-5 text-right font-extrabold text-zinc-950">${formatCurrency(rec.total)}</td>
+          <td class="py-3.5 px-5 text-right font-extrabold text-white">${formatCurrency(rec.total)}</td>
           <td class="py-3.5 px-5 text-right">
-            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="px-3 py-1.5 bg-zinc-950 hover:bg-rose-600 text-white text-xs font-semibold rounded-lg transition">
+            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition">
               <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
             </button>
           </td>
@@ -2008,7 +2274,7 @@
     }
 
     function resetReceiptsHistory() {
-      if (currentUser?.role !== 'admin') return;
+      if (!currentUser?.permissions?.history) return;
       appData.receipts = [];
       saveAppData();
       renderHistoryTable();
@@ -2122,7 +2388,7 @@
       const colors = {
         success: 'bg-emerald-600 text-white',
         error: 'bg-rose-600 text-white',
-        info: 'bg-zinc-950 text-white'
+        info: 'bg-white text-zinc-950'
       };
 
       const icons = {
