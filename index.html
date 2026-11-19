@@ -1,4 +1,8 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alvir Moto Store | Inventario y Recibos de Entrega</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -752,11 +756,43 @@
     </div>
 
     <!-- ========================================== -->
+    <!-- FIREBASE SDK PARA CLOUD FIRESTORE          -->
+    <!-- ========================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- ========================================== -->
     <!-- LÓGICA JAVASCRIPT DE LA APLICACIÓN         -->
     <!-- ========================================== -->
     <script>
         // --- 1. CLAVE DE PERSISTENCIA LIMPIA (v2 para iniciar recibos en cero) ---
         const STORAGE_KEY = 'alvir_moto_store_v2';
+
+        // --- 1B. CONEXIÓN A CLOUD FIRESTORE (RESPALDO EN LA NUBE) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9Zc25-HQK4XJTNdwYs4mwVxNtXCt-3Fo",
+            authDomain: "alvir-moto-store-145c0.firebaseapp.com",
+            projectId: "alvir-moto-store-145c0",
+            storageBucket: "alvir-moto-store-145c0.firebasestorage.app",
+            messagingSenderId: "908225874811",
+            appId: "1:908225874811:web:9afccb068592c0d44ecbde",
+            measurementId: "G-NK2P799E66"
+        };
+
+        let db = null;
+        const CLOUD_COLLECTION = 'stores';
+        const CLOUD_DOC_ID = 'alvir_moto_store_v2';
+
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+            }
+        } catch (err) {
+            console.warn('Firebase no inicializado:', err);
+        }
 
         // --- 2. USUARIO ADMINISTRADOR PRINCIPAL PREDEFINIDO ---
         const PRIMARY_ADMIN = {
@@ -783,11 +819,58 @@
         };
         let cart = [];
 
+        function applyParsedAppData(parsed) {
+            if (!parsed || typeof parsed !== 'object') return;
+            appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
+            appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
+            const secondaryUsers = Array.isArray(parsed.users)
+                ? parsed.users.filter(u => u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
+                : [];
+            appData.users = [PRIMARY_ADMIN, ...secondaryUsers];
+        }
+
+        async function syncFromCloud() {
+            if (!db) return;
+            try {
+                const doc = await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).get();
+                if (doc.exists && doc.data() && doc.data().payload) {
+                    const cloudData = JSON.parse(doc.data().payload);
+                    applyParsedAppData(cloudData);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+                    updateDashboardStats();
+                    if (currentUser) {
+                        renderInventoryTable(document.getElementById('inventory-search')?.value || '');
+                        renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
+                        renderHistoryTable();
+                        renderUsersTable();
+                    }
+                } else {
+                    await pushToCloud();
+                }
+            } catch (err) {
+                console.warn('Error leyendo desde Cloud Firestore:', err);
+            }
+        }
+
+        async function pushToCloud() {
+            if (!db) return;
+            try {
+                await db.collection(CLOUD_COLLECTION).doc(CLOUD_DOC_ID).set({
+                    payload: JSON.stringify(appData),
+                    updatedAt: new Date().toISOString(),
+                    projectId: firebaseConfig.projectId
+                });
+            } catch (err) {
+                console.warn('Error guardando en Cloud Firestore:', err);
+            }
+        }
+
         // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             loadAppData();
             checkSession();
             setupEventListeners();
+            syncFromCloud();
         });
 
         function loadAppData() {
@@ -795,14 +878,7 @@
             if (raw) {
                 try {
                     const parsed = JSON.parse(raw);
-                    appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
-                    appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
-                    
-                    // Asegurar que el administrador principal siempre exista con sus credenciales
-                    const secondaryUsers = Array.isArray(parsed.users)
-                        ? parsed.users.filter(u => u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
-                        : [];
-                    appData.users = [PRIMARY_ADMIN, ...secondaryUsers];
+                    applyParsedAppData(parsed);
                 } catch (err) {
                     saveAppData();
                 }
@@ -814,6 +890,7 @@
         function saveAppData() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
             updateDashboardStats();
+            pushToCloud();
         }
 
         // --- 5. SISTEMA DE AUTENTICACIÓN ---
@@ -892,8 +969,9 @@
         // --- 6. CONFIGURACIÓN DE EVENTOS ---
         function setupEventListeners() {
             // Submit del Login estricto
-            document.getElementById('login-form').addEventListener('submit', (e) => {
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                await syncFromCloud();
                 const usernameInput = document.getElementById('login-username').value.trim();
                 const passwordInput = document.getElementById('login-password').value;
 
