@@ -33,6 +33,10 @@
   <style>
     /* Estilos personalizados para impresión de Recibos y Kardex */
     @media print {
+      @page {
+        size: letter portrait;
+        margin: 0.4in;
+      }
       body * {
         visibility: hidden;
       }
@@ -55,14 +59,40 @@
         visibility: visible;
       }
       body.printing-kardex #printable-kardex {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
         box-shadow: none !important;
         border: none !important;
-        padding: 10px !important;
+        padding: 0 !important;
         margin: 0 !important;
+      }
+      body.printing-kardex #kardex-modal {
+        position: static !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+      body.printing-kardex #kardex-modal > div {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+      }
+      body.printing-kardex #printable-kardex table {
+        font-size: 9.5pt !important;
+        line-height: 1.25 !important;
+        border-collapse: collapse !important;
+      }
+      body.printing-kardex #printable-kardex th,
+      body.printing-kardex #printable-kardex td {
+        padding: 3.5px 6px !important;
+      }
+      body.printing-kardex #printable-kardex tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
       .no-print {
         display: none !important;
@@ -266,6 +296,14 @@
               </span>
             </button>
 
+            <button type="button" id="tab-btn-earnings" onclick="switchTab('earnings')"
+              class="nav-item perm-earnings w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-coins w-4 text-center"></i>
+                <span>Ganancias y Recuperación</span>
+              </span>
+            </button>
+
             <button type="button" id="tab-btn-users" onclick="switchTab('users')"
               class="nav-item owner-only w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950">
               <span class="flex items-center gap-3">
@@ -342,7 +380,7 @@
                 <form id="add-product-form" class="space-y-4">
                   <div>
                     <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre del Producto *</label>
-                    <input type="text" id="prod-name" required placeholder="Ej. Casco Integral LS2 Negro"
+                    <input type="text" id="prod-name" required placeholder="Ej. Manubrio Deportivo"
                       class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
 
@@ -354,15 +392,36 @@
 
                   <div class="grid grid-cols-2 gap-3">
                     <div>
-                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio (C$) *</label>
-                      <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00"
+                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio Costo (C$) *</label>
+                      <input type="number" id="prod-cost" required min="0" step="0.01" placeholder="0.00"
                         class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                     </div>
                     <div>
-                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades *</label>
-                      <input type="number" id="prod-stock" required min="0" step="1" placeholder="0"
+                      <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio Venta (C$) *</label>
+                      <input type="number" id="prod-price" required min="0.01" step="0.01" placeholder="0.00"
                         class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                     </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades Totales *</label>
+                    <input type="number" id="prod-stock" required min="0" step="1" placeholder="0"
+                      class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
+                  </div>
+
+                  <!-- Desglose Opcional de Colores -->
+                  <div class="bg-zinc-950/70 border border-zinc-800 rounded-xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-300">Desglose por Colores (Opcional)</span>
+                      <button type="button" onclick="addNewProdColorRow()" class="text-[11px] font-bold text-rose-400 hover:text-rose-300 flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>Agregar color</span>
+                      </button>
+                    </div>
+                    <p class="text-[10px] text-zinc-400 leading-relaxed">
+                      Si agregas colores, indica cuántas unidades son de cada color (por ej. 2 negros, 2 verdes, 1 amarillo). No es obligatorio.
+                    </p>
+                    <div id="new-prod-colors-container" class="space-y-2"></div>
                   </div>
 
                   <button type="submit" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm mt-2">
@@ -385,7 +444,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-400">
                       <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </span>
-                    <input type="text" id="inventory-search" placeholder="Buscar por nombre o serie..."
+                    <input type="text" id="inventory-search" placeholder="Buscar por nombre, serie o color..."
                       class="w-full pl-9 pr-3 py-2 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
                   </div>
                 </div>
@@ -395,8 +454,8 @@
                     <thead>
                       <tr class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
                         <th class="py-3.5 px-5">N° Serie</th>
-                        <th class="py-3.5 px-5">Producto</th>
-                        <th class="py-3.5 px-5 text-right">Precio</th>
+                        <th class="py-3.5 px-5">Producto / Colores</th>
+                        <th class="py-3.5 px-5 text-right">Precio Venta</th>
                         <th class="py-3.5 px-5 text-center">Unidades</th>
                         <th class="py-3.5 px-5 text-right">Acciones</th>
                       </tr>
@@ -428,7 +487,7 @@
                   </div>
                   <div>
                     <h2 class="text-base font-extrabold text-white">Buscar Producto y Consultar Precio</h2>
-                    <p class="text-xs text-zinc-400">Busca por número de serie o nombre del artículo para agregarlo</p>
+                    <p class="text-xs text-zinc-400">Busca por número de serie o nombre del artículo para mostrarlo y agregarlo</p>
                   </div>
                 </div>
 
@@ -441,7 +500,7 @@
                 </div>
 
                 <div id="billing-product-list" class="space-y-2.5 max-h-[430px] overflow-y-auto pr-1">
-                  <!-- Tarjetas de productos generadas por JS -->
+                  <!-- Solo se muestran resultados cuando el usuario escribe en el buscador -->
                 </div>
               </div>
             </div>
@@ -499,7 +558,7 @@
                       </tbody>
                     </table>
                     <div id="cart-empty-msg" class="p-6 text-center text-zinc-400 text-xs">
-                      Selecciona productos desde el buscador para añadirlos al recibo.
+                      Busca un producto por nombre o serie para añadirlo al recibo.
                     </div>
                   </div>
                 </div>
@@ -690,6 +749,81 @@
           </div>
         </div>
 
+        <!-- PESTAÑA E2: GANANCIAS Y RECUPERACIÓN DE INVERSIÓN -->
+        <div id="view-earnings" class="perm-earnings hidden fade-in space-y-6">
+          <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-zinc-800">
+              <div>
+                <h2 class="text-base font-extrabold text-white">Balance de Recuperación y Ganancias</h2>
+                <p class="text-xs text-zinc-400">Calculado automáticamente con cada recibo emitido según el precio de costo y venta</p>
+              </div>
+              <span class="text-xs font-semibold bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-full">Solo visible para perfiles autorizados</span>
+            </div>
+
+            <!-- Dos Secciones Principales: Dinero Recuperado (Costo) y Ganancia Neta -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="p-5 rounded-2xl border border-amber-800/40 bg-zinc-950/80">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-300">1. Dinero Recuperado de Inventario (Costo)</span>
+                  <i class="fa-solid fa-rotate-left text-amber-400 text-sm"></i>
+                </div>
+                <p id="earnings-recovered-total" class="text-2xl sm:text-3xl font-extrabold text-white">C$ 0.00</p>
+                <p class="text-xs text-zinc-400 mt-1.5">Capital de compra que ha regresado en efectivo/venta por los artículos entregados</p>
+              </div>
+
+              <div class="p-5 rounded-2xl border border-emerald-800/40 bg-zinc-950/80">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-300">2. Ganancia Neta Generada</span>
+                  <i class="fa-solid fa-sack-dollar text-emerald-400 text-sm"></i>
+                </div>
+                <p id="earnings-net-profit-total" class="text-2xl sm:text-3xl font-extrabold text-emerald-400">C$ 0.00</p>
+                <p id="earnings-gross-sales-sub" class="text-xs text-zinc-400 mt-1.5">Total vendido bruto: C$ 0.00</p>
+              </div>
+            </div>
+
+            <!-- Referencia de Inventario Actual en Bodega (Costo vs Venta) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div class="p-4 rounded-xl border border-zinc-800 bg-zinc-950/60 flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Stock Actual a Precio Costo</p>
+                  <p class="text-xs text-zinc-500 mt-0.5">Inversión aún en inventario</p>
+                </div>
+                <span id="earnings-stock-cost" class="text-lg font-extrabold text-zinc-100">C$ 0.00</span>
+              </div>
+
+              <div class="p-4 rounded-xl border border-zinc-800 bg-zinc-950/60 flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Stock Actual a Precio Venta</p>
+                  <p class="text-xs text-zinc-500 mt-0.5">Proyección al vender todo el stock</p>
+                </div>
+                <span id="earnings-stock-sale" class="text-lg font-extrabold text-zinc-100">C$ 0.00</span>
+              </div>
+            </div>
+
+            <!-- Detalle Producto por Producto -->
+            <div class="overflow-x-auto border border-zinc-800 rounded-xl">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-zinc-950/90 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                    <th class="py-3 px-4">Producto / Serie</th>
+                    <th class="py-3 px-4 text-center">Und. Vendidas</th>
+                    <th class="py-3 px-4 text-right">Dinero Recuperado (Costo)</th>
+                    <th class="py-3 px-4 text-right">Ganancia Neta</th>
+                    <th class="py-3 px-4 text-right">Total Vendido</th>
+                  </tr>
+                </thead>
+                <tbody id="earnings-table-body" class="divide-y divide-zinc-800/80 text-sm">
+                  <!-- Filas generadas dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="earnings-empty-state" class="hidden p-8 text-center text-zinc-400 text-xs">
+              Aún no hay recibos emitidos para calcular recuperación y ganancia.
+            </div>
+          </div>
+        </div>
+
         <!-- PESTAÑA E: GESTIÓN DE PERFILES Y PERMISOS (SOLO PERFIL PRINCIPAL) -->
         <div id="view-users" class="owner-only hidden fade-in">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -756,6 +890,14 @@
                         <span>Acceso a Reportes de Ventas</span>
                       </span>
                       <input type="checkbox" id="perm-check-reports" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 cursor-pointer hover:border-zinc-700 transition">
+                      <span class="flex items-center gap-2.5 text-xs font-semibold text-zinc-200">
+                        <i class="fa-solid fa-coins text-rose-400 w-4 text-center"></i>
+                        <span>Acceso a Ganancias y Recuperación</span>
+                      </span>
+                      <input type="checkbox" id="perm-check-earnings" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
                     </label>
 
                     <p class="text-[11px] text-zinc-400 pt-1">
@@ -850,6 +992,14 @@
           <input type="checkbox" id="modal-perm-reports" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
         </label>
 
+        <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+          <span class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+            <i class="fa-solid fa-coins text-rose-400 w-4 text-center"></i>
+            <span>Acceso a Ganancias y Recuperación</span>
+          </span>
+          <input type="checkbox" id="modal-perm-earnings" class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+        </label>
+
         <div class="pt-3 flex items-center justify-end gap-2">
           <button type="button" onclick="closeUserPermsModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
             Cancelar
@@ -862,16 +1012,16 @@
     </div>
   </div>
 
-  <!-- MODAL DE EDICIÓN RÁPIDA DE PRODUCTO (NOMBRE / PRECIO / UNIDADES) -->
-  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4">
-    <div class="bg-zinc-900 text-zinc-100 w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-zinc-800 fade-in">
+  <!-- MODAL DE EDICIÓN RÁPIDA DE PRODUCTO (NOMBRE / PRECIOS / UNIDADES / COLORES) -->
+  <div id="edit-product-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-lg rounded-2xl shadow-xl overflow-hidden border border-zinc-800 fade-in my-auto">
       <div class="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
         <h3 id="edit-modal-title" class="text-base font-extrabold text-white">Editar Producto</h3>
         <button type="button" onclick="closeEditProductModal()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
-      <form id="edit-product-form" class="p-6 space-y-4">
+      <form id="edit-product-form" class="p-6 space-y-4 max-h-[82vh] overflow-y-auto">
         <input type="hidden" id="edit-prod-id" />
         <input type="hidden" id="edit-prod-mode" />
 
@@ -881,16 +1031,34 @@
             class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
         </div>
 
-        <div id="edit-field-price-wrap">
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio (C$)</label>
-          <input type="number" id="edit-prod-price" min="0.01" step="0.01"
-            class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <div id="edit-field-prices-wrap" class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio Costo (C$)</label>
+            <input type="number" id="edit-prod-cost" min="0" step="0.01"
+              class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio Venta (C$)</label>
+            <input type="number" id="edit-prod-price" min="0.01" step="0.01"
+              class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+          </div>
         </div>
 
         <div id="edit-field-stock-wrap">
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades en Stock</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Unidades Totales en Stock</label>
           <input type="number" id="edit-prod-stock" min="0" step="1"
             class="w-full px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        </div>
+
+        <div class="bg-zinc-950/70 border border-zinc-800 rounded-xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-300">Colores del Producto (Opcional)</span>
+            <button type="button" onclick="addEditProdColorRow()" class="text-[11px] font-bold text-rose-400 hover:text-rose-300 flex items-center gap-1">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>Agregar color</span>
+            </button>
+          </div>
+          <div id="edit-prod-colors-container" class="space-y-2"></div>
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
@@ -926,7 +1094,7 @@
     </div>
   </div>
 
-  <!-- 3. MODAL DE RECIBO DE ENTREGA (IMPRIMIBLE) -->
+  <!-- 3. MODAL DE RECIBO DE ENTREGA (IMPRIMIBLE - SOLO PRECIOS DE VENTA) -->
   <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 fade-in my-auto">
       <div id="printable-receipt" class="p-8 bg-white text-zinc-800">
@@ -1008,32 +1176,30 @@
     </div>
   </div>
 
-  <!-- 4. MODAL HOJA DE KARDEX / INVENTARIO -->
+  <!-- 4. MODAL HOJA DE KARDEX (SOLO DETALLE: NOMBRE, N° SERIE Y UNIDADES - FORMATO CARTA) -->
   <div id="kardex-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 fade-in my-auto">
-      <div id="printable-kardex" class="p-8 bg-white text-zinc-800">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-zinc-950 pb-4 mb-5 gap-3">
+      <div id="printable-kardex" class="p-6 sm:p-8 bg-white text-zinc-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-zinc-950 pb-3 mb-4 gap-2">
           <div>
-            <h2 class="text-2xl font-black uppercase text-zinc-950">Alvir Moto Store</h2>
-            <p class="text-xs font-extrabold text-rose-600 uppercase tracking-widest">HOJA DE KARDEX - CONTROL FÍSICO Y VALORADO DE INVENTARIO</p>
+            <h2 class="text-xl font-black uppercase text-zinc-950">Alvir Moto Store</h2>
+            <p class="text-[11px] font-extrabold text-zinc-700 uppercase tracking-wider">HOJA DE KARDEX - DETALLE DE EXISTENCIAS</p>
           </div>
           <div class="text-left sm:text-right text-xs">
-            <p class="text-zinc-500">Fecha de emisión: <strong id="kardex-date" class="text-zinc-950">--/--/----</strong></p>
-            <p class="text-zinc-500">Responsable: <strong id="kardex-admin" class="text-zinc-950">vendedor Alvir Moto Store</strong></p>
+            <p class="text-zinc-600">Fecha: <strong id="kardex-date" class="text-zinc-950">--/--/----</strong></p>
+            <p class="text-zinc-600">Responsable: <strong id="kardex-admin" class="text-zinc-950">vendedor Alvir Moto Store</strong></p>
           </div>
         </div>
 
-        <div class="overflow-x-auto mb-6">
+        <div class="overflow-x-auto mb-5">
           <table class="w-full text-xs border-collapse border border-zinc-300">
             <thead>
-              <tr class="bg-zinc-100 text-zinc-800 uppercase">
-                <th class="border border-zinc-300 py-2 px-3 text-center w-10">#</th>
-                <th class="border border-zinc-300 py-2 px-3 text-left">N° Serie / Código</th>
-                <th class="border border-zinc-300 py-2 px-3 text-left">Descripción del Producto</th>
-                <th class="border border-zinc-300 py-2 px-3 text-center">Stock Actual</th>
-                <th class="border border-zinc-300 py-2 px-3 text-right">Precio Unit.</th>
-                <th class="border border-zinc-300 py-2 px-3 text-right">Valor Total</th>
-                <th class="border border-zinc-300 py-2 px-3 text-center w-24">Conteo Físico</th>
+              <tr class="bg-zinc-100 text-zinc-900 uppercase">
+                <th class="border border-zinc-300 py-2 px-2.5 text-center w-10">#</th>
+                <th class="border border-zinc-300 py-2 px-2.5 text-left">N° Serie / Código</th>
+                <th class="border border-zinc-300 py-2 px-2.5 text-left">Nombre del Producto</th>
+                <th class="border border-zinc-300 py-2 px-2.5 text-center w-28">Unidades Disp.</th>
+                <th class="border border-zinc-300 py-2 px-2.5 text-center w-24">Conteo Físico</th>
               </tr>
             </thead>
             <tbody id="kardex-table-body">
@@ -1041,22 +1207,20 @@
             </tbody>
             <tfoot>
               <tr class="bg-zinc-100 font-extrabold text-zinc-950">
-                <td colspan="3" class="border border-zinc-300 py-2.5 px-3 text-right uppercase">Totales Generales:</td>
-                <td id="kardex-total-units" class="border border-zinc-300 py-2.5 px-3 text-center">0</td>
-                <td class="border border-zinc-300 py-2.5 px-3 text-right">—</td>
-                <td id="kardex-total-value" class="border border-zinc-300 py-2.5 px-3 text-right text-rose-600">C$ 0.00</td>
-                <td class="border border-zinc-300 py-2.5 px-3"></td>
+                <td colspan="3" class="border border-zinc-300 py-2 px-2.5 text-right uppercase">Total Unidades:</td>
+                <td id="kardex-total-units" class="border border-zinc-300 py-2 px-2.5 text-center">0</td>
+                <td class="border border-zinc-300 py-2 px-2.5"></td>
               </tr>
             </tfoot>
           </table>
         </div>
 
-        <div class="grid grid-cols-2 gap-8 pt-8 text-center text-xs text-zinc-500">
+        <div class="grid grid-cols-2 gap-8 pt-6 text-center text-xs text-zinc-600">
           <div>
-            <div class="border-t border-zinc-400 w-48 mx-auto pt-1">Firma del Responsable</div>
+            <div class="border-t border-zinc-400 w-44 mx-auto pt-1">Firma del Responsable</div>
           </div>
           <div>
-            <div class="border-t border-zinc-400 w-48 mx-auto pt-1">Verificación / Auditoría</div>
+            <div class="border-t border-zinc-400 w-44 mx-auto pt-1">Verificación / Conteo</div>
           </div>
         </div>
       </div>
@@ -1114,7 +1278,8 @@
         inventory: true,
         kardex: true,
         history: true,
-        reports: true
+        reports: true,
+        earnings: true
       }
     };
 
@@ -1137,17 +1302,49 @@
           inventory: true,
           kardex: true,
           history: true,
-          reports: true
+          reports: true,
+          earnings: true
         };
       }
       const rawPerms = (user && user.permissions && typeof user.permissions === 'object') ? user.permissions : {};
-      // Compatibilidad si un perfil antiguo tenía role === 'admin'
       const legacyAdmin = user && user.role === 'admin' && !user.permissions;
       return {
         inventory: Boolean(rawPerms.inventory ?? legacyAdmin),
         kardex: Boolean(rawPerms.kardex ?? legacyAdmin),
         history: Boolean(rawPerms.history ?? legacyAdmin),
-        reports: Boolean(rawPerms.reports ?? legacyAdmin)
+        reports: Boolean(rawPerms.reports ?? legacyAdmin),
+        earnings: Boolean(rawPerms.earnings ?? legacyAdmin)
+      };
+    }
+
+    function normalizeColors(colors) {
+      if (!Array.isArray(colors)) return [];
+      return colors
+        .filter(c => c && String(c.name || '').trim())
+        .map(c => ({
+          name: String(c.name).trim(),
+          qty: Math.max(0, parseInt(c.qty, 10) || 0)
+        }));
+    }
+
+    function normalizeInventoryItem(item) {
+      const colors = normalizeColors(item.colors);
+      const rawStock = parseInt(item.stock, 10);
+      const stock = !isNaN(rawStock)
+        ? Math.max(0, rawStock)
+        : colors.reduce((sum, c) => sum + c.qty, 0);
+      const price = Math.max(0, Number(item.price) || 0);
+      const rawCost = Number(item.cost);
+      const cost = (!isNaN(rawCost) && rawCost >= 0) ? rawCost : price;
+
+      return {
+        id: String(item.id || Date.now()),
+        serial: String(item.serial || 'S/N').trim() || 'S/N',
+        name: String(item.name || '').trim(),
+        cost,
+        price,
+        stock,
+        colors
       };
     }
 
@@ -1157,7 +1354,9 @@
 
     function applyParsedAppData(parsed) {
       if (!parsed || typeof parsed !== 'object') return;
-      appData.inventory = Array.isArray(parsed.inventory) ? parsed.inventory : [...DEFAULT_INVENTORY];
+      appData.inventory = Array.isArray(parsed.inventory)
+        ? parsed.inventory.map(normalizeInventoryItem)
+        : [...DEFAULT_INVENTORY];
       appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
       const secondaryUsers = Array.isArray(parsed.users)
         ? parsed.users
@@ -1197,6 +1396,7 @@
             renderHistoryTable();
             renderUsersTable();
             renderSalesReports();
+            renderEarningsReport();
           }
         }
       } catch (err) {
@@ -1290,7 +1490,7 @@
         roleBadge.textContent = 'Principal';
         roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-950 text-white uppercase";
       } else {
-        const hasExtra = perms.inventory || perms.kardex || perms.history || perms.reports;
+        const hasExtra = perms.inventory || perms.kardex || perms.history || perms.reports || perms.earnings;
         roleBadge.textContent = hasExtra ? 'Perfil Personalizado' : 'Vendedor';
         roleBadge.className = "text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-200 text-zinc-800 uppercase";
       }
@@ -1314,6 +1514,10 @@
       document.querySelectorAll('aside .perm-reports, nav .perm-reports').forEach(el => {
         el.classList.toggle('hidden', !perms.reports);
       });
+
+      document.querySelectorAll('aside .perm-earnings, nav .perm-earnings').forEach(el => {
+        el.classList.toggle('hidden', !perms.earnings);
+      });
     }
 
     function getDefaultTabForUser() {
@@ -1321,6 +1525,7 @@
       if (currentUser.permissions?.inventory) return 'inventory';
       if (currentUser.permissions?.history) return 'history';
       if (currentUser.permissions?.reports) return 'reports';
+      if (currentUser.permissions?.earnings) return 'earnings';
       return 'billing';
     }
 
@@ -1332,11 +1537,12 @@
       applyUserAccessControls();
 
       renderInventoryTable();
-      renderBillingProducts();
+      renderBillingProducts(document.getElementById('billing-product-search').value);
       renderCart();
       renderHistoryTable();
       renderUsersTable();
       renderSalesReports();
+      renderEarningsReport();
       updateDashboardStats();
 
       switchTab(getDefaultTabForUser());
@@ -1369,8 +1575,56 @@
       }
     }
 
+    function addNewProdColorRow(name = '', qty = 1) {
+      const container = document.getElementById('new-prod-colors-container');
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2 new-color-row';
+      row.innerHTML = `
+        <input type="text" value="${escapeHTML(name)}" placeholder="Color (Ej. Negro, Verde)"
+          class="new-color-name flex-1 px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <input type="number" value="${qty}" min="0" step="1" placeholder="Cant."
+          class="new-color-qty w-20 px-2 py-1.5 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs text-center focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <button type="button" onclick="this.parentElement.remove()" title="Quitar color" class="text-zinc-400 hover:text-rose-400 px-1.5 py-1 text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      `;
+      container.appendChild(row);
+    }
+
+    function addEditProdColorRow(name = '', qty = 1) {
+      const container = document.getElementById('edit-prod-colors-container');
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2 edit-color-row';
+      row.innerHTML = `
+        <input type="text" value="${escapeHTML(name)}" placeholder="Color (Ej. Negro, Verde)"
+          class="edit-color-name flex-1 px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <input type="number" value="${qty}" min="0" step="1" placeholder="Cant."
+          class="edit-color-qty w-20 px-2 py-1.5 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs text-center focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <button type="button" onclick="this.parentElement.remove()" title="Quitar color" class="text-zinc-400 hover:text-rose-400 px-1.5 py-1 text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      `;
+      container.appendChild(row);
+    }
+
+    function collectColorRows(selectorPrefix) {
+      const rows = document.querySelectorAll(`.${selectorPrefix}-color-row`);
+      const colors = [];
+      let totalColorQty = 0;
+
+      rows.forEach(row => {
+        const cName = row.querySelector(`.${selectorPrefix}-color-name`).value.trim();
+        const cQty = Math.max(0, parseInt(row.querySelector(`.${selectorPrefix}-color-qty`).value, 10) || 0);
+        if (cName) {
+          colors.push({ name: cName, qty: cQty });
+          totalColorQty += cQty;
+        }
+      });
+
+      return { colors, totalColorQty };
+    }
+
     function setupEventListeners() {
-      // Cerrar menús de acciones abiertos al tocar fuera
       document.addEventListener('click', (e) => {
         if (openActionMenuId && !e.target.closest('.action-menu-wrapper')) {
           openActionMenuId = null;
@@ -1422,7 +1676,7 @@
         }
       });
 
-      // Añadir Producto (permite 0 o más unidades y serie opcional)
+      // Añadir Producto con precio costo, precio venta, unidades y desglose opcional de colores
       document.getElementById('add-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.permissions?.inventory) return;
@@ -1430,12 +1684,19 @@
         const name = document.getElementById('prod-name').value.trim();
         const rawSerial = document.getElementById('prod-serial').value.trim().toUpperCase();
         const serial = rawSerial || 'S/N';
+        const cost = parseFloat(document.getElementById('prod-cost').value);
         const price = parseFloat(document.getElementById('prod-price').value);
         const stockRaw = document.getElementById('prod-stock').value.trim();
         const stock = stockRaw === '' ? NaN : parseInt(stockRaw, 10);
 
-        if (!name || isNaN(price) || price <= 0 || isNaN(stock) || stock < 0) {
-          showToast('Completa nombre, precio y unidades (0 o más).', 'error');
+        if (!name || isNaN(cost) || cost < 0 || isNaN(price) || price <= 0 || isNaN(stock) || stock < 0) {
+          showToast('Completa nombre, precio costo, precio venta y unidades.', 'error');
+          return;
+        }
+
+        const { colors, totalColorQty } = collectColorRows('new');
+        if (colors.length > 0 && totalColorQty !== stock) {
+          showToast(`La suma de colores (${totalColorQty}) no coincide con las unidades totales (${stock}).`, 'error');
           return;
         }
 
@@ -1451,18 +1712,22 @@
           id: Date.now().toString(),
           serial,
           name,
+          cost,
           price,
-          stock
+          stock,
+          colors
         });
 
         saveAppData();
         renderInventoryTable(document.getElementById('inventory-search').value);
         renderBillingProducts(document.getElementById('billing-product-search').value);
+        renderEarningsReport();
         e.target.reset();
+        document.getElementById('new-prod-colors-container').innerHTML = '';
         showToast('Producto guardado en el inventario.', 'success');
       });
 
-      // Guardar edición rápida de producto
+      // Guardar edición de producto
       document.getElementById('edit-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.permissions?.inventory) return;
@@ -1473,6 +1738,7 @@
         if (!product) return;
 
         const newName = document.getElementById('edit-prod-name').value.trim();
+        const newCost = parseFloat(document.getElementById('edit-prod-cost').value);
         const newPrice = parseFloat(document.getElementById('edit-prod-price').value);
         const newStock = parseInt(document.getElementById('edit-prod-stock').value, 10);
 
@@ -1480,8 +1746,12 @@
           showToast('El nombre del producto no puede quedar vacío.', 'error');
           return;
         }
+        if (isNaN(newCost) || newCost < 0) {
+          showToast('Ingresa un precio de costo válido.', 'error');
+          return;
+        }
         if (isNaN(newPrice) || newPrice <= 0) {
-          showToast('Ingresa un precio válido mayor a cero.', 'error');
+          showToast('Ingresa un precio de venta válido mayor a cero.', 'error');
           return;
         }
         if (isNaN(newStock) || newStock < 0) {
@@ -1489,18 +1759,26 @@
           return;
         }
 
+        const { colors, totalColorQty } = collectColorRows('edit');
+        if (colors.length > 0 && totalColorQty !== newStock) {
+          showToast(`La suma de colores (${totalColorQty}) no coincide con las unidades totales (${newStock}).`, 'error');
+          return;
+        }
+
         product.name = newName;
+        product.cost = newCost;
         product.price = newPrice;
         product.stock = newStock;
+        product.colors = colors;
 
         saveAppData();
         closeEditProductModal();
         renderInventoryTable(document.getElementById('inventory-search').value);
         renderBillingProducts(document.getElementById('billing-product-search').value);
+        renderEarningsReport();
         showToast(mode === 'stock' ? 'Unidades actualizadas.' : 'Producto actualizado.', 'success');
       });
 
-      // Confirmar eliminación desde modal
       document.getElementById('confirm-delete-btn').addEventListener('click', () => {
         if (!currentUser?.permissions?.inventory || !pendingDeleteId) return;
         const id = pendingDeleteId;
@@ -1513,10 +1791,10 @@
         renderInventoryTable(document.getElementById('inventory-search').value);
         renderBillingProducts(document.getElementById('billing-product-search').value);
         renderCart();
+        renderEarningsReport();
         showToast('Producto eliminado del inventario.', 'info');
       });
 
-      // Crear nuevo perfil con permisos seleccionables (solo dueño principal)
       document.getElementById('add-user-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.isOwner) {
@@ -1542,6 +1820,7 @@
         const allowKardex = document.getElementById('perm-check-kardex').checked;
         const allowHistory = document.getElementById('perm-check-history').checked;
         const allowReports = document.getElementById('perm-check-reports').checked;
+        const allowEarnings = document.getElementById('perm-check-earnings').checked;
 
         appData.users.push({
           username,
@@ -1551,7 +1830,8 @@
             inventory: allowInventory,
             kardex: allowKardex,
             history: allowHistory,
-            reports: allowReports
+            reports: allowReports,
+            earnings: allowEarnings
           }
         });
 
@@ -1561,7 +1841,6 @@
         showToast(`Perfil "${username}" creado con éxito.`, 'success');
       });
 
-      // Guardar cambios de permisos en modal
       document.getElementById('edit-user-perms-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.isOwner) return;
@@ -1574,7 +1853,8 @@
           inventory: document.getElementById('modal-perm-inventory').checked,
           kardex: document.getElementById('modal-perm-kardex').checked,
           history: document.getElementById('modal-perm-history').checked,
-          reports: document.getElementById('modal-perm-reports').checked
+          reports: document.getElementById('modal-perm-reports').checked,
+          earnings: document.getElementById('modal-perm-earnings').checked
         };
 
         saveAppData();
@@ -1605,6 +1885,7 @@
       if (tabName === 'inventory') return Boolean(currentUser.permissions?.inventory);
       if (tabName === 'history') return Boolean(currentUser.permissions?.history);
       if (tabName === 'reports') return Boolean(currentUser.permissions?.reports);
+      if (tabName === 'earnings') return Boolean(currentUser.permissions?.earnings);
       return false;
     }
 
@@ -1613,7 +1894,7 @@
         tabName = getDefaultTabForUser();
       }
 
-      const views = ['inventory', 'billing', 'history', 'reports', 'users'];
+      const views = ['inventory', 'billing', 'history', 'reports', 'earnings', 'users'];
       views.forEach(v => {
         const viewEl = document.getElementById(`view-${v}`);
         const btnEl = document.getElementById(`tab-btn-${v}`);
@@ -1638,6 +1919,8 @@
         renderHistoryTable();
       } else if (tabName === 'reports') {
         renderSalesReports();
+      } else if (tabName === 'earnings') {
+        renderEarningsReport();
       } else if (tabName === 'users') {
         renderUsersTable();
       }
@@ -1668,11 +1951,13 @@
       const emptyState = document.getElementById('inventory-empty-state');
       const query = filterText.toLowerCase().trim();
 
-      const filtered = appData.inventory.filter(item =>
-        !query ||
-        item.name.toLowerCase().includes(query) ||
-        (item.serial && item.serial.toLowerCase().includes(query))
-      );
+      const filtered = appData.inventory.filter(item => {
+        if (!query) return true;
+        const matchName = item.name.toLowerCase().includes(query);
+        const matchSerial = item.serial && item.serial.toLowerCase().includes(query);
+        const matchColor = Array.isArray(item.colors) && item.colors.some(c => c.name.toLowerCase().includes(query));
+        return matchName || matchSerial || matchColor;
+      });
 
       tbody.innerHTML = '';
 
@@ -1690,13 +1975,24 @@
             ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950/80 text-amber-300 border border-amber-800/50">${item.stock} und.</span>`
             : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950/80 text-rose-300 border border-rose-800/50">0 und.</span>`;
 
+        const colorChips = Array.isArray(item.colors) && item.colors.length > 0
+          ? `<div class="flex flex-wrap gap-1 mt-1.5">${
+              item.colors.map(c =>
+                `<span class="inline-flex items-center px-2 py-0.5 rounded bg-zinc-800/90 border border-zinc-700/70 text-[11px] text-zinc-200">${escapeHTML(c.name)}: <strong class="ml-1 text-white">${c.qty}</strong></span>`
+              ).join('')
+            }</div>`
+          : '';
+
         const isMenuOpen = openActionMenuId === item.id;
 
         const tr = document.createElement('tr');
         tr.className = `transition ${isZero ? 'bg-zinc-950/50' : 'hover:bg-zinc-800/40'}`;
         tr.innerHTML = `
           <td class="py-3.5 px-5 font-mono text-xs font-semibold text-zinc-400">${escapeHTML(item.serial || 'S/N')}</td>
-          <td class="py-3.5 px-5 font-semibold text-white">${escapeHTML(item.name)}</td>
+          <td class="py-3.5 px-5">
+            <div class="font-semibold text-white">${escapeHTML(item.name)}</div>
+            ${colorChips}
+          </td>
           <td class="py-3.5 px-5 text-right font-bold text-zinc-100">${formatCurrency(item.price)}</td>
           <td class="py-3.5 px-5 text-center">${stockBadge}</td>
           <td class="py-3.5 px-5 text-right">
@@ -1721,7 +2017,7 @@
                   <button type="button" onclick="openEditProductModal('${item.id}', 'price')"
                     class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 flex items-center gap-2.5">
                     <i class="fa-solid fa-tag text-zinc-400 w-3.5"></i>
-                    <span>Cambiar precio</span>
+                    <span>Cambiar precios / colores</span>
                   </button>
                   <button type="button" onclick="openEditProductModal('${item.id}', 'stock')"
                     class="w-full px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 flex items-center gap-2.5">
@@ -1756,13 +2052,20 @@
       document.getElementById('edit-prod-id').value = product.id;
       document.getElementById('edit-prod-mode').value = mode;
       document.getElementById('edit-prod-name').value = product.name;
+      document.getElementById('edit-prod-cost').value = product.cost ?? 0;
       document.getElementById('edit-prod-price').value = product.price;
       document.getElementById('edit-prod-stock').value = product.stock;
 
+      const colorsContainer = document.getElementById('edit-prod-colors-container');
+      colorsContainer.innerHTML = '';
+      if (Array.isArray(product.colors) && product.colors.length > 0) {
+        product.colors.forEach(c => addEditProdColorRow(c.name, c.qty));
+      }
+
       const titleMap = {
         all: 'Editar Nombre y Detalles',
-        price: 'Cambiar Precio',
-        stock: 'Unidades en Inventario'
+        price: 'Cambiar Precios y Colores',
+        stock: 'Unidades y Colores en Inventario'
       };
       document.getElementById('edit-modal-title').textContent = titleMap[mode] || 'Editar Producto';
 
@@ -1781,6 +2084,9 @@
       if (!product) return;
 
       product.stock = 0;
+      if (Array.isArray(product.colors)) {
+        product.colors.forEach(c => { c.qty = 0; });
+      }
       cart = cart.filter(c => c.id !== id);
       saveAppData();
       renderInventoryTable(document.getElementById('inventory-search').value);
@@ -1804,6 +2110,7 @@
       document.getElementById('confirm-delete-modal').classList.add('hidden');
     }
 
+    // Hoja de Kardex: solo detalle (nombre, número de serie y unidades) sin precios
     function openKardexModal() {
       if (!currentUser?.permissions?.inventory || !currentUser?.permissions?.kardex) {
         showToast('No tienes permiso para abrir la Hoja de Kardex.', 'error');
@@ -1812,7 +2119,7 @@
 
       const now = new Date();
       document.getElementById('kardex-date').textContent = now.toLocaleDateString('es-NI', {
-        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        day: '2-digit', month: '2-digit', year: 'numeric'
       });
       document.getElementById('kardex-admin').textContent = currentUser.username;
 
@@ -1820,28 +2127,27 @@
       tbody.innerHTML = '';
 
       let totalUnits = 0;
-      let totalValue = 0;
 
       appData.inventory.forEach((item, idx) => {
-        const itemTotal = item.price * item.stock;
-        totalUnits += item.stock;
-        totalValue += itemTotal;
+        const qty = Number(item.stock) || 0;
+        totalUnits += qty;
+
+        const colorSummary = Array.isArray(item.colors) && item.colors.length > 0
+          ? `<span class="text-zinc-600 text-[11px]"> (${item.colors.map(c => `${escapeHTML(c.name)}: ${c.qty}`).join(', ')})</span>`
+          : '';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td class="border border-zinc-300 py-2 px-3 text-center text-zinc-500">${idx + 1}</td>
-          <td class="border border-zinc-300 py-2 px-3 font-mono font-bold text-zinc-700">${escapeHTML(item.serial || 'S/N')}</td>
-          <td class="border border-zinc-300 py-2 px-3 font-medium text-zinc-900">${escapeHTML(item.name)}</td>
-          <td class="border border-zinc-300 py-2 px-3 text-center font-bold">${item.stock}</td>
-          <td class="border border-zinc-300 py-2 px-3 text-right">${formatCurrency(item.price)}</td>
-          <td class="border border-zinc-300 py-2 px-3 text-right font-bold">${formatCurrency(itemTotal)}</td>
-          <td class="border border-zinc-300 py-2 px-3"></td>
+          <td class="border border-zinc-300 py-1.5 px-2.5 text-center text-zinc-600">${idx + 1}</td>
+          <td class="border border-zinc-300 py-1.5 px-2.5 font-mono font-semibold text-zinc-800">${escapeHTML(item.serial || 'S/N')}</td>
+          <td class="border border-zinc-300 py-1.5 px-2.5 font-medium text-zinc-900">${escapeHTML(item.name)}${colorSummary}</td>
+          <td class="border border-zinc-300 py-1.5 px-2.5 text-center font-bold text-zinc-950">${qty}</td>
+          <td class="border border-zinc-300 py-1.5 px-2.5"></td>
         `;
         tbody.appendChild(tr);
       });
 
       document.getElementById('kardex-total-units').textContent = totalUnits;
-      document.getElementById('kardex-total-value').textContent = formatCurrency(totalValue);
       document.getElementById('kardex-modal').classList.remove('hidden');
     }
 
@@ -1856,6 +2162,7 @@
       if (perms.kardex) active.push('<span class="px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/50 text-[11px] font-semibold">Kardex</span>');
       if (perms.history) active.push('<span class="px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-800/50 text-[11px] font-semibold">Historial</span>');
       if (perms.reports) active.push('<span class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/50 text-[11px] font-semibold">Reportes</span>');
+      if (perms.earnings) active.push('<span class="px-2 py-0.5 rounded bg-violet-950/80 text-violet-300 border border-violet-800/50 text-[11px] font-semibold">Ganancias</span>');
       return `<div class="flex flex-wrap gap-1">${active.join('')}</div>`;
     }
 
@@ -1907,6 +2214,7 @@
       document.getElementById('modal-perm-kardex').checked = Boolean(perms.kardex);
       document.getElementById('modal-perm-history').checked = Boolean(perms.history);
       document.getElementById('modal-perm-reports').checked = Boolean(perms.reports);
+      document.getElementById('modal-perm-earnings').checked = Boolean(perms.earnings);
 
       document.getElementById('edit-user-perms-modal').classList.remove('hidden');
     }
@@ -1925,19 +2233,29 @@
       showToast(`Perfil "${username}" eliminado.`, 'info');
     }
 
+    // Buscador de facturación: vacío por defecto hasta que se busque por nombre o serie
     function renderBillingProducts(filterText = '') {
       const container = document.getElementById('billing-product-list');
-      const query = filterText.toLowerCase().trim();
+      const query = String(filterText || '').toLowerCase().trim();
 
-      const filtered = appData.inventory.filter(item =>
-        !query ||
+      container.innerHTML = '';
+
+      if (!query) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-zinc-400 bg-zinc-950/70 rounded-xl border border-dashed border-zinc-800">
+            <i class="fa-solid fa-magnifying-glass text-lg mb-2 text-zinc-500"></i>
+            <p class="text-xs font-medium">Escribe el nombre o número de serie del producto para mostrarlo aquí.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const matches = appData.inventory.filter(item =>
         item.name.toLowerCase().includes(query) ||
         (item.serial && item.serial.toLowerCase().includes(query))
       );
 
-      container.innerHTML = '';
-
-      if (filtered.length === 0) {
+      if (matches.length === 0) {
         container.innerHTML = `
           <div class="p-8 text-center text-zinc-400 bg-zinc-950/70 rounded-xl border border-dashed border-zinc-800">
             <p class="text-sm font-medium">No se encontraron productos con "${escapeHTML(filterText)}".</p>
@@ -1946,11 +2264,26 @@
         return;
       }
 
-      filtered.forEach(item => {
-        const inCart = cart.find(c => c.id === item.id);
-        const inCartQty = inCart ? inCart.qty : 0;
-        const available = item.stock - inCartQty;
+      matches.forEach(item => {
+        const inCart = cart.filter(c => c.id === item.id).reduce((s, c) => s + c.qty, 0);
+        const available = Math.max(0, item.stock - inCart);
         const isOutOfStock = available <= 0;
+
+        const hasColors = Array.isArray(item.colors) && item.colors.length > 0;
+        const colorSelectorHtml = hasColors
+          ? `<div class="mt-2 flex flex-wrap items-center gap-1.5">
+               <select id="billing-color-${item.id}" ${isOutOfStock ? 'disabled' : ''}
+                 class="px-2.5 py-1 bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500">
+                 ${item.colors.map((c, idx) => {
+                   const usedColorQty = cart
+                     .filter(x => x.id === item.id && x.colorName === c.name)
+                     .reduce((sum, x) => sum + x.qty, 0);
+                   const rem = Math.max(0, (Number(c.qty) || 0) - usedColorQty);
+                   return `<option value="${idx}" ${rem <= 0 ? 'disabled' : ''}>${escapeHTML(c.name)} (${rem} disp.)</option>`;
+                 }).join('')}
+               </select>
+             </div>`
+          : '';
 
         const card = document.createElement('div');
         card.className = `p-3.5 rounded-xl border transition flex items-center justify-between gap-3 ${
@@ -1967,6 +2300,7 @@
             </div>
             <p class="text-sm font-bold text-white truncate">${escapeHTML(item.name)}</p>
             <p class="text-xs font-extrabold text-rose-400 mt-0.5">${formatCurrency(item.price)}</p>
+            ${colorSelectorHtml}
           </div>
           <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
             class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
@@ -1986,23 +2320,43 @@
       const product = appData.inventory.find(p => p.id === productId);
       if (!product) return;
 
-      const existing = cart.find(c => c.id === productId);
-      if (existing) {
-        if (existing.qty >= product.stock) {
+      let chosenColor = null;
+      if (Array.isArray(product.colors) && product.colors.length > 0) {
+        const selEl = document.getElementById(`billing-color-${productId}`);
+        const cIdx = selEl ? parseInt(selEl.value, 10) : 0;
+        const cObj = product.colors[cIdx] || product.colors[0];
+        if (!cObj) return;
+
+        const usedColorQty = cart
+          .filter(x => x.id === productId && x.colorName === cObj.name)
+          .reduce((sum, x) => sum + x.qty, 0);
+
+        if (usedColorQty >= (Number(cObj.qty) || 0)) {
+          showToast(`No hay más unidades disponibles en color ${cObj.name}.`, 'error');
+          return;
+        }
+        chosenColor = cObj.name;
+      } else {
+        const totalInCart = cart.filter(x => x.id === productId).reduce((sum, x) => sum + x.qty, 0);
+        if (totalInCart >= product.stock) {
           showToast('No hay más unidades disponibles en stock.', 'error');
           return;
         }
+      }
+
+      const cartKey = chosenColor ? `${productId}__${chosenColor}` : productId;
+      const existing = cart.find(c => c.cartKey === cartKey);
+      if (existing) {
         existing.qty += 1;
       } else {
-        if (product.stock < 1) {
-          showToast('Producto sin unidades disponibles.', 'error');
-          return;
-        }
         cart.push({
+          cartKey,
           id: product.id,
           serial: product.serial || 'S/N',
           name: product.name,
-          price: product.price,
+          colorName: chosenColor,
+          cost: Number(product.cost) || 0,
+          price: Number(product.price) || 0,
           qty: 1
         });
       }
@@ -2011,19 +2365,30 @@
       renderBillingProducts(document.getElementById('billing-product-search').value);
     }
 
-    function updateCartQty(productId, delta) {
-      const product = appData.inventory.find(p => p.id === productId);
-      const itemIndex = cart.findIndex(c => c.id === productId);
-      if (itemIndex === -1 || !product) return;
+    function updateCartQty(cartKey, delta) {
+      const itemIndex = cart.findIndex(c => c.cartKey === cartKey);
+      if (itemIndex === -1) return;
 
-      const newQty = cart[itemIndex].qty + delta;
+      const cartItem = cart[itemIndex];
+      const product = appData.inventory.find(p => p.id === cartItem.id);
+      if (!product) return;
+
+      const newQty = cartItem.qty + delta;
       if (newQty <= 0) {
         cart.splice(itemIndex, 1);
-      } else if (newQty > product.stock) {
-        showToast(`Stock máximo disponible: ${product.stock}`, 'error');
-        return;
       } else {
-        cart[itemIndex].qty = newQty;
+        if (cartItem.colorName && Array.isArray(product.colors) && product.colors.length > 0) {
+          const cObj = product.colors.find(c => c.name === cartItem.colorName);
+          const maxC = cObj ? (Number(cObj.qty) || 0) : 0;
+          if (newQty > maxC) {
+            showToast(`Stock máximo en ${cartItem.colorName}: ${maxC}`, 'error');
+            return;
+          }
+        } else if (newQty > product.stock) {
+          showToast(`Stock máximo disponible: ${product.stock}`, 'error');
+          return;
+        }
+        cartItem.qty = newQty;
       }
 
       renderCart();
@@ -2055,23 +2420,24 @@
       cart.forEach(item => {
         const subtotal = item.price * item.qty;
         total += subtotal;
+        const colorLabel = item.colorName ? ` · Color: ${escapeHTML(item.colorName)}` : '';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="py-2.5 px-3">
             <p class="font-bold text-white text-xs leading-snug">${escapeHTML(item.name)}</p>
-            <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(item.serial || 'S/N')} · ${formatCurrency(item.price)} c/u</p>
+            <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(item.serial || 'S/N')}${colorLabel} · ${formatCurrency(item.price)} c/u</p>
           </td>
           <td class="py-2.5 px-2 text-center">
             <div class="inline-flex items-center border border-zinc-700 rounded-lg bg-zinc-950">
-              <button type="button" onclick="updateCartQty('${item.id}', -1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-rose-400">-</button>
+              <button type="button" onclick="updateCartQty('${escapeHTML(item.cartKey)}', -1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-rose-400">-</button>
               <span class="px-2 text-xs font-bold text-white">${item.qty}</span>
-              <button type="button" onclick="updateCartQty('${item.id}', 1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-emerald-400">+</button>
+              <button type="button" onclick="updateCartQty('${escapeHTML(item.cartKey)}', 1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-emerald-400">+</button>
             </div>
           </td>
           <td class="py-2.5 px-3 text-right font-bold text-white text-xs">${formatCurrency(subtotal)}</td>
           <td class="py-2.5 px-2 text-right">
-            <button type="button" onclick="updateCartQty('${item.id}', -9999)" class="text-zinc-400 hover:text-rose-400 text-xs">
+            <button type="button" onclick="updateCartQty('${escapeHTML(item.cartKey)}', -9999)" class="text-zinc-400 hover:text-rose-400 text-xs">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </td>
@@ -2108,6 +2474,12 @@
         const invItem = appData.inventory.find(i => i.id === cartItem.id);
         if (invItem) {
           invItem.stock = Math.max(0, invItem.stock - cartItem.qty);
+          if (cartItem.colorName && Array.isArray(invItem.colors)) {
+            const cObj = invItem.colors.find(c => c.name === cartItem.colorName);
+            if (cObj) {
+              cObj.qty = Math.max(0, cObj.qty - cartItem.qty);
+            }
+          }
         }
       });
 
@@ -2138,12 +2510,14 @@
 
       document.getElementById('client-name').value = '';
       document.getElementById('client-phone').value = '';
+      document.getElementById('billing-product-search').value = '';
       cart = [];
       renderCart();
       renderInventoryTable(document.getElementById('inventory-search').value);
-      renderBillingProducts(document.getElementById('billing-product-search').value);
+      renderBillingProducts('');
       renderHistoryTable();
       renderSalesReports();
+      renderEarningsReport();
 
       openReceiptModal(newReceipt);
       showToast(`Recibo ${receiptNumber} emitido.`, 'success');
@@ -2162,11 +2536,12 @@
       itemsList.innerHTML = '';
 
       receipt.items.forEach(item => {
+        const colorSub = item.colorName ? ` · Color: ${escapeHTML(item.colorName)}` : '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="py-2 pr-2">
             <p class="font-bold text-zinc-900">${escapeHTML(item.name)}</p>
-            <p class="font-mono text-[10px] text-zinc-400">Serie: ${escapeHTML(item.serial || 'S/N')}</p>
+            <p class="font-mono text-[10px] text-zinc-400">Serie: ${escapeHTML(item.serial || 'S/N')}${colorSub}</p>
           </td>
           <td class="py-2 text-center font-semibold">${item.qty}</td>
           <td class="py-2 text-right text-zinc-600">${formatCurrency(item.price)}</td>
@@ -2278,6 +2653,7 @@
       saveAppData();
       renderHistoryTable();
       renderSalesReports();
+      renderEarningsReport();
       showToast('Historial de recibos reiniciado a cero.', 'info');
     }
 
@@ -2359,6 +2735,99 @@
       const transferEl = document.getElementById('report-transfer-total');
       if (cashEl) cashEl.textContent = formatCurrency(cashSum);
       if (transferEl) transferEl.textContent = formatCurrency(transferSum);
+    }
+
+    function renderEarningsReport() {
+      let totalRecoveredCost = 0;
+      let totalGrossSales = 0;
+      let totalNetProfit = 0;
+
+      const byProduct = {};
+
+      appData.receipts.forEach(rec => {
+        if (!Array.isArray(rec.items)) return;
+        rec.items.forEach(it => {
+          const qty = Number(it.qty) || 0;
+          const salePrice = Number(it.price) || 0;
+          const invMatch = appData.inventory.find(p => p.id === it.id);
+          const unitCost = (it.cost !== undefined && it.cost !== null)
+            ? Number(it.cost) || 0
+            : (invMatch ? (Number(invMatch.cost) || 0) : salePrice);
+
+          const recovered = unitCost * qty;
+          const gross = salePrice * qty;
+          const profit = gross - recovered;
+
+          totalRecoveredCost += recovered;
+          totalGrossSales += gross;
+          totalNetProfit += profit;
+
+          const key = `${it.id || it.name}__${it.colorName || ''}`;
+          if (!byProduct[key]) {
+            byProduct[key] = {
+              name: it.name + (it.colorName ? ` (${it.colorName})` : ''),
+              serial: it.serial || 'S/N',
+              qty: 0,
+              recovered: 0,
+              profit: 0,
+              gross: 0
+            };
+          }
+          byProduct[key].qty += qty;
+          byProduct[key].recovered += recovered;
+          byProduct[key].profit += profit;
+          byProduct[key].gross += gross;
+        });
+      });
+
+      let stockCostTotal = 0;
+      let stockSaleTotal = 0;
+      appData.inventory.forEach(item => {
+        const st = Number(item.stock) || 0;
+        stockCostTotal += st * (Number(item.cost) || 0);
+        stockSaleTotal += st * (Number(item.price) || 0);
+      });
+
+      const recEl = document.getElementById('earnings-recovered-total');
+      const profEl = document.getElementById('earnings-net-profit-total');
+      const grossSubEl = document.getElementById('earnings-gross-sales-sub');
+      const stCostEl = document.getElementById('earnings-stock-cost');
+      const stSaleEl = document.getElementById('earnings-stock-sale');
+
+      if (recEl) recEl.textContent = formatCurrency(totalRecoveredCost);
+      if (profEl) profEl.textContent = formatCurrency(totalNetProfit);
+      if (grossSubEl) grossSubEl.textContent = `Total vendido bruto: ${formatCurrency(totalGrossSales)}`;
+      if (stCostEl) stCostEl.textContent = formatCurrency(stockCostTotal);
+      if (stSaleEl) stSaleEl.textContent = formatCurrency(stockSaleTotal);
+
+      const tbody = document.getElementById('earnings-table-body');
+      const emptyEl = document.getElementById('earnings-empty-state');
+      if (!tbody || !emptyEl) return;
+
+      tbody.innerHTML = '';
+      const rows = Object.values(byProduct);
+
+      if (rows.length === 0) {
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      emptyEl.classList.add('hidden');
+
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-zinc-800/40';
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="font-semibold text-white text-xs">${escapeHTML(r.name)}</div>
+            <div class="font-mono text-[10px] text-zinc-400">${escapeHTML(r.serial)}</div>
+          </td>
+          <td class="py-3 px-4 text-center font-bold text-zinc-200">${r.qty}</td>
+          <td class="py-3 px-4 text-right font-semibold text-amber-300">${formatCurrency(r.recovered)}</td>
+          <td class="py-3 px-4 text-right font-bold ${r.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${formatCurrency(r.profit)}</td>
+          <td class="py-3 px-4 text-right font-bold text-white">${formatCurrency(r.gross)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function printDocument(type) {
