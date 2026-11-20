@@ -99,83 +99,118 @@
       }
     }
 
-    /* Tema Claro para la aplicación post-login (mantiene #login-screen intacto) */
-    #app-shell.theme-light,
-    #app-shell.theme-light > div,
-    #app-shell.theme-light main {
+    /* =========================================================================
+       1. MODO CLARO: TODO BLANCO PURO, TEXTOS EN NEGRO Y BOTONES EN CELESTE VIVO
+       ========================================================================= */
+    body.app-theme-light {
       background-color: #ffffff !important;
-      color: #18181b !important;
+      color: #000000 !important;
     }
 
-    #app-shell.theme-light .bg-zinc-950 {
+    #app-shell.theme-light,
+    #app-shell.theme-light > div,
+    #app-shell.theme-light header,
+    #app-shell.theme-light aside,
+    #app-shell.theme-light main,
+    #app-shell.theme-light section,
+    #app-shell.theme-light table,
+    #app-shell.theme-light thead,
+    #app-shell.theme-light tbody,
+    #app-shell.theme-light tr,
+    #app-shell.theme-light input,
+    #app-shell.theme-light select,
+    #app-shell.theme-light textarea {
       background-color: #ffffff !important;
-      color: #18181b !important;
+      color: #000000 !important;
     }
+
+    #app-shell.theme-light .bg-zinc-950,
     #app-shell.theme-light .bg-zinc-950\/70,
     #app-shell.theme-light .bg-zinc-950\/80,
     #app-shell.theme-light .bg-zinc-950\/60,
     #app-shell.theme-light .bg-zinc-950\/90,
-    #app-shell.theme-light .bg-zinc-950\/50 {
-      background-color: #f8fafc !important;
-      color: #18181b !important;
-    }
-
+    #app-shell.theme-light .bg-zinc-950\/50,
     #app-shell.theme-light .bg-zinc-900,
-    #app-shell.theme-light .bg-zinc-900\/90 {
+    #app-shell.theme-light .bg-zinc-900\/90,
+    #app-shell.theme-light .bg-zinc-800,
+    #app-shell.theme-light .bg-zinc-800\/90,
+    #app-shell.theme-light .bg-zinc-100,
+    #app-shell.theme-light .bg-white,
+    #app-shell.theme-light .bg-white\/95,
+    #app-shell.theme-light .bg-stone-100 {
       background-color: #ffffff !important;
-      color: #18181b !important;
+      color: #000000 !important;
     }
 
-    #app-shell.theme-light .bg-zinc-800,
-    #app-shell.theme-light .bg-zinc-800\/90 {
-      background-color: #f1f5f9 !important;
-      color: #18181b !important;
+    /* Mantener el ícono contenedor del logo con estilo limpio en modo claro */
+    #app-shell.theme-light header .w-11.h-10.bg-zinc-950 {
+      background-color: #ffffff !important;
+      border: 1.5px solid #000000 !important;
+    }
+
+    /* Radio buttons de Método de Pago en modo claro */
+    #app-shell.theme-light input[type="radio"].peer + div {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #cbd5e1 !important;
+    }
+    #app-shell.theme-light input[type="radio"].peer:checked + div {
+      background-color: #38bdf8 !important;
+      color: #000000 !important;
+      border-color: #0284c7 !important;
     }
 
     #app-shell.theme-light .border-zinc-800,
     #app-shell.theme-light .border-zinc-800\/80,
     #app-shell.theme-light .border-zinc-800\/60,
     #app-shell.theme-light .border-zinc-700,
-    #app-shell.theme-light .border-zinc-700\/70 {
-      border-color: #e2e8f0 !important;
+    #app-shell.theme-light .border-zinc-700\/70,
+    #app-shell.theme-light .border-zinc-200,
+    #app-shell.theme-light .border-amber-800\/40,
+    #app-shell.theme-light .border-emerald-800\/40 {
+      border-color: #d4d4d8 !important;
     }
 
     #app-shell.theme-light .divide-zinc-800 > :not([hidden]) ~ :not([hidden]),
     #app-shell.theme-light .divide-zinc-800\/80 > :not([hidden]) ~ :not([hidden]) {
-      border-color: #e2e8f0 !important;
+      border-color: #e4e4e7 !important;
     }
 
-    #app-shell.theme-light .text-white {
-      color: #09090b !important;
-    }
+    /* TODOS los textos en negro en modo claro */
+    #app-shell.theme-light,
+    #app-shell.theme-light p,
+    #app-shell.theme-light span,
+    #app-shell.theme-light h1,
+    #app-shell.theme-light h2,
+    #app-shell.theme-light h3,
+    #app-shell.theme-light label,
+    #app-shell.theme-light th,
+    #app-shell.theme-light td,
+    #app-shell.theme-light strong,
+    #app-shell.theme-light .text-white,
     #app-shell.theme-light .text-zinc-100,
-    #app-shell.theme-light .text-zinc-200 {
-      color: #18181b !important;
-    }
-    #app-shell.theme-light .text-zinc-300 {
-      color: #334155 !important;
-    }
-    #app-shell.theme-light .text-zinc-400 {
-      color: #64748b !important;
-    }
-    #app-shell.theme-light .text-zinc-500 {
-      color: #64748b !important;
+    #app-shell.theme-light .text-zinc-200,
+    #app-shell.theme-light .text-zinc-300,
+    #app-shell.theme-light .text-zinc-400,
+    #app-shell.theme-light .text-zinc-500,
+    #app-shell.theme-light .text-zinc-700,
+    #app-shell.theme-light .text-zinc-800,
+    #app-shell.theme-light .text-zinc-900,
+    #app-shell.theme-light .text-zinc-950,
+    #app-shell.theme-light .text-rose-400,
+    #app-shell.theme-light .text-rose-300,
+    #app-shell.theme-light .text-emerald-400,
+    #app-shell.theme-light .text-emerald-300,
+    #app-shell.theme-light .text-amber-400,
+    #app-shell.theme-light .text-amber-300,
+    #app-shell.theme-light .text-sky-300,
+    #app-shell.theme-light .text-violet-300 {
+      color: #000000 !important;
     }
 
-    #app-shell.theme-light .placeholder-zinc-500::placeholder {
-      color: #94a3b8 !important;
-    }
-
-    /* Botones contrastados en modo claro para distinguirlos con claridad */
-    #app-shell.theme-light .theme-action-btn {
-      background-color: #09090b !important;
-      color: #ffffff !important;
-      border-color: #09090b !important;
-    }
-    #app-shell.theme-light .theme-action-btn:hover {
-      background-color: #e11d48 !important;
-      color: #ffffff !important;
-      border-color: #e11d48 !important;
+    #app-shell.theme-light .placeholder-zinc-500::placeholder,
+    #app-shell.theme-light input::placeholder {
+      color: #52525b !important;
     }
 
     /* Badges en modo claro */
@@ -183,76 +218,283 @@
       background-color: #dcfce7 !important;
       border-color: #86efac !important;
     }
-    #app-shell.theme-light .text-emerald-300,
-    #app-shell.theme-light .text-emerald-400 {
-      color: #15803d !important;
-    }
     #app-shell.theme-light .bg-amber-950\/80 {
       background-color: #fef3c7 !important;
       border-color: #fcd34d !important;
-    }
-    #app-shell.theme-light .text-amber-300,
-    #app-shell.theme-light .text-amber-400 {
-      color: #b45309 !important;
     }
     #app-shell.theme-light .bg-rose-950\/80,
     #app-shell.theme-light .bg-rose-950\/70 {
       background-color: #ffe4e6 !important;
       border-color: #fda4af !important;
     }
-    #app-shell.theme-light .text-rose-300,
-    #app-shell.theme-light .text-rose-400 {
-      color: #be123c !important;
-    }
     #app-shell.theme-light .bg-sky-950\/80 {
       background-color: #e0f2fe !important;
       border-color: #7dd3fc !important;
-    }
-    #app-shell.theme-light .text-sky-300 {
-      color: #0369a1 !important;
     }
     #app-shell.theme-light .bg-violet-950\/80 {
       background-color: #ede9fe !important;
       border-color: #c4b5fd !important;
     }
-    #app-shell.theme-light .text-violet-300 {
-      color: #6d28d9 !important;
-    }
 
-    /* Modales oscuros de edición/permisos en modo claro */
+    /* Modales en modo claro (todo blanco + texto negro) */
     body.app-theme-light #edit-user-perms-modal > div,
     body.app-theme-light #edit-product-modal > div,
     body.app-theme-light #confirm-delete-modal > div {
       background-color: #ffffff !important;
-      color: #18181b !important;
-      border-color: #e2e8f0 !important;
+      color: #000000 !important;
+      border-color: #d4d4d8 !important;
     }
     body.app-theme-light #edit-user-perms-modal .bg-zinc-950,
     body.app-theme-light #edit-product-modal .bg-zinc-950,
     body.app-theme-light #edit-product-modal .bg-zinc-950\/70,
-    body.app-theme-light #confirm-delete-modal .bg-zinc-950 {
-      background-color: #f8fafc !important;
-      color: #18181b !important;
-      border-color: #e2e8f0 !important;
-    }
+    body.app-theme-light #confirm-delete-modal .bg-zinc-950,
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-900,
+    body.app-theme-light #edit-product-modal .bg-zinc-900,
     body.app-theme-light #edit-user-perms-modal .bg-zinc-800,
     body.app-theme-light #edit-product-modal .bg-zinc-800,
-    body.app-theme-light #confirm-delete-modal .bg-zinc-800 {
-      background-color: #f1f5f9 !important;
-      color: #0f172a !important;
+    body.app-theme-light #confirm-delete-modal .bg-zinc-800,
+    body.app-theme-light #edit-product-modal input {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #d4d4d8 !important;
     }
-    body.app-theme-light #edit-user-perms-modal .text-white,
-    body.app-theme-light #edit-product-modal .text-white,
-    body.app-theme-light #confirm-delete-modal .text-white,
-    body.app-theme-light #edit-user-perms-modal .text-zinc-200,
-    body.app-theme-light #edit-product-modal .text-zinc-200,
-    body.app-theme-light #confirm-delete-modal .text-zinc-200 {
-      color: #0f172a !important;
+    body.app-theme-light #edit-user-perms-modal p,
+    body.app-theme-light #edit-user-perms-modal span,
+    body.app-theme-light #edit-user-perms-modal h3,
+    body.app-theme-light #edit-product-modal p,
+    body.app-theme-light #edit-product-modal span,
+    body.app-theme-light #edit-product-modal h3,
+    body.app-theme-light #edit-product-modal label,
+    body.app-theme-light #confirm-delete-modal p,
+    body.app-theme-light #confirm-delete-modal span,
+    body.app-theme-light #confirm-delete-modal h3 {
+      color: #000000 !important;
     }
-    body.app-theme-light #edit-user-perms-modal .text-zinc-400,
-    body.app-theme-light #edit-product-modal .text-zinc-400,
-    body.app-theme-light #confirm-delete-modal .text-zinc-400 {
-      color: #64748b !important;
+
+
+    /* =========================================================================
+       2. MODO OSCURO: TODO ABSOLUTAMENTE NEGRO PURO, TEXTOS EN BLANCO
+       ========================================================================= */
+    body.app-theme-dark {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    #app-shell.theme-dark,
+    #app-shell.theme-dark > div,
+    #app-shell.theme-dark header,
+    #app-shell.theme-dark aside,
+    #app-shell.theme-dark main,
+    #app-shell.theme-dark section,
+    #app-shell.theme-dark table,
+    #app-shell.theme-dark thead,
+    #app-shell.theme-dark tbody,
+    #app-shell.theme-dark tr,
+    #app-shell.theme-dark input,
+    #app-shell.theme-dark select,
+    #app-shell.theme-dark textarea {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    #app-shell.theme-dark .bg-zinc-950,
+    #app-shell.theme-dark .bg-zinc-950\/70,
+    #app-shell.theme-dark .bg-zinc-950\/80,
+    #app-shell.theme-dark .bg-zinc-950\/60,
+    #app-shell.theme-dark .bg-zinc-950\/90,
+    #app-shell.theme-dark .bg-zinc-950\/50,
+    #app-shell.theme-dark .bg-zinc-900,
+    #app-shell.theme-dark .bg-zinc-900\/90,
+    #app-shell.theme-dark .bg-zinc-800,
+    #app-shell.theme-dark .bg-zinc-800\/90,
+    #app-shell.theme-dark .bg-zinc-100,
+    #app-shell.theme-dark .bg-white,
+    #app-shell.theme-dark .bg-white\/95,
+    #app-shell.theme-dark .bg-stone-100,
+    #app-shell.theme-dark .bg-rose-50 {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    /* Radio buttons de Método de Pago en modo oscuro */
+    #app-shell.theme-dark input[type="radio"].peer + div {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    #app-shell.theme-dark input[type="radio"].peer:checked + div {
+      background-color: #38bdf8 !important;
+      color: #000000 !important;
+      border-color: #0284c7 !important;
+    }
+    #app-shell.theme-dark input[type="radio"].peer:checked + div span,
+    #app-shell.theme-dark input[type="radio"].peer:checked + div i {
+      color: #000000 !important;
+    }
+
+    #app-shell.theme-dark .border-zinc-800,
+    #app-shell.theme-dark .border-zinc-800\/80,
+    #app-shell.theme-dark .border-zinc-800\/60,
+    #app-shell.theme-dark .border-zinc-700,
+    #app-shell.theme-dark .border-zinc-700\/70,
+    #app-shell.theme-dark .border-zinc-200,
+    #app-shell.theme-dark .border-rose-200,
+    #app-shell.theme-dark .border-amber-800\/40,
+    #app-shell.theme-dark .border-emerald-800\/40 {
+      border-color: #27272a !important;
+    }
+
+    #app-shell.theme-dark .divide-zinc-800 > :not([hidden]) ~ :not([hidden]),
+    #app-shell.theme-dark .divide-zinc-800\/80 > :not([hidden]) ~ :not([hidden]) {
+      border-color: #27272a !important;
+    }
+
+    /* TODOS los textos en blanco en modo oscuro */
+    #app-shell.theme-dark,
+    #app-shell.theme-dark p,
+    #app-shell.theme-dark span,
+    #app-shell.theme-dark h1,
+    #app-shell.theme-dark h2,
+    #app-shell.theme-dark h3,
+    #app-shell.theme-dark label,
+    #app-shell.theme-dark th,
+    #app-shell.theme-dark td,
+    #app-shell.theme-dark strong,
+    #app-shell.theme-dark .text-white,
+    #app-shell.theme-dark .text-zinc-100,
+    #app-shell.theme-dark .text-zinc-200,
+    #app-shell.theme-dark .text-zinc-300,
+    #app-shell.theme-dark .text-zinc-400,
+    #app-shell.theme-dark .text-zinc-500,
+    #app-shell.theme-dark .text-zinc-700,
+    #app-shell.theme-dark .text-zinc-800,
+    #app-shell.theme-dark .text-zinc-900,
+    #app-shell.theme-dark .text-zinc-950,
+    #app-shell.theme-dark .text-rose-400,
+    #app-shell.theme-dark .text-rose-300,
+    #app-shell.theme-dark .text-emerald-400,
+    #app-shell.theme-dark .text-emerald-300,
+    #app-shell.theme-dark .text-amber-400,
+    #app-shell.theme-dark .text-amber-300,
+    #app-shell.theme-dark .text-sky-300,
+    #app-shell.theme-dark .text-violet-300 {
+      color: #ffffff !important;
+    }
+
+    #app-shell.theme-dark .placeholder-zinc-500::placeholder,
+    #app-shell.theme-dark input::placeholder {
+      color: #a1a1aa !important;
+    }
+
+    /* Modales en modo oscuro (todo negro puro + texto blanco) */
+    body.app-theme-dark #edit-user-perms-modal > div,
+    body.app-theme-dark #edit-product-modal > div,
+    body.app-theme-dark #confirm-delete-modal > div {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-950,
+    body.app-theme-dark #edit-product-modal .bg-zinc-950,
+    body.app-theme-dark #edit-product-modal .bg-zinc-950\/70,
+    body.app-theme-dark #confirm-delete-modal .bg-zinc-950,
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-900,
+    body.app-theme-dark #edit-product-modal .bg-zinc-900,
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-800,
+    body.app-theme-dark #edit-product-modal .bg-zinc-800,
+    body.app-theme-dark #confirm-delete-modal .bg-zinc-800,
+    body.app-theme-dark #edit-product-modal input {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    body.app-theme-dark #edit-user-perms-modal p,
+    body.app-theme-dark #edit-user-perms-modal span,
+    body.app-theme-dark #edit-user-perms-modal h3,
+    body.app-theme-dark #edit-product-modal p,
+    body.app-theme-dark #edit-product-modal span,
+    body.app-theme-dark #edit-product-modal h3,
+    body.app-theme-dark #edit-product-modal label,
+    body.app-theme-dark #confirm-delete-modal p,
+    body.app-theme-dark #confirm-delete-modal span,
+    body.app-theme-dark #confirm-delete-modal h3 {
+      color: #ffffff !important;
+    }
+
+
+    /* =========================================================================
+       3. TODOS LOS BOTONES FUNCIONALES EN CELESTE VIVO (IGUAL EN CLARO Y OSCURO)
+       ========================================================================= */
+    #app-shell button,
+    #edit-user-perms-modal button,
+    #edit-product-modal button,
+    #confirm-delete-modal button,
+    #receipt-modal .no-print button,
+    #kardex-modal .no-print button {
+      background-color: #38bdf8 !important; /* Celeste vivo (Sky 400) */
+      border-color: #0284c7 !important;
+      color: #000000 !important;
+      opacity: 1 !important;
+    }
+
+    #app-shell button:hover:not(:disabled),
+    #edit-user-perms-modal button:hover:not(:disabled),
+    #edit-product-modal button:hover:not(:disabled),
+    #confirm-delete-modal button:hover:not(:disabled),
+    #receipt-modal .no-print button:hover:not(:disabled),
+    #kardex-modal .no-print button:hover:not(:disabled) {
+      background-color: #0ea5e9 !important; /* Celeste intenso al pasar cursor (Sky 500) */
+      border-color: #0369a1 !important;
+      color: #000000 !important;
+    }
+
+    /* Pestaña activa en el menú lateral resaltada con borde/celeste más intenso */
+    #app-shell button.nav-item.nav-active-tab {
+      background-color: #0ea5e9 !important;
+      border: 2px solid #0369a1 !important;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35) !important;
+    }
+
+    /* Botones deshabilitados (sin stock) */
+    #app-shell button:disabled {
+      background-color: #bae6fd !important;
+      border-color: #7dd3fc !important;
+      color: #334155 !important;
+      opacity: 0.65 !important;
+      cursor: not-allowed !important;
+    }
+
+    /* Texto e íconos dentro de los botones en contraste negro nítido en ambos modos */
+    #app-shell.theme-light button,
+    #app-shell.theme-light button span,
+    #app-shell.theme-light button i,
+    #app-shell.theme-dark button,
+    #app-shell.theme-dark button span,
+    #app-shell.theme-dark button i,
+    #edit-user-perms-modal button,
+    #edit-user-perms-modal button span,
+    #edit-user-perms-modal button i,
+    #edit-product-modal button,
+    #edit-product-modal button span,
+    #edit-product-modal button i,
+    #confirm-delete-modal button,
+    #confirm-delete-modal button span,
+    #confirm-delete-modal button i,
+    #receipt-modal .no-print button,
+    #receipt-modal .no-print button span,
+    #receipt-modal .no-print button i,
+    #kardex-modal .no-print button,
+    #kardex-modal .no-print button span,
+    #kardex-modal .no-print button i {
+      color: #000000 !important;
+    }
+
+    /* Badges internos de contador dentro de botones de navegación */
+    #app-shell.theme-light button .rounded-full,
+    #app-shell.theme-dark button .rounded-full {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #0284c7 !important;
     }
 
     /* Animaciones suaves */
@@ -1036,7 +1278,7 @@
 
                 <div class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-3 text-[11px] text-zinc-400 flex items-center gap-2.5">
                   <i class="fa-solid fa-wand-magic-sparkles text-rose-400 shrink-0"></i>
-                  <span>En modo claro los botones principales mantienen contraste oscuro o acento rojo para distinguirse con claridad.</span>
+                  <span>Tanto en modo claro como en modo oscuro, todos los botones de acción mantienen un tono celeste vivo uniforme.</span>
                 </div>
               </div>
 
@@ -1579,8 +1821,10 @@
 
       if (appShell) {
         appShell.classList.toggle('theme-light', isLight);
+        appShell.classList.toggle('theme-dark', !isLight);
       }
       document.body.classList.toggle('app-theme-light', isLight);
+      document.body.classList.toggle('app-theme-dark', !isLight);
 
       const darkBtn = document.getElementById('btn-theme-dark');
       const lightBtn = document.getElementById('btn-theme-light');
@@ -1588,11 +1832,11 @@
 
       if (darkBtn && lightBtn) {
         if (!isLight) {
-          darkBtn.className = "py-3.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border-2 border-rose-500 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md";
-          lightBtn.className = "py-3.5 px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 border-2 border-zinc-300 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5";
+          darkBtn.className = "py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md ring-2 ring-white";
+          lightBtn.className = "py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5";
         } else {
-          darkBtn.className = "py-3.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border-2 border-zinc-900 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-sm";
-          lightBtn.className = "py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-600 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md";
+          darkBtn.className = "py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5";
+          lightBtn.className = "py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md ring-2 ring-black";
         }
       }
 
@@ -1844,6 +2088,7 @@
     }
 
     function showLogin() {
+      document.body.classList.remove('app-theme-light', 'app-theme-dark');
       document.getElementById('login-screen').classList.remove('hidden');
       document.getElementById('app-shell').classList.add('hidden');
       document.getElementById('app-shell').classList.remove('flex');
@@ -2275,7 +2520,7 @@
           viewEl.classList.toggle('hidden', v !== tabName);
         }
         if (btnEl) {
-          btnEl.classList.remove('bg-zinc-950', 'text-white', 'bg-white', 'text-zinc-950');
+          btnEl.classList.remove('bg-zinc-950', 'text-white', 'bg-white', 'text-zinc-950', 'nav-active-tab');
           btnEl.classList.add('text-zinc-700', 'hover:bg-zinc-100', 'hover:text-zinc-950');
         }
       });
@@ -2283,7 +2528,7 @@
       const activeBtn = document.getElementById(`tab-btn-${tabName}`);
       if (activeBtn) {
         activeBtn.classList.remove('text-zinc-700', 'hover:bg-zinc-100', 'hover:text-zinc-950', 'text-zinc-300', 'hover:bg-zinc-900', 'hover:text-white');
-        activeBtn.classList.add('bg-zinc-950', 'text-white');
+        activeBtn.classList.add('bg-zinc-950', 'text-white', 'nav-active-tab');
       }
 
       if (tabName === 'billing') {
