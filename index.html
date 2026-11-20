@@ -99,6 +99,162 @@
       }
     }
 
+    /* Tema Claro para la aplicación post-login (mantiene #login-screen intacto) */
+    #app-shell.theme-light,
+    #app-shell.theme-light > div,
+    #app-shell.theme-light main {
+      background-color: #ffffff !important;
+      color: #18181b !important;
+    }
+
+    #app-shell.theme-light .bg-zinc-950 {
+      background-color: #ffffff !important;
+      color: #18181b !important;
+    }
+    #app-shell.theme-light .bg-zinc-950\/70,
+    #app-shell.theme-light .bg-zinc-950\/80,
+    #app-shell.theme-light .bg-zinc-950\/60,
+    #app-shell.theme-light .bg-zinc-950\/90,
+    #app-shell.theme-light .bg-zinc-950\/50 {
+      background-color: #f8fafc !important;
+      color: #18181b !important;
+    }
+
+    #app-shell.theme-light .bg-zinc-900,
+    #app-shell.theme-light .bg-zinc-900\/90 {
+      background-color: #ffffff !important;
+      color: #18181b !important;
+    }
+
+    #app-shell.theme-light .bg-zinc-800,
+    #app-shell.theme-light .bg-zinc-800\/90 {
+      background-color: #f1f5f9 !important;
+      color: #18181b !important;
+    }
+
+    #app-shell.theme-light .border-zinc-800,
+    #app-shell.theme-light .border-zinc-800\/80,
+    #app-shell.theme-light .border-zinc-800\/60,
+    #app-shell.theme-light .border-zinc-700,
+    #app-shell.theme-light .border-zinc-700\/70 {
+      border-color: #e2e8f0 !important;
+    }
+
+    #app-shell.theme-light .divide-zinc-800 > :not([hidden]) ~ :not([hidden]),
+    #app-shell.theme-light .divide-zinc-800\/80 > :not([hidden]) ~ :not([hidden]) {
+      border-color: #e2e8f0 !important;
+    }
+
+    #app-shell.theme-light .text-white {
+      color: #09090b !important;
+    }
+    #app-shell.theme-light .text-zinc-100,
+    #app-shell.theme-light .text-zinc-200 {
+      color: #18181b !important;
+    }
+    #app-shell.theme-light .text-zinc-300 {
+      color: #334155 !important;
+    }
+    #app-shell.theme-light .text-zinc-400 {
+      color: #64748b !important;
+    }
+    #app-shell.theme-light .text-zinc-500 {
+      color: #64748b !important;
+    }
+
+    #app-shell.theme-light .placeholder-zinc-500::placeholder {
+      color: #94a3b8 !important;
+    }
+
+    /* Botones contrastados en modo claro para distinguirlos con claridad */
+    #app-shell.theme-light .theme-action-btn {
+      background-color: #09090b !important;
+      color: #ffffff !important;
+      border-color: #09090b !important;
+    }
+    #app-shell.theme-light .theme-action-btn:hover {
+      background-color: #e11d48 !important;
+      color: #ffffff !important;
+      border-color: #e11d48 !important;
+    }
+
+    /* Badges en modo claro */
+    #app-shell.theme-light .bg-emerald-950\/80 {
+      background-color: #dcfce7 !important;
+      border-color: #86efac !important;
+    }
+    #app-shell.theme-light .text-emerald-300,
+    #app-shell.theme-light .text-emerald-400 {
+      color: #15803d !important;
+    }
+    #app-shell.theme-light .bg-amber-950\/80 {
+      background-color: #fef3c7 !important;
+      border-color: #fcd34d !important;
+    }
+    #app-shell.theme-light .text-amber-300,
+    #app-shell.theme-light .text-amber-400 {
+      color: #b45309 !important;
+    }
+    #app-shell.theme-light .bg-rose-950\/80,
+    #app-shell.theme-light .bg-rose-950\/70 {
+      background-color: #ffe4e6 !important;
+      border-color: #fda4af !important;
+    }
+    #app-shell.theme-light .text-rose-300,
+    #app-shell.theme-light .text-rose-400 {
+      color: #be123c !important;
+    }
+    #app-shell.theme-light .bg-sky-950\/80 {
+      background-color: #e0f2fe !important;
+      border-color: #7dd3fc !important;
+    }
+    #app-shell.theme-light .text-sky-300 {
+      color: #0369a1 !important;
+    }
+    #app-shell.theme-light .bg-violet-950\/80 {
+      background-color: #ede9fe !important;
+      border-color: #c4b5fd !important;
+    }
+    #app-shell.theme-light .text-violet-300 {
+      color: #6d28d9 !important;
+    }
+
+    /* Modales oscuros de edición/permisos en modo claro */
+    body.app-theme-light #edit-user-perms-modal > div,
+    body.app-theme-light #edit-product-modal > div,
+    body.app-theme-light #confirm-delete-modal > div {
+      background-color: #ffffff !important;
+      color: #18181b !important;
+      border-color: #e2e8f0 !important;
+    }
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-950,
+    body.app-theme-light #edit-product-modal .bg-zinc-950,
+    body.app-theme-light #edit-product-modal .bg-zinc-950\/70,
+    body.app-theme-light #confirm-delete-modal .bg-zinc-950 {
+      background-color: #f8fafc !important;
+      color: #18181b !important;
+      border-color: #e2e8f0 !important;
+    }
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-800,
+    body.app-theme-light #edit-product-modal .bg-zinc-800,
+    body.app-theme-light #confirm-delete-modal .bg-zinc-800 {
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+    }
+    body.app-theme-light #edit-user-perms-modal .text-white,
+    body.app-theme-light #edit-product-modal .text-white,
+    body.app-theme-light #confirm-delete-modal .text-white,
+    body.app-theme-light #edit-user-perms-modal .text-zinc-200,
+    body.app-theme-light #edit-product-modal .text-zinc-200,
+    body.app-theme-light #confirm-delete-modal .text-zinc-200 {
+      color: #0f172a !important;
+    }
+    body.app-theme-light #edit-user-perms-modal .text-zinc-400,
+    body.app-theme-light #edit-product-modal .text-zinc-400,
+    body.app-theme-light #confirm-delete-modal .text-zinc-400 {
+      color: #64748b !important;
+    }
+
     /* Animaciones suaves */
     .fade-in {
       animation: fadeIn 0.22s ease-out;
@@ -182,13 +338,13 @@
     </div>
   </section>
 
-  <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN) - COLORES INVERTIDOS (FONDO OSCURO / TARJETAS Y BOTONES PRINCIPALES CLAROS) -->
+  <!-- 2. APLICACIÓN PRINCIPAL (POST-LOGIN) -->
   <div id="app-shell" class="hidden flex-col min-h-screen bg-zinc-950 text-zinc-100 selection:bg-rose-900/60 selection:text-rose-100">
 
     <!-- Fondo oscuro para menú lateral en móvil -->
     <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/75 backdrop-blur-[2px] z-40 hidden lg:hidden"></div>
 
-    <!-- Barra Superior Invertida -->
+    <!-- Barra Superior -->
     <header class="bg-white/95 backdrop-blur-md text-zinc-900 sticky top-0 z-30 border-b border-zinc-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         <!-- Izquierda: Botón Menú + Silueta Deportiva + Marca -->
@@ -260,7 +416,7 @@
             </div>
           </div>
 
-          <!-- Opciones de Navegación Separadas (controladas por permisos granulares) -->
+          <!-- Opciones de Navegación Separadas -->
           <nav class="space-y-1">
             <button type="button" id="tab-btn-inventory" onclick="switchTab('inventory')"
               class="nav-item perm-inventory w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left bg-zinc-950 text-white">
@@ -311,6 +467,14 @@
                 <span>Gestión de Perfiles</span>
               </span>
             </button>
+
+            <button type="button" id="tab-btn-settings" onclick="switchTab('settings')"
+              class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-gear w-4 text-center text-rose-600"></i>
+                <span>Configuración</span>
+              </span>
+            </button>
           </nav>
         </div>
 
@@ -359,7 +523,7 @@
             </div>
 
             <div id="kardex-action-card" class="perm-kardex bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex flex-col justify-center">
-              <button type="button" onclick="openKardexModal()" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+              <button type="button" onclick="openKardexModal()" class="theme-action-btn w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider border border-zinc-300">
                 <i class="fa-solid fa-print text-sm"></i>
                 <span>Hoja de Kardex</span>
               </button>
@@ -424,7 +588,7 @@
                     <div id="new-prod-colors-container" class="space-y-2"></div>
                   </div>
 
-                  <button type="submit" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm mt-2">
+                  <button type="submit" class="theme-action-btn w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm mt-2 border border-zinc-300">
                     <i class="fa-solid fa-floppy-disk text-xs"></i>
                     <span>Guardar en Inventario</span>
                   </button>
@@ -569,14 +733,14 @@
                   <div class="grid grid-cols-2 gap-3">
                     <label class="cursor-pointer">
                       <input type="radio" name="payment-method" value="Efectivo" checked class="peer sr-only" />
-                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-white peer-checked:bg-white flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-zinc-950 transition">
+                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-rose-500 peer-checked:bg-zinc-900 flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-white transition">
                         <i class="fa-solid fa-money-bill-wave text-emerald-500"></i>
                         <span>Efectivo</span>
                       </div>
                     </label>
                     <label class="cursor-pointer">
                       <input type="radio" name="payment-method" value="Transferencia" class="peer sr-only" />
-                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-white peer-checked:bg-white flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-zinc-950 transition">
+                      <div class="p-3 rounded-xl border border-zinc-700 bg-zinc-950 peer-checked:border-rose-500 peer-checked:bg-zinc-900 flex items-center justify-center gap-2 font-bold text-xs text-zinc-300 peer-checked:text-white transition">
                         <i class="fa-solid fa-building-columns text-sky-500"></i>
                         <span>Transferencia</span>
                       </div>
@@ -824,6 +988,105 @@
           </div>
         </div>
 
+        <!-- PESTAÑA CONFIGURACIÓN (TEMA Y PERFIL) -->
+        <div id="view-settings" class="hidden fade-in space-y-6">
+          <div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-zinc-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-950/70 text-rose-400 flex items-center justify-center text-base">
+                  <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div>
+                  <h2 class="text-base font-extrabold text-white">Configuración del Sistema</h2>
+                  <p class="text-xs text-zinc-400">Ajustes rápidos de apariencia y consulta de tu perfil activo</p>
+                </div>
+              </div>
+              <span id="settings-theme-badge" class="text-xs font-bold bg-zinc-800 text-zinc-200 px-3 py-1.5 rounded-full border border-zinc-700">
+                Modo actual: Oscuro
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Tarjeta 1: Modo Oscuro y Modo Claro -->
+              <div class="bg-zinc-950/70 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between space-y-5">
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-rose-400">Apariencia de la Aplicación</span>
+                    <i class="fa-solid fa-circle-half-stroke text-zinc-400"></i>
+                  </div>
+                  <h3 class="text-lg font-extrabold text-white">Modo Oscuro y Modo Claro</h3>
+                  <p class="text-xs text-zinc-400 leading-relaxed">
+                    Cambia directamente el fondo y las tarjetas de la aplicación entre modo oscuro y modo claro. La pantalla de inicio de sesión permanece intacta.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <button type="button" id="btn-theme-dark" onclick="setAppTheme('dark')"
+                    class="py-3.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border-2 border-zinc-700 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-sm">
+                    <i class="fa-solid fa-moon text-amber-400 text-sm"></i>
+                    <span>Modo Oscuro</span>
+                  </button>
+
+                  <button type="button" id="btn-theme-light" onclick="setAppTheme('light')"
+                    class="py-3.5 px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 border-2 border-zinc-300 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-sm">
+                    <i class="fa-solid fa-sun text-amber-500 text-sm"></i>
+                    <span>Modo Claro</span>
+                  </button>
+                </div>
+
+                <div class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-3 text-[11px] text-zinc-400 flex items-center gap-2.5">
+                  <i class="fa-solid fa-wand-magic-sparkles text-rose-400 shrink-0"></i>
+                  <span>En modo claro los botones principales mantienen contraste oscuro o acento rojo para distinguirse con claridad.</span>
+                </div>
+              </div>
+
+              <!-- Tarjeta 2: Botón y Panel de Información del Perfil -->
+              <div class="bg-zinc-950/70 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between space-y-5">
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-rose-400">Cuenta y Accesos</span>
+                    <i class="fa-solid fa-id-badge text-zinc-400"></i>
+                  </div>
+                  <h3 class="text-lg font-extrabold text-white">Información del Perfil</h3>
+                  <p class="text-xs text-zinc-400 leading-relaxed">
+                    Consulta tu nombre de usuario, tu tipo de cuenta y las ventanas o cargos que tienes habilitados actualmente.
+                  </p>
+                </div>
+
+                <div>
+                  <button type="button" id="btn-toggle-profile-info" onclick="toggleProfileInfoPanel()"
+                    class="theme-action-btn w-full py-3.5 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-extrabold rounded-xl transition flex items-center justify-between text-xs uppercase tracking-wider border border-zinc-300">
+                    <span class="flex items-center gap-2.5">
+                      <i class="fa-solid fa-user-shield text-sm"></i>
+                      <span>Información del Perfil</span>
+                    </span>
+                    <span id="profile-info-toggle-label" class="text-[11px] font-bold opacity-80">Ocultar detalles</span>
+                  </button>
+                </div>
+
+                <div id="profile-info-panel" class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+                  <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-zinc-800">
+                    <div>
+                      <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">Nombre de Usuario</span>
+                      <p id="settings-profile-username" class="text-sm font-extrabold text-white mt-0.5">-</p>
+                    </div>
+                    <span id="settings-profile-role-badge" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-rose-600 text-white">
+                      -
+                    </span>
+                  </div>
+
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">Ventanas y Cargos Habilitados</span>
+                    <div id="settings-profile-access-list" class="flex flex-wrap gap-1.5">
+                      <!-- Generado dinámicamente según permisos -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- PESTAÑA E: GESTIÓN DE PERFILES Y PERMISOS (SOLO PERFIL PRINCIPAL) -->
         <div id="view-users" class="owner-only hidden fade-in">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -905,7 +1168,7 @@
                     </p>
                   </div>
 
-                  <button type="submit" class="w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm">
+                  <button type="submit" class="theme-action-btn w-full py-3 px-4 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white font-bold rounded-xl transition flex items-center justify-center gap-2 text-sm border border-zinc-300">
                     <i class="fa-solid fa-user-check text-xs"></i>
                     <span>Guardar Perfil</span>
                   </button>
@@ -1004,7 +1267,7 @@
           <button type="button" onclick="closeUserPermsModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
             Cancelar
           </button>
-          <button type="submit" class="px-4 py-2.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-xl transition">
+          <button type="submit" class="px-4 py-2.5 bg-zinc-950 hover:bg-rose-600 text-white text-xs font-bold rounded-xl transition">
             Guardar Permisos
           </button>
         </div>
@@ -1065,7 +1328,7 @@
           <button type="button" onclick="closeEditProductModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
             Cancelar
           </button>
-          <button type="submit" class="px-4 py-2.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-xl transition">
+          <button type="submit" class="px-4 py-2.5 bg-zinc-950 hover:bg-rose-600 text-white text-xs font-bold rounded-xl transition">
             Guardar Cambios
           </button>
         </div>
@@ -1244,6 +1507,7 @@
   <!-- LÓGICA JAVASCRIPT DE LA APLICACIÓN -->
   <script>
     const STORAGE_KEY = 'alvir_moto_store_v3';
+    const THEME_STORAGE_KEY = 'alvir_moto_store_theme_v1';
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9Zc2S-HQK42JTnOvYs4mwVvkTXcT-3Fo",
@@ -1285,6 +1549,8 @@
 
     const DEFAULT_INVENTORY = [];
 
+    let currentAppTheme = 'dark';
+    let profileInfoExpanded = true;
     let currentUser = null;
     let appData = {
       users: [PRIMARY_ADMIN],
@@ -1294,6 +1560,111 @@
     let cart = [];
     let openActionMenuId = null;
     let pendingDeleteId = null;
+
+    function loadSavedTheme() {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      currentAppTheme = (saved === 'light') ? 'light' : 'dark';
+      applyAppTheme(currentAppTheme, false);
+    }
+
+    function setAppTheme(themeName) {
+      currentAppTheme = (themeName === 'light') ? 'light' : 'dark';
+      localStorage.setItem(THEME_STORAGE_KEY, currentAppTheme);
+      applyAppTheme(currentAppTheme, true);
+    }
+
+    function applyAppTheme(themeName, notify = false) {
+      const appShell = document.getElementById('app-shell');
+      const isLight = themeName === 'light';
+
+      if (appShell) {
+        appShell.classList.toggle('theme-light', isLight);
+      }
+      document.body.classList.toggle('app-theme-light', isLight);
+
+      const darkBtn = document.getElementById('btn-theme-dark');
+      const lightBtn = document.getElementById('btn-theme-light');
+      const badge = document.getElementById('settings-theme-badge');
+
+      if (darkBtn && lightBtn) {
+        if (!isLight) {
+          darkBtn.className = "py-3.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border-2 border-rose-500 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md";
+          lightBtn.className = "py-3.5 px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 border-2 border-zinc-300 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5";
+        } else {
+          darkBtn.className = "py-3.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border-2 border-zinc-900 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-sm";
+          lightBtn.className = "py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-600 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-md";
+        }
+      }
+
+      if (badge) {
+        badge.textContent = isLight ? 'Modo actual: Claro' : 'Modo actual: Oscuro';
+      }
+
+      if (notify) {
+        showToast(isLight ? 'Modo claro activado en la aplicación.' : 'Modo oscuro activado en la aplicación.', 'info');
+      }
+    }
+
+    function toggleProfileInfoPanel() {
+      profileInfoExpanded = !profileInfoExpanded;
+      renderProfileInfoPanel();
+    }
+
+    function renderProfileInfoPanel() {
+      if (!currentUser) return;
+      const usernameEl = document.getElementById('settings-profile-username');
+      const roleBadgeEl = document.getElementById('settings-profile-role-badge');
+      const listEl = document.getElementById('settings-profile-access-list');
+      const panelEl = document.getElementById('profile-info-panel');
+      const toggleLabelEl = document.getElementById('profile-info-toggle-label');
+
+      if (panelEl) {
+        panelEl.classList.toggle('hidden', !profileInfoExpanded);
+      }
+      if (toggleLabelEl) {
+        toggleLabelEl.textContent = profileInfoExpanded ? 'Ocultar detalles' : 'Ver detalles';
+      }
+
+      if (usernameEl) {
+        usernameEl.textContent = currentUser.username;
+      }
+
+      const perms = currentUser.permissions || {};
+      const isOwner = Boolean(currentUser.isOwner);
+
+      if (roleBadgeEl) {
+        if (isOwner) {
+          roleBadgeEl.textContent = 'Administrador Principal';
+          roleBadgeEl.className = "text-[11px] font-bold px-2.5 py-1 rounded-full bg-rose-600 text-white";
+        } else {
+          const hasExtra = perms.inventory || perms.kardex || perms.history || perms.reports || perms.earnings;
+          roleBadgeEl.textContent = hasExtra ? 'Vendedor con Accesos' : 'Vendedor';
+          roleBadgeEl.className = "text-[11px] font-bold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-100 border border-zinc-700";
+        }
+      }
+
+      if (!listEl) return;
+
+      const enabledItems = [];
+      if (isOwner) {
+        enabledItems.push({ label: 'Administrador Principal (Acceso Total)', icon: 'fa-crown', cls: 'bg-rose-600 text-white border-rose-600' });
+        enabledItems.push({ label: 'Crear y Administrar Perfiles', icon: 'fa-users-gear', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
+      }
+      enabledItems.push({ label: 'Emisión de Recibos', icon: 'fa-receipt', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
+      if (perms.inventory) enabledItems.push({ label: 'Acceso a Inventario', icon: 'fa-boxes-stacked', cls: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/50' });
+      if (perms.kardex) enabledItems.push({ label: 'Hoja de Kardex', icon: 'fa-file-lines', cls: 'bg-amber-950/80 text-amber-300 border-amber-800/50' });
+      if (perms.history) enabledItems.push({ label: 'Historial de Recibos', icon: 'fa-clock-rotate-left', cls: 'bg-sky-950/80 text-sky-300 border-sky-800/50' });
+      if (perms.reports) enabledItems.push({ label: 'Reportes de Ventas', icon: 'fa-chart-line', cls: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/50' });
+      if (perms.earnings) enabledItems.push({ label: 'Ganancias y Recuperación', icon: 'fa-coins', cls: 'bg-violet-950/80 text-violet-300 border-violet-800/50' });
+      enabledItems.push({ label: 'Configuración', icon: 'fa-gear', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
+
+      listEl.innerHTML = enabledItems.map(item => `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${item.cls}">
+          <i class="fa-solid ${item.icon} text-[11px]"></i>
+          <span>${escapeHTML(item.label)}</span>
+        </span>
+      `).join('');
+    }
 
     function normalizePermissions(user) {
       const isPrimary = user && user.username && user.username.toLowerCase() === PRIMARY_ADMIN.username.toLowerCase();
@@ -1395,6 +1766,7 @@
             renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
             renderHistoryTable();
             renderUsersTable();
+            renderProfileInfoPanel();
             renderSalesReports();
             renderEarningsReport();
           }
@@ -1418,6 +1790,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      loadSavedTheme();
       loadAppData();
       checkSession();
       setupEventListeners();
@@ -1534,6 +1907,7 @@
       document.getElementById('app-shell').classList.remove('hidden');
       document.getElementById('app-shell').classList.add('flex');
 
+      applyAppTheme(currentAppTheme, false);
       applyUserAccessControls();
 
       renderInventoryTable();
@@ -1541,6 +1915,7 @@
       renderCart();
       renderHistoryTable();
       renderUsersTable();
+      renderProfileInfoPanel();
       renderSalesReports();
       renderEarningsReport();
       updateDashboardStats();
@@ -1676,7 +2051,6 @@
         }
       });
 
-      // Añadir Producto con precio costo, precio venta, unidades y desglose opcional de colores
       document.getElementById('add-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.permissions?.inventory) return;
@@ -1727,7 +2101,6 @@
         showToast('Producto guardado en el inventario.', 'success');
       });
 
-      // Guardar edición de producto
       document.getElementById('edit-product-form').addEventListener('submit', (e) => {
         e.preventDefault();
         if (!currentUser?.permissions?.inventory) return;
@@ -1880,7 +2253,7 @@
 
     function canAccessTab(tabName) {
       if (!currentUser) return false;
-      if (tabName === 'billing') return true;
+      if (tabName === 'billing' || tabName === 'settings') return true;
       if (tabName === 'users') return Boolean(currentUser.isOwner);
       if (tabName === 'inventory') return Boolean(currentUser.permissions?.inventory);
       if (tabName === 'history') return Boolean(currentUser.permissions?.history);
@@ -1894,7 +2267,7 @@
         tabName = getDefaultTabForUser();
       }
 
-      const views = ['inventory', 'billing', 'history', 'reports', 'earnings', 'users'];
+      const views = ['inventory', 'billing', 'history', 'reports', 'earnings', 'settings', 'users'];
       views.forEach(v => {
         const viewEl = document.getElementById(`view-${v}`);
         const btnEl = document.getElementById(`tab-btn-${v}`);
@@ -1921,6 +2294,9 @@
         renderSalesReports();
       } else if (tabName === 'earnings') {
         renderEarningsReport();
+      } else if (tabName === 'settings') {
+        renderProfileInfoPanel();
+        applyAppTheme(currentAppTheme, false);
       } else if (tabName === 'users') {
         renderUsersTable();
       }
@@ -2000,7 +2376,7 @@
               <button type="button" onclick="toggleProductActionMenu('${item.id}', event)"
                 class="inline-flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition ${
                   isMenuOpen
-                    ? 'bg-white text-zinc-950 border-white'
+                    ? 'bg-zinc-950 text-white border-zinc-950'
                     : 'bg-zinc-950 hover:bg-zinc-800 text-zinc-200 border-zinc-700'
                 }">
                 <span>Acciones</span>
@@ -2110,7 +2486,6 @@
       document.getElementById('confirm-delete-modal').classList.add('hidden');
     }
 
-    // Hoja de Kardex: solo detalle (nombre, número de serie y unidades) sin precios
     function openKardexModal() {
       if (!currentUser?.permissions?.inventory || !currentUser?.permissions?.kardex) {
         showToast('No tienes permiso para abrir la Hoja de Kardex.', 'error');
@@ -2175,7 +2550,7 @@
         const perms = normalizePermissions(user);
 
         const roleBadge = isPrimary
-          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-white text-zinc-950 mb-1"><i class="fa-solid fa-crown text-rose-600"></i> Principal (Total)</span>`
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-zinc-950 text-white mb-1"><i class="fa-solid fa-crown text-rose-500"></i> Principal (Total)</span>`
           : formatPermissionChips(perms);
 
         const tr = document.createElement('tr');
@@ -2188,7 +2563,7 @@
             ${isPrimary
               ? `<span class="text-xs text-zinc-500 italic">Dueño</span>`
               : `<div class="inline-flex items-center gap-1.5">
-                   <button type="button" onclick="openUserPermsModal('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-zinc-800 hover:bg-white text-zinc-200 hover:text-zinc-950 rounded-lg text-xs font-semibold transition">
+                   <button type="button" onclick="openUserPermsModal('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-950 text-zinc-200 hover:text-white rounded-lg text-xs font-semibold transition">
                      <i class="fa-solid fa-sliders mr-1"></i>Permisos
                    </button>
                    <button type="button" onclick="deleteUser('${escapeHTML(user.username)}')" class="px-2.5 py-1 bg-rose-950/70 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg text-xs font-semibold transition">
@@ -2233,7 +2608,6 @@
       showToast(`Perfil "${username}" eliminado.`, 'info');
     }
 
-    // Buscador de facturación: vacío por defecto hasta que se busque por nombre o serie
     function renderBillingProducts(filterText = '') {
       const container = document.getElementById('billing-product-list');
       const query = String(filterText || '').toLowerCase().trim();
@@ -2303,7 +2677,7 @@
             ${colorSelectorHtml}
           </div>
           <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
-            class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            class="theme-action-btn px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 border border-zinc-300 ${
               isOutOfStock
                 ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
                 : 'bg-white hover:bg-rose-600 text-zinc-950 hover:text-white'
@@ -2632,7 +3006,7 @@
           <td class="py-3.5 px-5">${payBadge}</td>
           <td class="py-3.5 px-5 text-right font-extrabold text-white">${formatCurrency(rec.total)}</td>
           <td class="py-3.5 px-5 text-right">
-            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition">
+            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300">
               <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
             </button>
           </td>
@@ -2856,7 +3230,7 @@
       const colors = {
         success: 'bg-emerald-600 text-white',
         error: 'bg-rose-600 text-white',
-        info: 'bg-white text-zinc-950'
+        info: 'bg-zinc-950 text-white border border-zinc-700'
       };
 
       const icons = {
