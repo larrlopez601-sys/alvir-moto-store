@@ -103,6 +103,7 @@
        1. MODO CLARO: TODO BLANCO PURO, TEXTOS EN NEGRO Y BOTONES EN CELESTE VIVO
        ========================================================================= */
     body.app-theme-light {
+      color-scheme: light;
       background-color: #ffffff !important;
       color: #000000 !important;
     }
@@ -124,20 +125,20 @@
       color: #000000 !important;
     }
 
-    #app-shell.theme-light .bg-zinc-950,
-    #app-shell.theme-light .bg-zinc-950\/70,
-    #app-shell.theme-light .bg-zinc-950\/80,
-    #app-shell.theme-light .bg-zinc-950\/60,
-    #app-shell.theme-light .bg-zinc-950\/90,
-    #app-shell.theme-light .bg-zinc-950\/50,
-    #app-shell.theme-light .bg-zinc-900,
-    #app-shell.theme-light .bg-zinc-900\/90,
-    #app-shell.theme-light .bg-zinc-800,
-    #app-shell.theme-light .bg-zinc-800\/90,
-    #app-shell.theme-light .bg-zinc-100,
-    #app-shell.theme-light .bg-white,
-    #app-shell.theme-light .bg-white\/95,
-    #app-shell.theme-light .bg-stone-100 {
+    #app-shell.theme-light .bg-zinc-950:not(button),
+    #app-shell.theme-light .bg-zinc-950\/70:not(button),
+    #app-shell.theme-light .bg-zinc-950\/80:not(button),
+    #app-shell.theme-light .bg-zinc-950\/60:not(button),
+    #app-shell.theme-light .bg-zinc-950\/90:not(button),
+    #app-shell.theme-light .bg-zinc-950\/50:not(button),
+    #app-shell.theme-light .bg-zinc-900:not(button),
+    #app-shell.theme-light .bg-zinc-900\/90:not(button),
+    #app-shell.theme-light .bg-zinc-800:not(button),
+    #app-shell.theme-light .bg-zinc-800\/90:not(button),
+    #app-shell.theme-light .bg-zinc-100:not(button),
+    #app-shell.theme-light .bg-white:not(button),
+    #app-shell.theme-light .bg-white\/95:not(button),
+    #app-shell.theme-light .bg-stone-100:not(button) {
       background-color: #ffffff !important;
       color: #000000 !important;
     }
@@ -160,14 +161,14 @@
       border-color: #0284c7 !important;
     }
 
-    #app-shell.theme-light .border-zinc-800,
-    #app-shell.theme-light .border-zinc-800\/80,
-    #app-shell.theme-light .border-zinc-800\/60,
-    #app-shell.theme-light .border-zinc-700,
-    #app-shell.theme-light .border-zinc-700\/70,
-    #app-shell.theme-light .border-zinc-200,
-    #app-shell.theme-light .border-amber-800\/40,
-    #app-shell.theme-light .border-emerald-800\/40 {
+    #app-shell.theme-light .border-zinc-800:not(button),
+    #app-shell.theme-light .border-zinc-800\/80:not(button),
+    #app-shell.theme-light .border-zinc-800\/60:not(button),
+    #app-shell.theme-light .border-zinc-700:not(button),
+    #app-shell.theme-light .border-zinc-700\/70:not(button),
+    #app-shell.theme-light .border-zinc-200:not(button),
+    #app-shell.theme-light .border-amber-800\/40:not(button),
+    #app-shell.theme-light .border-emerald-800\/40:not(button) {
       border-color: #d4d4d8 !important;
     }
 
@@ -244,15 +245,15 @@
       color: #000000 !important;
       border-color: #d4d4d8 !important;
     }
-    body.app-theme-light #edit-user-perms-modal .bg-zinc-950,
-    body.app-theme-light #edit-product-modal .bg-zinc-950,
-    body.app-theme-light #edit-product-modal .bg-zinc-950\/70,
-    body.app-theme-light #confirm-delete-modal .bg-zinc-950,
-    body.app-theme-light #edit-user-perms-modal .bg-zinc-900,
-    body.app-theme-light #edit-product-modal .bg-zinc-900,
-    body.app-theme-light #edit-user-perms-modal .bg-zinc-800,
-    body.app-theme-light #edit-product-modal .bg-zinc-800,
-    body.app-theme-light #confirm-delete-modal .bg-zinc-800,
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-product-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-product-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-light #confirm-delete-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-900:not(button),
+    body.app-theme-light #edit-product-modal .bg-zinc-900:not(button),
+    body.app-theme-light #edit-user-perms-modal .bg-zinc-800:not(button),
+    body.app-theme-light #edit-product-modal .bg-zinc-800:not(button),
+    body.app-theme-light #confirm-delete-modal .bg-zinc-800:not(button),
     body.app-theme-light #edit-product-modal input {
       background-color: #ffffff !important;
       color: #000000 !important;
@@ -273,9 +274,10 @@
 
 
     /* =========================================================================
-       2. MODO OSCURO: TODO ABSOLUTAMENTE NEGRO PURO, TEXTOS EN BLANCO
+       2. MODO OSCURO: FONDO OSCURO PURO, TEXTOS EN BLANCO Y BOTONES EN CELESTE
        ========================================================================= */
     body.app-theme-dark {
+      color-scheme: dark;
       background-color: #000000 !important;
       color: #ffffff !important;
     }
@@ -297,21 +299,21 @@
       color: #ffffff !important;
     }
 
-    #app-shell.theme-dark .bg-zinc-950,
-    #app-shell.theme-dark .bg-zinc-950\/70,
-    #app-shell.theme-dark .bg-zinc-950\/80,
-    #app-shell.theme-dark .bg-zinc-950\/60,
-    #app-shell.theme-dark .bg-zinc-950\/90,
-    #app-shell.theme-dark .bg-zinc-950\/50,
-    #app-shell.theme-dark .bg-zinc-900,
-    #app-shell.theme-dark .bg-zinc-900\/90,
-    #app-shell.theme-dark .bg-zinc-800,
-    #app-shell.theme-dark .bg-zinc-800\/90,
-    #app-shell.theme-dark .bg-zinc-100,
-    #app-shell.theme-dark .bg-white,
-    #app-shell.theme-dark .bg-white\/95,
-    #app-shell.theme-dark .bg-stone-100,
-    #app-shell.theme-dark .bg-rose-50 {
+    #app-shell.theme-dark .bg-zinc-950:not(button),
+    #app-shell.theme-dark .bg-zinc-950\/70:not(button),
+    #app-shell.theme-dark .bg-zinc-950\/80:not(button),
+    #app-shell.theme-dark .bg-zinc-950\/60:not(button),
+    #app-shell.theme-dark .bg-zinc-950\/90:not(button),
+    #app-shell.theme-dark .bg-zinc-950\/50:not(button),
+    #app-shell.theme-dark .bg-zinc-900:not(button),
+    #app-shell.theme-dark .bg-zinc-900\/90:not(button),
+    #app-shell.theme-dark .bg-zinc-800:not(button),
+    #app-shell.theme-dark .bg-zinc-800\/90:not(button),
+    #app-shell.theme-dark .bg-zinc-100:not(button),
+    #app-shell.theme-dark .bg-white:not(button),
+    #app-shell.theme-dark .bg-white\/95:not(button),
+    #app-shell.theme-dark .bg-stone-100:not(button),
+    #app-shell.theme-dark .bg-rose-50:not(button) {
       background-color: #000000 !important;
       color: #ffffff !important;
     }
@@ -323,24 +325,24 @@
       border-color: #27272a !important;
     }
     #app-shell.theme-dark input[type="radio"].peer:checked + div {
-      background-color: #38bdf8 !important;
-      color: #000000 !important;
-      border-color: #0284c7 !important;
+      background-color: #0ea5e9 !important;
+      color: #ffffff !important;
+      border-color: #38bdf8 !important;
     }
     #app-shell.theme-dark input[type="radio"].peer:checked + div span,
     #app-shell.theme-dark input[type="radio"].peer:checked + div i {
-      color: #000000 !important;
+      color: #ffffff !important;
     }
 
-    #app-shell.theme-dark .border-zinc-800,
-    #app-shell.theme-dark .border-zinc-800\/80,
-    #app-shell.theme-dark .border-zinc-800\/60,
-    #app-shell.theme-dark .border-zinc-700,
-    #app-shell.theme-dark .border-zinc-700\/70,
-    #app-shell.theme-dark .border-zinc-200,
-    #app-shell.theme-dark .border-rose-200,
-    #app-shell.theme-dark .border-amber-800\/40,
-    #app-shell.theme-dark .border-emerald-800\/40 {
+    #app-shell.theme-dark .border-zinc-800:not(button),
+    #app-shell.theme-dark .border-zinc-800\/80:not(button),
+    #app-shell.theme-dark .border-zinc-800\/60:not(button),
+    #app-shell.theme-dark .border-zinc-700:not(button),
+    #app-shell.theme-dark .border-zinc-700\/70:not(button),
+    #app-shell.theme-dark .border-zinc-200:not(button),
+    #app-shell.theme-dark .border-rose-200:not(button),
+    #app-shell.theme-dark .border-amber-800\/40:not(button),
+    #app-shell.theme-dark .border-emerald-800\/40:not(button) {
       border-color: #27272a !important;
     }
 
@@ -394,15 +396,15 @@
       color: #ffffff !important;
       border-color: #27272a !important;
     }
-    body.app-theme-dark #edit-user-perms-modal .bg-zinc-950,
-    body.app-theme-dark #edit-product-modal .bg-zinc-950,
-    body.app-theme-dark #edit-product-modal .bg-zinc-950\/70,
-    body.app-theme-dark #confirm-delete-modal .bg-zinc-950,
-    body.app-theme-dark #edit-user-perms-modal .bg-zinc-900,
-    body.app-theme-dark #edit-product-modal .bg-zinc-900,
-    body.app-theme-dark #edit-user-perms-modal .bg-zinc-800,
-    body.app-theme-dark #edit-product-modal .bg-zinc-800,
-    body.app-theme-dark #confirm-delete-modal .bg-zinc-800,
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-product-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-product-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-dark #confirm-delete-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-900:not(button),
+    body.app-theme-dark #edit-product-modal .bg-zinc-900:not(button),
+    body.app-theme-dark #edit-user-perms-modal .bg-zinc-800:not(button),
+    body.app-theme-dark #edit-product-modal .bg-zinc-800:not(button),
+    body.app-theme-dark #confirm-delete-modal .bg-zinc-800:not(button),
     body.app-theme-dark #edit-product-modal input {
       background-color: #000000 !important;
       color: #ffffff !important;
@@ -423,78 +425,140 @@
 
 
     /* =========================================================================
-       3. TODOS LOS BOTONES FUNCIONALES EN CELESTE VIVO (IGUAL EN CLARO Y OSCURO)
+       3. TODOS LOS BOTONES FUNCIONALES EN CELESTE VIVO (CLARO Y OSCURO)
        ========================================================================= */
-    #app-shell button,
-    #edit-user-perms-modal button,
-    #edit-product-modal button,
-    #confirm-delete-modal button,
-    #receipt-modal .no-print button,
-    #kardex-modal .no-print button {
-      background-color: #38bdf8 !important; /* Celeste vivo (Sky 400) */
-      border-color: #0284c7 !important;
+    /* Modo Claro: botones celestes con letras negras */
+    body.app-theme-light #app-shell button,
+    body.app-theme-light #edit-user-perms-modal button,
+    body.app-theme-light #edit-product-modal button,
+    body.app-theme-light #confirm-delete-modal button,
+    body.app-theme-light #receipt-modal .no-print button,
+    body.app-theme-light #kardex-modal .no-print button {
+      background: #38bdf8 !important;
+      background-color: #38bdf8 !important;
+      border: 1.5px solid #0284c7 !important;
       color: #000000 !important;
       opacity: 1 !important;
     }
 
-    #app-shell button:hover:not(:disabled),
-    #edit-user-perms-modal button:hover:not(:disabled),
-    #edit-product-modal button:hover:not(:disabled),
-    #confirm-delete-modal button:hover:not(:disabled),
-    #receipt-modal .no-print button:hover:not(:disabled),
-    #kardex-modal .no-print button:hover:not(:disabled) {
-      background-color: #0ea5e9 !important; /* Celeste intenso al pasar cursor (Sky 500) */
+    body.app-theme-light #app-shell button:hover:not(:disabled),
+    body.app-theme-light #edit-user-perms-modal button:hover:not(:disabled),
+    body.app-theme-light #edit-product-modal button:hover:not(:disabled),
+    body.app-theme-light #confirm-delete-modal button:hover:not(:disabled),
+    body.app-theme-light #receipt-modal .no-print button:hover:not(:disabled),
+    body.app-theme-light #kardex-modal .no-print button:hover:not(:disabled) {
+      background: #0ea5e9 !important;
+      background-color: #0ea5e9 !important;
       border-color: #0369a1 !important;
       color: #000000 !important;
     }
 
-    /* Pestaña activa en el menú lateral resaltada con borde/celeste más intenso */
-    #app-shell button.nav-item.nav-active-tab {
+    body.app-theme-light #app-shell button,
+    body.app-theme-light #app-shell button span,
+    body.app-theme-light #app-shell button i,
+    body.app-theme-light #edit-user-perms-modal button,
+    body.app-theme-light #edit-user-perms-modal button span,
+    body.app-theme-light #edit-user-perms-modal button i,
+    body.app-theme-light #edit-product-modal button,
+    body.app-theme-light #edit-product-modal button span,
+    body.app-theme-light #edit-product-modal button i,
+    body.app-theme-light #confirm-delete-modal button,
+    body.app-theme-light #confirm-delete-modal button span,
+    body.app-theme-light #confirm-delete-modal button i,
+    body.app-theme-light #receipt-modal .no-print button,
+    body.app-theme-light #receipt-modal .no-print button span,
+    body.app-theme-light #receipt-modal .no-print button i,
+    body.app-theme-light #kardex-modal .no-print button,
+    body.app-theme-light #kardex-modal .no-print button span,
+    body.app-theme-light #kardex-modal .no-print button i {
+      color: #000000 !important;
+    }
+
+    /* Modo Oscuro: botones celestes con letras e íconos en BLANCO PURO */
+    body.app-theme-dark #app-shell button,
+    body.app-theme-dark #edit-user-perms-modal button,
+    body.app-theme-dark #edit-product-modal button,
+    body.app-theme-dark #confirm-delete-modal button,
+    body.app-theme-dark #receipt-modal .no-print button,
+    body.app-theme-dark #kardex-modal .no-print button {
+      background: #0ea5e9 !important;
+      background-color: #0ea5e9 !important;
+      border: 1.5px solid #38bdf8 !important;
+      color: #ffffff !important;
+      opacity: 1 !important;
+    }
+
+    body.app-theme-dark #app-shell button:hover:not(:disabled),
+    body.app-theme-dark #edit-user-perms-modal button:hover:not(:disabled),
+    body.app-theme-dark #edit-product-modal button:hover:not(:disabled),
+    body.app-theme-dark #confirm-delete-modal button:hover:not(:disabled),
+    body.app-theme-dark #receipt-modal .no-print button:hover:not(:disabled),
+    body.app-theme-dark #kardex-modal .no-print button:hover:not(:disabled) {
+      background: #0284c7 !important;
+      background-color: #0284c7 !important;
+      border-color: #7dd3fc !important;
+      color: #ffffff !important;
+    }
+
+    body.app-theme-dark #app-shell button,
+    body.app-theme-dark #app-shell button span,
+    body.app-theme-dark #app-shell button i,
+    body.app-theme-dark #edit-user-perms-modal button,
+    body.app-theme-dark #edit-user-perms-modal button span,
+    body.app-theme-dark #edit-user-perms-modal button i,
+    body.app-theme-dark #edit-product-modal button,
+    body.app-theme-dark #edit-product-modal button span,
+    body.app-theme-dark #edit-product-modal button i,
+    body.app-theme-dark #confirm-delete-modal button,
+    body.app-theme-dark #confirm-delete-modal button span,
+    body.app-theme-dark #confirm-delete-modal button i,
+    body.app-theme-dark #receipt-modal .no-print button,
+    body.app-theme-dark #receipt-modal .no-print button span,
+    body.app-theme-dark #receipt-modal .no-print button i,
+    body.app-theme-dark #kardex-modal .no-print button,
+    body.app-theme-dark #kardex-modal .no-print button span,
+    body.app-theme-dark #kardex-modal .no-print button i {
+      color: #ffffff !important;
+    }
+
+    /* Pestaña activa en el menú lateral resaltada */
+    body.app-theme-light #app-shell button.nav-item.nav-active-tab {
       background-color: #0ea5e9 !important;
       border: 2px solid #0369a1 !important;
       box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35) !important;
     }
+    body.app-theme-dark #app-shell button.nav-item.nav-active-tab {
+      background-color: #0284c7 !important;
+      border: 2px solid #7dd3fc !important;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.4) !important;
+    }
 
     /* Botones deshabilitados (sin stock) */
-    #app-shell button:disabled {
+    body.app-theme-light #app-shell button:disabled {
       background-color: #bae6fd !important;
       border-color: #7dd3fc !important;
       color: #334155 !important;
       opacity: 0.65 !important;
       cursor: not-allowed !important;
     }
-
-    /* Texto e íconos dentro de los botones en contraste negro nítido en ambos modos */
-    #app-shell.theme-light button,
-    #app-shell.theme-light button span,
-    #app-shell.theme-light button i,
-    #app-shell.theme-dark button,
-    #app-shell.theme-dark button span,
-    #app-shell.theme-dark button i,
-    #edit-user-perms-modal button,
-    #edit-user-perms-modal button span,
-    #edit-user-perms-modal button i,
-    #edit-product-modal button,
-    #edit-product-modal button span,
-    #edit-product-modal button i,
-    #confirm-delete-modal button,
-    #confirm-delete-modal button span,
-    #confirm-delete-modal button i,
-    #receipt-modal .no-print button,
-    #receipt-modal .no-print button span,
-    #receipt-modal .no-print button i,
-    #kardex-modal .no-print button,
-    #kardex-modal .no-print button span,
-    #kardex-modal .no-print button i {
-      color: #000000 !important;
+    body.app-theme-dark #app-shell button:disabled {
+      background-color: #0c4a6e !important;
+      border-color: #0369a1 !important;
+      color: #bae6fd !important;
+      opacity: 0.75 !important;
+      cursor: not-allowed !important;
     }
 
     /* Badges internos de contador dentro de botones de navegación */
-    #app-shell.theme-light button .rounded-full,
-    #app-shell.theme-dark button .rounded-full {
+    body.app-theme-light #app-shell button .rounded-full {
       background-color: #ffffff !important;
       color: #000000 !important;
       border: 1px solid #0284c7 !important;
+    }
+    body.app-theme-dark #app-shell button .rounded-full {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border: 1px solid #7dd3fc !important;
     }
 
     /* Animaciones suaves */
