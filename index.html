@@ -271,6 +271,30 @@
     body.app-theme-light #confirm-delete-modal h3 {
       color: #000000 !important;
     }
+    body.app-theme-light #edit-receipt-modal > div {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #d4d4d8 !important;
+    }
+    body.app-theme-light #edit-receipt-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-900:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-800:not(button),
+    body.app-theme-light #edit-receipt-modal input,
+    body.app-theme-light #edit-receipt-modal select {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #d4d4d8 !important;
+    }
+    body.app-theme-light #edit-receipt-modal p,
+    body.app-theme-light #edit-receipt-modal span,
+    body.app-theme-light #edit-receipt-modal h3,
+    body.app-theme-light #edit-receipt-modal h4,
+    body.app-theme-light #edit-receipt-modal label,
+    body.app-theme-light #edit-receipt-modal th,
+    body.app-theme-light #edit-receipt-modal td {
+      color: #000000 !important;
+    }
 
 
     /* =========================================================================
@@ -422,6 +446,30 @@
     body.app-theme-dark #confirm-delete-modal h3 {
       color: #ffffff !important;
     }
+    body.app-theme-dark #edit-receipt-modal > div {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-900:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-800:not(button),
+    body.app-theme-dark #edit-receipt-modal input,
+    body.app-theme-dark #edit-receipt-modal select {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    body.app-theme-dark #edit-receipt-modal p,
+    body.app-theme-dark #edit-receipt-modal span,
+    body.app-theme-dark #edit-receipt-modal h3,
+    body.app-theme-dark #edit-receipt-modal h4,
+    body.app-theme-dark #edit-receipt-modal label,
+    body.app-theme-dark #edit-receipt-modal th,
+    body.app-theme-dark #edit-receipt-modal td {
+      color: #ffffff !important;
+    }
 
 
     /* =========================================================================
@@ -432,6 +480,7 @@
     body.app-theme-light #edit-user-perms-modal button,
     body.app-theme-light #edit-product-modal button,
     body.app-theme-light #confirm-delete-modal button,
+    body.app-theme-light #edit-receipt-modal button,
     body.app-theme-light #receipt-modal .no-print button,
     body.app-theme-light #kardex-modal .no-print button {
       background: #38bdf8 !important;
@@ -479,6 +528,7 @@
     body.app-theme-dark #edit-user-perms-modal button,
     body.app-theme-dark #edit-product-modal button,
     body.app-theme-dark #confirm-delete-modal button,
+    body.app-theme-dark #edit-receipt-modal button,
     body.app-theme-dark #receipt-modal .no-print button,
     body.app-theme-dark #kardex-modal .no-print button {
       background: #0ea5e9 !important;
@@ -1743,6 +1793,10 @@
       </div>
 
       <div class="no-print bg-zinc-50 px-6 py-4 border-t border-zinc-200/80 flex flex-wrap items-center justify-end gap-3">
+        <button type="button" id="receipt-modal-edit-btn" onclick="openEditReceiptFromModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Editar Recibo</span>
+        </button>
         <button type="button" onclick="printDocument('receipt')" class="px-4 py-2.5 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
           <i class="fa-solid fa-print"></i>
           <span>Imprimir Recibo</span>
@@ -1751,6 +1805,146 @@
           Listo / Cerrar
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA EDITAR FACTURA / RECIBO YA EMITIDO -->
+  <div id="edit-receipt-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden border border-zinc-800 fade-in my-auto">
+      <div class="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-base font-extrabold text-white">Editar Recibo / Factura</h3>
+            <span id="edit-rec-number-badge" class="font-mono text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-600 text-white">REC-0001</span>
+          </div>
+          <p class="text-xs text-zinc-400 mt-0.5">Al guardar, el inventario se ajusta automáticamente: los productos quitados regresan y los nuevos se descuentan</p>
+        </div>
+        <button type="button" onclick="closeEditReceiptModal()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <form id="edit-receipt-form" class="p-6 space-y-5 max-h-[82vh] overflow-y-auto">
+        <input type="hidden" id="edit-rec-index" />
+
+        <!-- Datos del Cliente y Pago -->
+        <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
+          <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-pen text-rose-400"></i> Datos del Cliente y Pago
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Nombre del Cliente *</label>
+              <input type="text" id="edit-rec-client-name" required
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Teléfono del Cliente *</label>
+              <input type="tel" id="edit-rec-client-phone" required
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Método de Pago</label>
+              <select id="edit-rec-payment-method"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agregar Producto Nuevo al Recibo -->
+        <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-plus-circle text-emerald-400"></i> Añadir Producto al Recibo
+            </h4>
+            <span class="text-[11px] text-zinc-400">Se descuenta del inventario al guardar</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+            <div class="sm:col-span-6">
+              <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Buscar Producto (Nombre o Serie)</label>
+              <input type="text" id="edit-rec-add-search" oninput="renderEditReceiptProductSelect()" placeholder="Escribe para filtrar o elige..."
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+            <div class="sm:col-span-6">
+              <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Producto Disponible</label>
+              <select id="edit-rec-add-product" onchange="onEditReceiptProductSelectChange()"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500">
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+            <div id="edit-rec-add-color-wrap" class="sm:col-span-5 hidden">
+              <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Color</label>
+              <select id="edit-rec-add-color"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500">
+              </select>
+            </div>
+            <div id="edit-rec-add-qty-wrap" class="sm:col-span-3">
+              <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Cantidad</label>
+              <input type="number" id="edit-rec-add-qty" value="1" min="1" step="1"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+            <div id="edit-rec-add-price-wrap" class="sm:col-span-4">
+              <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Precio Unit. (C$)</label>
+              <input type="number" id="edit-rec-add-price" min="0.01" step="0.01"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="button" onclick="addItemToEditingReceipt()"
+              class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i>
+              <span>Agregar al Recibo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Productos en el Recibo -->
+        <div>
+          <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 mb-2">Productos del Recibo</h4>
+          <div class="border border-zinc-800 rounded-xl overflow-hidden">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-zinc-950/80 border-b border-zinc-800 text-[11px] uppercase text-zinc-400">
+                <tr>
+                  <th class="py-2.5 px-3">Producto</th>
+                  <th class="py-2.5 px-2 text-center">Cant.</th>
+                  <th class="py-2.5 px-2 text-right">Precio C$/u</th>
+                  <th class="py-2.5 px-3 text-right">Subtotal</th>
+                  <th class="py-2.5 px-2 text-center">Quitar</th>
+                </tr>
+              </thead>
+              <tbody id="edit-rec-items-body" class="divide-y divide-zinc-800/80">
+              </tbody>
+            </table>
+            <div id="edit-rec-items-empty" class="hidden p-5 text-center text-zinc-400 text-xs">
+              No hay productos en este recibo. Agrega uno arriba o cancela la edición.
+            </div>
+          </div>
+        </div>
+
+        <!-- Total y Botones -->
+        <div class="pt-3 border-t border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-zinc-400 block">Nuevo Total del Recibo:</span>
+            <span id="edit-rec-total-display" class="text-xl font-extrabold text-rose-400">C$ 0.00</span>
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <button type="button" onclick="closeEditReceiptModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
+              Cancelar
+            </button>
+            <button type="submit" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Guardar Cambios</span>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -3455,10 +3649,15 @@
           <td class="py-3.5 px-5 text-xs font-medium text-zinc-300">${escapeHTML(rec.seller)}</td>
           <td class="py-3.5 px-5">${payBadge}</td>
           <td class="py-3.5 px-5 text-right font-extrabold text-white">${formatCurrency(rec.total)}</td>
-          <td class="py-3.5 px-5 text-right">
-            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300">
-              <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
-            </button>
+          <td class="py-3.5 px-5 text-right whitespace-nowrap">
+            <div class="inline-flex items-center gap-1.5">
+              <button type="button" onclick="openEditReceiptModal(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300">
+                <i class="fa-solid fa-pen-to-square mr-1"></i>Editar
+              </button>
+              <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300">
+                <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
+              </button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -3643,6 +3842,463 @@
         tbody.appendChild(tr);
       });
     }
+
+    let editingReceiptIndex = null;
+    let editingReceiptDraftItems = [];
+    let currentModalReceiptIndex = null;
+
+    function viewReceiptByIndex(index) {
+      if (appData.receipts[index]) {
+        currentModalReceiptIndex = index;
+        openReceiptModal(appData.receipts[index]);
+      }
+    }
+
+    function openEditReceiptFromModal() {
+      if (currentModalReceiptIndex === null || !appData.receipts[currentModalReceiptIndex]) return;
+      const idx = currentModalReceiptIndex;
+      closeReceiptModal();
+      openEditReceiptModal(idx);
+    }
+
+    function getAvailableStockForEditReceipt(productId, colorName = null) {
+      const invItem = appData.inventory.find(p => p.id === productId);
+      if (!invItem) return 0;
+
+      const origReceipt = (editingReceiptIndex !== null && appData.receipts[editingReceiptIndex])
+        ? appData.receipts[editingReceiptIndex]
+        : null;
+
+      let origQty = 0;
+      if (origReceipt && Array.isArray(origReceipt.items)) {
+        origReceipt.items.forEach(it => {
+          if (it.id === productId && (!colorName || it.colorName === colorName)) {
+            origQty += (Number(it.qty) || 0);
+          }
+        });
+      }
+
+      let draftQty = 0;
+      editingReceiptDraftItems.forEach(it => {
+        if (it.id === productId && (!colorName || it.colorName === colorName)) {
+          draftQty += (Number(it.qty) || 0);
+        }
+      });
+
+      if (colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+        const cObj = invItem.colors.find(c => c.name === colorName);
+        const baseColorStock = cObj ? (Number(cObj.qty) || 0) : 0;
+        return Math.max(0, baseColorStock + origQty - draftQty);
+      }
+
+      return Math.max(0, (Number(invItem.stock) || 0) + origQty - draftQty);
+    }
+
+    function openEditReceiptModal(index) {
+      const rec = appData.receipts[index];
+      if (!rec) return;
+
+      editingReceiptIndex = index;
+      editingReceiptDraftItems = Array.isArray(rec.items)
+        ? rec.items.map((it, idx) => ({
+            uid: `${it.id || 'item'}__${it.colorName || ''}__${idx}__${Date.now()}`,
+            id: it.id || null,
+            serial: it.serial || 'S/N',
+            name: it.name || 'Producto',
+            colorName: it.colorName || null,
+            cost: Number(it.cost) || 0,
+            price: Number(it.price) || 0,
+            qty: Math.max(1, parseInt(it.qty, 10) || 1)
+          }))
+        : [];
+
+      document.getElementById('edit-rec-index').value = index;
+      document.getElementById('edit-rec-number-badge').textContent = rec.number || `REC-${index + 1}`;
+      document.getElementById('edit-rec-client-name').value = rec.clientName || '';
+      document.getElementById('edit-rec-client-phone').value = rec.clientPhone || '';
+      document.getElementById('edit-rec-payment-method').value = rec.paymentMethod || 'Efectivo';
+      document.getElementById('edit-rec-add-search').value = '';
+      document.getElementById('edit-rec-add-qty').value = 1;
+
+      renderEditReceiptProductSelect();
+      renderEditReceiptItemsTable();
+
+      document.getElementById('edit-receipt-modal').classList.remove('hidden');
+    }
+
+    function closeEditReceiptModal() {
+      editingReceiptIndex = null;
+      editingReceiptDraftItems = [];
+      document.getElementById('edit-receipt-modal').classList.add('hidden');
+    }
+
+    function renderEditReceiptProductSelect() {
+      const selectEl = document.getElementById('edit-rec-add-product');
+      const query = (document.getElementById('edit-rec-add-search')?.value || '').trim().toLowerCase();
+      if (!selectEl) return;
+
+      const matches = appData.inventory.filter(p => {
+        if (!query) return true;
+        return p.name.toLowerCase().includes(query) || (p.serial && p.serial.toLowerCase().includes(query));
+      });
+
+      selectEl.innerHTML = '';
+      if (matches.length === 0) {
+        selectEl.innerHTML = `<option value="">Sin productos coincidentes</option>`;
+        document.getElementById('edit-rec-add-color-wrap').classList.add('hidden');
+        document.getElementById('edit-rec-add-price').value = '';
+        return;
+      }
+
+      matches.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `${p.serial || 'S/N'} — ${p.name} (Stock: ${p.stock} | ${formatCurrency(p.price)})`;
+        selectEl.appendChild(opt);
+      });
+
+      onEditReceiptProductSelectChange();
+    }
+
+    function onEditReceiptProductSelectChange() {
+      const prodId = document.getElementById('edit-rec-add-product')?.value;
+      const colorWrap = document.getElementById('edit-rec-add-color-wrap');
+      const colorSelect = document.getElementById('edit-rec-add-color');
+      const qtyWrap = document.getElementById('edit-rec-add-qty-wrap');
+      const priceWrap = document.getElementById('edit-rec-add-price-wrap');
+      const priceInput = document.getElementById('edit-rec-add-price');
+
+      const prod = appData.inventory.find(p => p.id === prodId);
+      if (!prod) {
+        colorWrap.classList.add('hidden');
+        qtyWrap.className = 'sm:col-span-3';
+        priceWrap.className = 'sm:col-span-4';
+        if (priceInput) priceInput.value = '';
+        return;
+      }
+
+      if (priceInput) {
+        priceInput.value = Number(prod.price || 0).toFixed(2);
+      }
+
+      if (Array.isArray(prod.colors) && prod.colors.length > 0) {
+        colorWrap.classList.remove('hidden');
+        qtyWrap.className = 'sm:col-span-3';
+        priceWrap.className = 'sm:col-span-4';
+        colorSelect.innerHTML = prod.colors.map((c, idx) => {
+          const avail = getAvailableStockForEditReceipt(prod.id, c.name);
+          return `<option value="${idx}">${escapeHTML(c.name)} (${avail} disp.)</option>`;
+        }).join('');
+      } else {
+        colorWrap.classList.add('hidden');
+        qtyWrap.className = 'sm:col-span-4';
+        priceWrap.className = 'sm:col-span-4';
+      }
+    }
+
+    function addItemToEditingReceipt() {
+      const prodId = document.getElementById('edit-rec-add-product')?.value;
+      const prod = appData.inventory.find(p => p.id === prodId);
+      if (!prod) {
+        showToast('Selecciona un producto válido para agregar.', 'error');
+        return;
+      }
+
+      const addQty = parseInt(document.getElementById('edit-rec-add-qty')?.value, 10);
+      const addPrice = parseFloat(document.getElementById('edit-rec-add-price')?.value);
+
+      if (isNaN(addQty) || addQty <= 0) {
+        showToast('Ingresa una cantidad válida mayor a cero.', 'error');
+        return;
+      }
+      if (isNaN(addPrice) || addPrice <= 0) {
+        showToast('Ingresa un precio unitario válido mayor a cero.', 'error');
+        return;
+      }
+
+      let chosenColor = null;
+      if (Array.isArray(prod.colors) && prod.colors.length > 0) {
+        const cIdx = parseInt(document.getElementById('edit-rec-add-color')?.value, 10) || 0;
+        const cObj = prod.colors[cIdx] || prod.colors[0];
+        if (!cObj) return;
+        chosenColor = cObj.name;
+      }
+
+      const avail = getAvailableStockForEditReceipt(prod.id, chosenColor);
+      if (addQty > avail) {
+        showToast(`Solo hay ${avail} unidades disponibles para este producto${chosenColor ? ` en ${chosenColor}` : ''}.`, 'error');
+        return;
+      }
+
+      const existing = editingReceiptDraftItems.find(
+        it => it.id === prod.id && (it.colorName || null) === (chosenColor || null)
+      );
+
+      if (existing) {
+        existing.qty += addQty;
+        existing.price = addPrice;
+      } else {
+        editingReceiptDraftItems.push({
+          uid: `${prod.id}__${chosenColor || ''}__${Date.now()}__${Math.random().toString(36).slice(2, 6)}`,
+          id: prod.id,
+          serial: prod.serial || 'S/N',
+          name: prod.name,
+          colorName: chosenColor,
+          cost: Number(prod.cost) || 0,
+          price: addPrice,
+          qty: addQty
+        });
+      }
+
+      renderEditReceiptItemsTable();
+      onEditReceiptProductSelectChange();
+      showToast('Producto agregado al recibo.', 'info');
+    }
+
+    function updateEditingReceiptItemQty(uid, newQtyRaw) {
+      const item = editingReceiptDraftItems.find(it => it.uid === uid);
+      if (!item) return;
+
+      const newQty = parseInt(newQtyRaw, 10);
+      if (isNaN(newQty) || newQty <= 0) {
+        removeEditingReceiptItem(uid);
+        return;
+      }
+
+      if (item.id) {
+        const otherDraftQty = editingReceiptDraftItems
+          .filter(it => it.uid !== uid && it.id === item.id && (it.colorName || null) === (item.colorName || null))
+          .reduce((s, it) => s + (Number(it.qty) || 0), 0);
+
+        const invItem = appData.inventory.find(p => p.id === item.id);
+        if (invItem) {
+          const origReceipt = (editingReceiptIndex !== null && appData.receipts[editingReceiptIndex])
+            ? appData.receipts[editingReceiptIndex]
+            : null;
+          let origQty = 0;
+          if (origReceipt && Array.isArray(origReceipt.items)) {
+            origReceipt.items.forEach(it => {
+              if (it.id === item.id && (it.colorName || null) === (item.colorName || null)) {
+                origQty += (Number(it.qty) || 0);
+              }
+            });
+          }
+
+          let baseStock = Number(invItem.stock) || 0;
+          if (item.colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+            const cObj = invItem.colors.find(c => c.name === item.colorName);
+            baseStock = cObj ? (Number(cObj.qty) || 0) : 0;
+          }
+
+          const maxAllowed = baseStock + origQty - otherDraftQty;
+          if (newQty > maxAllowed) {
+            showToast(`Máximo disponible en inventario: ${Math.max(0, maxAllowed)} unidades.`, 'error');
+            renderEditReceiptItemsTable();
+            return;
+          }
+        }
+      }
+
+      item.qty = newQty;
+      renderEditReceiptItemsTable();
+      onEditReceiptProductSelectChange();
+    }
+
+    function updateEditingReceiptItemPrice(uid, newPriceRaw) {
+      const item = editingReceiptDraftItems.find(it => it.uid === uid);
+      if (!item) return;
+
+      const newPrice = parseFloat(newPriceRaw);
+      if (isNaN(newPrice) || newPrice <= 0) {
+        showToast('Ingresa un precio válido mayor a cero.', 'error');
+        renderEditReceiptItemsTable();
+        return;
+      }
+
+      item.price = newPrice;
+      renderEditReceiptItemsTable();
+    }
+
+    function removeEditingReceiptItem(uid) {
+      editingReceiptDraftItems = editingReceiptDraftItems.filter(it => it.uid !== uid);
+      renderEditReceiptItemsTable();
+      onEditReceiptProductSelectChange();
+    }
+
+    function renderEditReceiptItemsTable() {
+      const tbody = document.getElementById('edit-rec-items-body');
+      const emptyEl = document.getElementById('edit-rec-items-empty');
+      const totalEl = document.getElementById('edit-rec-total-display');
+      if (!tbody || !emptyEl || !totalEl) return;
+
+      tbody.innerHTML = '';
+      if (editingReceiptDraftItems.length === 0) {
+        emptyEl.classList.remove('hidden');
+        totalEl.textContent = formatCurrency(0);
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      let total = 0;
+
+      editingReceiptDraftItems.forEach(item => {
+        const sub = (Number(item.price) || 0) * (Number(item.qty) || 0);
+        total += sub;
+        const colorSub = item.colorName ? ` · Color: ${escapeHTML(item.colorName)}` : '';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2.5 px-3">
+            <p class="font-bold text-white text-xs">${escapeHTML(item.name)}</p>
+            <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(item.serial || 'S/N')}${colorSub}</p>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <input type="number" value="${item.qty}" min="1" step="1"
+              onchange="updateEditingReceiptItemQty('${escapeHTML(item.uid)}', this.value)"
+              class="w-16 px-2 py-1 bg-zinc-950 border border-zinc-700 text-white rounded-lg text-xs text-center font-bold focus:outline-none focus:ring-1 focus:ring-rose-500" />
+          </td>
+          <td class="py-2.5 px-2 text-right">
+            <input type="number" value="${Number(item.price).toFixed(2)}" min="0.01" step="0.01"
+              onchange="updateEditingReceiptItemPrice('${escapeHTML(item.uid)}', this.value)"
+              class="w-24 px-2 py-1 bg-zinc-950 border border-zinc-700 text-amber-300 rounded-lg text-xs text-right font-bold focus:outline-none focus:ring-1 focus:ring-rose-500" />
+          </td>
+          <td class="py-2.5 px-3 text-right font-bold text-white text-xs">${formatCurrency(sub)}</td>
+          <td class="py-2.5 px-2 text-center">
+            <button type="button" onclick="removeEditingReceiptItem('${escapeHTML(item.uid)}')" title="Quitar producto"
+              class="px-2 py-1 bg-rose-950/70 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg text-xs font-bold transition">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      totalEl.textContent = formatCurrency(total);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const formEl = document.getElementById('edit-receipt-form');
+      if (formEl) {
+        formEl.addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (editingReceiptIndex === null) return;
+          const rec = appData.receipts[editingReceiptIndex];
+          if (!rec) return;
+
+          const clientName = document.getElementById('edit-rec-client-name').value.trim();
+          const clientPhone = document.getElementById('edit-rec-client-phone').value.trim();
+          const paymentMethod = document.getElementById('edit-rec-payment-method').value;
+
+          if (!clientName) {
+            showToast('El nombre del cliente no puede quedar vacío.', 'error');
+            return;
+          }
+          if (!clientPhone) {
+            showToast('El teléfono del cliente no puede quedar vacío.', 'error');
+            return;
+          }
+          if (editingReceiptDraftItems.length === 0) {
+            showToast('El recibo debe tener al menos un producto.', 'error');
+            return;
+          }
+
+          // 1. Devolver al inventario los productos que estaban originalmente en el recibo
+          if (Array.isArray(rec.items)) {
+            rec.items.forEach(oldItem => {
+              if (!oldItem.id) return;
+              const invItem = appData.inventory.find(p => p.id === oldItem.id);
+              if (!invItem) return;
+              const q = Number(oldItem.qty) || 0;
+              invItem.stock = (Number(invItem.stock) || 0) + q;
+              if (oldItem.colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+                const cObj = invItem.colors.find(c => c.name === oldItem.colorName);
+                if (cObj) {
+                  cObj.qty = (Number(cObj.qty) || 0) + q;
+                }
+              }
+            });
+          }
+
+          // 2. Validar disponibilidad y descontar del inventario los productos editados / nuevos
+          for (const newItem of editingReceiptDraftItems) {
+            if (!newItem.id) continue;
+            const invItem = appData.inventory.find(p => p.id === newItem.id);
+            if (!invItem) continue;
+            const q = Number(newItem.qty) || 0;
+
+            if ((Number(invItem.stock) || 0) < q) {
+              if (Array.isArray(rec.items)) {
+                rec.items.forEach(oldItem => {
+                  if (!oldItem.id) return;
+                  const p2 = appData.inventory.find(x => x.id === oldItem.id);
+                  if (!p2) return;
+                  const q2 = Number(oldItem.qty) || 0;
+                  p2.stock = Math.max(0, (Number(p2.stock) || 0) - q2);
+                  if (oldItem.colorName && Array.isArray(p2.colors)) {
+                    const c2 = p2.colors.find(c => c.name === oldItem.colorName);
+                    if (c2) c2.qty = Math.max(0, (Number(c2.qty) || 0) - q2);
+                  }
+                });
+              }
+              showToast(`No hay suficiente stock de "${newItem.name}".`, 'error');
+              return;
+            }
+
+            if (newItem.colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+              const cObj = invItem.colors.find(c => c.name === newItem.colorName);
+              if (cObj && (Number(cObj.qty) || 0) < q) {
+                showToast(`No hay suficiente stock de "${newItem.name}" en color ${newItem.colorName}.`, 'error');
+                return;
+              }
+            }
+          }
+
+          editingReceiptDraftItems.forEach(newItem => {
+            if (!newItem.id) return;
+            const invItem = appData.inventory.find(p => p.id === newItem.id);
+            if (!invItem) return;
+            const q = Number(newItem.qty) || 0;
+            invItem.stock = Math.max(0, (Number(invItem.stock) || 0) - q);
+            if (newItem.colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+              const cObj = invItem.colors.find(c => c.name === newItem.colorName);
+              if (cObj) {
+                cObj.qty = Math.max(0, (Number(cObj.qty) || 0) - q);
+              }
+            }
+          });
+
+          const cleanedItems = editingReceiptDraftItems.map(it => ({
+            cartKey: it.colorName ? `${it.id}__${it.colorName}` : it.id,
+            id: it.id,
+            serial: it.serial || 'S/N',
+            name: it.name,
+            colorName: it.colorName || null,
+            cost: Number(it.cost) || 0,
+            price: Number(it.price) || 0,
+            qty: Math.max(1, parseInt(it.qty, 10) || 1)
+          }));
+
+          const newTotal = cleanedItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+
+          rec.clientName = clientName;
+          rec.clientPhone = clientPhone;
+          rec.paymentMethod = paymentMethod;
+          rec.items = cleanedItems;
+          rec.total = newTotal;
+          rec.editedAt = new Date().toISOString();
+          rec.editedBy = currentUser?.username || rec.seller;
+
+          saveAppData();
+          closeEditReceiptModal();
+          renderInventoryTable(document.getElementById('inventory-search').value);
+          renderBillingProducts(document.getElementById('billing-product-search').value);
+          renderHistoryTable();
+          renderSalesReports();
+          renderEarningsReport();
+          showToast(`Recibo ${rec.number} actualizado y el inventario se ajustó correctamente.`, 'success');
+        });
+      }
+    });
 
     function printDocument(type) {
       document.body.classList.remove('printing-receipt', 'printing-kardex');
