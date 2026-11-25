@@ -1019,7 +1019,7 @@
                         <tr>
                           <th class="py-2.5 px-3">Producto / Serie</th>
                           <th class="py-2.5 px-2 text-center">Cant.</th>
-                          <th class="py-2.5 px-3 text-right">Subtotal</th>
+                          <th class="py-2.5 px-3 text-right">Precio</th>
                           <th class="py-2.5 px-2"></th>
                         </tr>
                       </thead>
@@ -1077,19 +1077,29 @@
             <div class="p-6 border-b border-zinc-800 flex flex-col gap-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Historial de Recibos de Compra / Entrega</h2>
-                  <p class="text-xs text-zinc-400">Consulta o reimprime comprobantes guardados por número de recibo o rango de fechas</p>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h2 class="text-base font-extrabold text-white">Historial de Recibos de Compra / Entrega</h2>
+                    <span id="history-active-period-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-600 text-white">Mostrando: Hoy</span>
+                  </div>
+                  <p class="text-xs text-zinc-400 mt-0.5">Por defecto muestra únicamente lo facturado hoy; usa las pestañas rápidas o el filtro de fechas para ver días anteriores</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                   <button type="button" onclick="clearHistoryFilters()" class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-filter-circle-xmark"></i>
-                    <span>Limpiar Filtros</span>
-                  </button>
-                  <button type="button" onclick="resetReceiptsHistory()" class="px-3.5 py-2 bg-rose-950/70 text-rose-300 hover:bg-rose-600 hover:text-white border border-rose-800/60 rounded-xl text-xs font-bold transition flex items-center gap-2 self-start sm:self-auto">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <span>Reiniciar Historial a Cero</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span>Volver a Hoy</span>
                   </button>
                 </div>
+              </div>
+
+              <!-- Pestañas rápidas por período -->
+              <div class="flex flex-wrap items-center gap-2 bg-zinc-950/70 p-3 rounded-xl border border-zinc-800">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 mr-1">Período:</span>
+                <button type="button" id="hist-preset-today" onclick="setHistoryPreset('today')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Hoy</button>
+                <button type="button" id="hist-preset-yesterday" onclick="setHistoryPreset('yesterday')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Ayer</button>
+                <button type="button" id="hist-preset-week" onclick="setHistoryPreset('week')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Esta semana</button>
+                <button type="button" id="hist-preset-month" onclick="setHistoryPreset('month')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Este mes</button>
+                <button type="button" id="hist-preset-last_month" onclick="setHistoryPreset('last_month')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Mes pasado</button>
+                <button type="button" id="hist-preset-year" onclick="setHistoryPreset('year')" class="hist-preset-btn px-3 py-1.5 rounded-lg text-xs font-bold transition">Este año</button>
               </div>
 
               <!-- Filtros: Buscar por N° de Recibo + Desde / Hasta -->
@@ -1107,13 +1117,13 @@
 
                 <div>
                   <label for="history-date-from" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Desde (Fecha)</label>
-                  <input type="date" id="history-date-from" onchange="renderHistoryTable()"
+                  <input type="date" id="history-date-from" onchange="onCustomHistoryDateChange()"
                     class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                 </div>
 
                 <div>
                   <label for="history-date-to" class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Hasta (Fecha)</label>
-                  <input type="date" id="history-date-to" onchange="renderHistoryTable()"
+                  <input type="date" id="history-date-to" onchange="onCustomHistoryDateChange()"
                     class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                 </div>
               </div>
@@ -1708,7 +1718,6 @@
                 <th class="py-2 text-left">Producto / Serie</th>
                 <th class="py-2 text-center">Cant.</th>
                 <th class="py-2 text-right">Precio</th>
-                <th class="py-2 text-right">Subtotal</th>
               </tr>
             </thead>
             <tbody id="rec-items-list" class="divide-y divide-zinc-100">
@@ -2598,6 +2607,9 @@
       if (tabName === 'billing') {
         renderBillingProducts(document.getElementById('billing-product-search').value);
       } else if (tabName === 'history') {
+        historyFilterPreset = 'today';
+        if (document.getElementById('history-date-from')) document.getElementById('history-date-from').value = '';
+        if (document.getElementById('history-date-to')) document.getElementById('history-date-to').value = '';
         renderHistoryTable();
       } else if (tabName === 'reports') {
         renderSalesReports();
@@ -2618,11 +2630,19 @@
       const totalUnits = appData.inventory.reduce((sum, item) => sum + (Number(item.stock) || 0), 0);
       const totalValue = appData.inventory.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.stock) || 0)), 0);
 
+      const now = new Date();
+      const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+      const endToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+      const todayReceiptsCount = appData.receipts.filter(rec => {
+        const d = parseReceiptDate(rec);
+        return d && d >= startToday && d <= endToday;
+      }).length;
+
       document.getElementById('stat-total-products').textContent = totalProducts;
       document.getElementById('stat-total-units').textContent = totalUnits;
       document.getElementById('stat-total-value').textContent = formatCurrency(totalValue);
       document.getElementById('badge-inventory-count').textContent = totalProducts;
-      document.getElementById('badge-receipts-count').textContent = appData.receipts.length;
+      document.getElementById('badge-receipts-count').textContent = todayReceiptsCount;
     }
 
     function toggleProductActionMenu(id, event) {
@@ -2982,7 +3002,11 @@
               </span>
             </div>
             <p class="text-sm font-bold text-white truncate">${escapeHTML(item.name)}</p>
-            <p class="text-xs font-extrabold text-rose-400 mt-0.5">${formatCurrency(item.price)}</p>
+            <div class="mt-1 flex items-center gap-1.5">
+              <span class="text-[11px] font-bold text-zinc-400">Precio C$:</span>
+              <input type="number" id="billing-price-${item.id}" value="${Number(item.price).toFixed(2)}" min="0.01" step="0.01" ${isOutOfStock ? 'disabled' : ''}
+                class="w-24 px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-rose-400 font-extrabold rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
             ${colorSelectorHtml}
           </div>
           <button type="button" onclick="addToCart('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
@@ -3027,10 +3051,15 @@
         }
       }
 
+      const priceInputEl = document.getElementById(`billing-price-${productId}`);
+      const customPriceVal = priceInputEl ? parseFloat(priceInputEl.value) : NaN;
+      const finalUnitPrice = (!isNaN(customPriceVal) && customPriceVal > 0) ? customPriceVal : (Number(product.price) || 0);
+
       const cartKey = chosenColor ? `${productId}__${chosenColor}` : productId;
       const existing = cart.find(c => c.cartKey === cartKey);
       if (existing) {
         existing.qty += 1;
+        existing.price = finalUnitPrice;
       } else {
         cart.push({
           cartKey,
@@ -3039,7 +3068,7 @@
           name: product.name,
           colorName: chosenColor,
           cost: Number(product.cost) || 0,
-          price: Number(product.price) || 0,
+          price: finalUnitPrice,
           qty: 1
         });
       }
@@ -3078,6 +3107,19 @@
       renderBillingProducts(document.getElementById('billing-product-search').value);
     }
 
+    function updateCartPrice(cartKey, rawVal) {
+      const item = cart.find(c => c.cartKey === cartKey);
+      if (!item) return;
+      const newPrice = parseFloat(rawVal);
+      if (isNaN(newPrice) || newPrice <= 0) {
+        showToast('Ingresa un precio válido mayor a cero.', 'error');
+        renderCart();
+        return;
+      }
+      item.price = newPrice;
+      renderCart();
+    }
+
     function clearCart() {
       cart = [];
       renderCart();
@@ -3109,7 +3151,14 @@
         tr.innerHTML = `
           <td class="py-2.5 px-3">
             <p class="font-bold text-white text-xs leading-snug">${escapeHTML(item.name)}</p>
-            <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(item.serial || 'S/N')}${colorLabel} · ${formatCurrency(item.price)} c/u</p>
+            <p class="font-mono text-[10px] text-zinc-400 mb-1">${escapeHTML(item.serial || 'S/N')}${colorLabel}</p>
+            <div class="inline-flex items-center gap-1">
+              <span class="text-[10px] font-semibold text-zinc-400">C$/u:</span>
+              <input type="number" value="${Number(item.price).toFixed(2)}" min="0.01" step="0.01"
+                onchange="updateCartPrice('${escapeHTML(item.cartKey)}', this.value)"
+                class="w-20 px-1.5 py-0.5 bg-zinc-950 border border-zinc-700 text-amber-300 font-bold rounded text-[11px] focus:outline-none focus:ring-1 focus:ring-rose-500"
+                title="Cambiar precio unitario para este recibo" />
+            </div>
           </td>
           <td class="py-2.5 px-2 text-center">
             <div class="inline-flex items-center border border-zinc-700 rounded-lg bg-zinc-950">
@@ -3221,13 +3270,13 @@
       receipt.items.forEach(item => {
         const colorSub = item.colorName ? ` · Color: ${escapeHTML(item.colorName)}` : '';
         const tr = document.createElement('tr');
+        const unitNote = item.qty > 1 ? ` · ${formatCurrency(item.price)} c/u` : '';
         tr.innerHTML = `
           <td class="py-2 pr-2">
             <p class="font-bold text-zinc-900">${escapeHTML(item.name)}</p>
-            <p class="font-mono text-[10px] text-zinc-400">Serie: ${escapeHTML(item.serial || 'S/N')}${colorSub}</p>
+            <p class="font-mono text-[10px] text-zinc-400">Serie: ${escapeHTML(item.serial || 'S/N')}${colorSub}${unitNote}</p>
           </td>
           <td class="py-2 text-center font-semibold">${item.qty}</td>
-          <td class="py-2 text-right text-zinc-600">${formatCurrency(item.price)}</td>
           <td class="py-2 text-right font-bold text-zinc-900">${formatCurrency(item.price * item.qty)}</td>
         `;
         itemsList.appendChild(tr);
@@ -3259,10 +3308,87 @@
       return null;
     }
 
+    let historyFilterPreset = 'today';
+
+    function getHistoryPresetRange(preset) {
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+      const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+
+      if (preset === 'today') {
+        return { from: todayStart, to: todayEnd, label: 'Hoy' };
+      }
+      if (preset === 'yesterday') {
+        const yStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
+        const yEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59, 999);
+        return { from: yStart, to: yEnd, label: 'Ayer' };
+      }
+      if (preset === 'week') {
+        const dayOfWeek = now.getDay();
+        const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        const wStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diffToMonday, 0, 0, 0, 0);
+        return { from: wStart, to: todayEnd, label: 'Esta semana' };
+      }
+      if (preset === 'month') {
+        const mStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+        return { from: mStart, to: todayEnd, label: 'Este mes' };
+      }
+      if (preset === 'last_month') {
+        const lmStart = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
+        const lmEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+        return { from: lmStart, to: lmEnd, label: 'Mes pasado' };
+      }
+      if (preset === 'year') {
+        const yrStart = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
+        return { from: yrStart, to: todayEnd, label: 'Este año' };
+      }
+      return { from: null, to: null, label: 'Rango personalizado' };
+    }
+
+    function updateHistoryPresetButtonsUI() {
+      const presets = ['today', 'yesterday', 'week', 'month', 'last_month', 'year'];
+      presets.forEach(p => {
+        const btn = document.getElementById(`hist-preset-${p}`);
+        if (!btn) return;
+        if (historyFilterPreset === p) {
+          btn.classList.add('ring-2', 'ring-white', 'shadow-md');
+        } else {
+          btn.classList.remove('ring-2', 'ring-white', 'shadow-md');
+        }
+      });
+
+      const badge = document.getElementById('history-active-period-badge');
+      if (badge) {
+        const info = getHistoryPresetRange(historyFilterPreset);
+        badge.textContent = `Mostrando: ${info.label}`;
+      }
+    }
+
+    function setHistoryPreset(preset) {
+      historyFilterPreset = preset;
+      const fromInput = document.getElementById('history-date-from');
+      const toInput = document.getElementById('history-date-to');
+      if (fromInput) fromInput.value = '';
+      if (toInput) toInput.value = '';
+      renderHistoryTable();
+    }
+
+    function onCustomHistoryDateChange() {
+      const fromVal = document.getElementById('history-date-from')?.value || '';
+      const toVal = document.getElementById('history-date-to')?.value || '';
+      if (fromVal || toVal) {
+        historyFilterPreset = 'custom';
+      } else {
+        historyFilterPreset = 'today';
+      }
+      renderHistoryTable();
+    }
+
     function clearHistoryFilters() {
       document.getElementById('history-search-number').value = '';
       document.getElementById('history-date-from').value = '';
       document.getElementById('history-date-to').value = '';
+      historyFilterPreset = 'today';
       renderHistoryTable();
     }
 
@@ -3273,8 +3399,23 @@
       const fromVal = document.getElementById('history-date-from')?.value || '';
       const toVal = document.getElementById('history-date-to')?.value || '';
 
-      const fromDate = fromVal ? new Date(`${fromVal}T00:00:00`) : null;
-      const toDate = toVal ? new Date(`${toVal}T23:59:59.999`) : null;
+      let fromDate = null;
+      let toDate = null;
+
+      if (fromVal || toVal) {
+        historyFilterPreset = 'custom';
+        fromDate = fromVal ? new Date(`${fromVal}T00:00:00`) : null;
+        toDate = toVal ? new Date(`${toVal}T23:59:59.999`) : null;
+      } else {
+        if (historyFilterPreset === 'custom') {
+          historyFilterPreset = 'today';
+        }
+        const range = getHistoryPresetRange(historyFilterPreset);
+        fromDate = range.from;
+        toDate = range.to;
+      }
+
+      updateHistoryPresetButtonsUI();
 
       const filtered = appData.receipts.map((rec, originalIdx) => ({ rec, originalIdx })).filter(({ rec }) => {
         if (searchNum && !String(rec.number || '').toLowerCase().includes(searchNum)) {
@@ -3328,16 +3469,6 @@
       if (appData.receipts[index]) {
         openReceiptModal(appData.receipts[index]);
       }
-    }
-
-    function resetReceiptsHistory() {
-      if (!currentUser?.permissions?.history) return;
-      appData.receipts = [];
-      saveAppData();
-      renderHistoryTable();
-      renderSalesReports();
-      renderEarningsReport();
-      showToast('Historial de recibos reiniciado a cero.', 'info');
     }
 
     function renderSalesReports() {
