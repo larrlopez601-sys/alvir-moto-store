@@ -240,7 +240,8 @@
     /* Modales en modo claro (todo blanco + texto negro) */
     body.app-theme-light #edit-user-perms-modal > div,
     body.app-theme-light #edit-product-modal > div,
-    body.app-theme-light #confirm-delete-modal > div {
+    body.app-theme-light #confirm-delete-modal > div,
+    body.app-theme-light #edit-receipt-modal > div {
       background-color: #ffffff !important;
       color: #000000 !important;
       border-color: #d4d4d8 !important;
@@ -249,12 +250,19 @@
     body.app-theme-light #edit-product-modal .bg-zinc-950:not(button),
     body.app-theme-light #edit-product-modal .bg-zinc-950\/70:not(button),
     body.app-theme-light #confirm-delete-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-950:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-950\/80:not(button),
     body.app-theme-light #edit-user-perms-modal .bg-zinc-900:not(button),
     body.app-theme-light #edit-product-modal .bg-zinc-900:not(button),
+    body.app-theme-light #edit-receipt-modal .bg-zinc-900:not(button),
     body.app-theme-light #edit-user-perms-modal .bg-zinc-800:not(button),
     body.app-theme-light #edit-product-modal .bg-zinc-800:not(button),
     body.app-theme-light #confirm-delete-modal .bg-zinc-800:not(button),
-    body.app-theme-light #edit-product-modal input {
+    body.app-theme-light #edit-receipt-modal .bg-zinc-800:not(button),
+    body.app-theme-light #edit-product-modal input,
+    body.app-theme-light #edit-receipt-modal input,
+    body.app-theme-light #edit-receipt-modal select {
       background-color: #ffffff !important;
       color: #000000 !important;
       border-color: #d4d4d8 !important;
@@ -268,10 +276,24 @@
     body.app-theme-light #edit-product-modal label,
     body.app-theme-light #confirm-delete-modal p,
     body.app-theme-light #confirm-delete-modal span,
-    body.app-theme-light #confirm-delete-modal h3 {
+    body.app-theme-light #confirm-delete-modal h3,
+    body.app-theme-light #edit-receipt-modal p,
+    body.app-theme-light #edit-receipt-modal span,
+    body.app-theme-light #edit-receipt-modal h3,
+    body.app-theme-light #edit-receipt-modal label,
+    body.app-theme-light #edit-receipt-modal th,
+    body.app-theme-light #edit-receipt-modal td {
       color: #000000 !important;
     }
 
+    /* Dropdown de sugerencias de clientes en modo claro */
+    body.app-theme-light .client-suggestions-dropdown {
+      background-color: #ffffff !important;
+      border-color: #0284c7 !important;
+    }
+    body.app-theme-light .client-suggestions-dropdown .client-suggestion-item:hover {
+      background-color: #e0f2fe !important;
+    }
 
     /* =========================================================================
        2. MODO OSCURO: FONDO OSCURO PURO, TEXTOS EN BLANCO Y BOTONES EN CELESTE
@@ -391,7 +413,8 @@
     /* Modales en modo oscuro (todo negro puro + texto blanco) */
     body.app-theme-dark #edit-user-perms-modal > div,
     body.app-theme-dark #edit-product-modal > div,
-    body.app-theme-dark #confirm-delete-modal > div {
+    body.app-theme-dark #confirm-delete-modal > div,
+    body.app-theme-dark #edit-receipt-modal > div {
       background-color: #000000 !important;
       color: #ffffff !important;
       border-color: #27272a !important;
@@ -400,12 +423,19 @@
     body.app-theme-dark #edit-product-modal .bg-zinc-950:not(button),
     body.app-theme-dark #edit-product-modal .bg-zinc-950\/70:not(button),
     body.app-theme-dark #confirm-delete-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-950:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-950\/70:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-950\/80:not(button),
     body.app-theme-dark #edit-user-perms-modal .bg-zinc-900:not(button),
     body.app-theme-dark #edit-product-modal .bg-zinc-900:not(button),
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-900:not(button),
     body.app-theme-dark #edit-user-perms-modal .bg-zinc-800:not(button),
     body.app-theme-dark #edit-product-modal .bg-zinc-800:not(button),
     body.app-theme-dark #confirm-delete-modal .bg-zinc-800:not(button),
-    body.app-theme-dark #edit-product-modal input {
+    body.app-theme-dark #edit-receipt-modal .bg-zinc-800:not(button),
+    body.app-theme-dark #edit-product-modal input,
+    body.app-theme-dark #edit-receipt-modal input,
+    body.app-theme-dark #edit-receipt-modal select {
       background-color: #000000 !important;
       color: #ffffff !important;
       border-color: #27272a !important;
@@ -419,8 +449,23 @@
     body.app-theme-dark #edit-product-modal label,
     body.app-theme-dark #confirm-delete-modal p,
     body.app-theme-dark #confirm-delete-modal span,
-    body.app-theme-dark #confirm-delete-modal h3 {
+    body.app-theme-dark #confirm-delete-modal h3,
+    body.app-theme-dark #edit-receipt-modal p,
+    body.app-theme-dark #edit-receipt-modal span,
+    body.app-theme-dark #edit-receipt-modal h3,
+    body.app-theme-dark #edit-receipt-modal label,
+    body.app-theme-dark #edit-receipt-modal th,
+    body.app-theme-dark #edit-receipt-modal td {
       color: #ffffff !important;
+    }
+
+    /* Dropdown de sugerencias de clientes en modo oscuro */
+    body.app-theme-dark .client-suggestions-dropdown {
+      background-color: #09090b !important;
+      border-color: #38bdf8 !important;
+    }
+    body.app-theme-dark .client-suggestions-dropdown .client-suggestion-item:hover {
+      background-color: #18181b !important;
     }
 
 
@@ -428,10 +473,11 @@
        3. TODOS LOS BOTONES FUNCIONALES EN CELESTE VIVO (CLARO Y OSCURO)
        ========================================================================= */
     /* Modo Claro: botones celestes con letras negras */
-    body.app-theme-light #app-shell button,
+    body.app-theme-light #app-shell button:not(.client-suggestion-item),
     body.app-theme-light #edit-user-perms-modal button,
     body.app-theme-light #edit-product-modal button,
     body.app-theme-light #confirm-delete-modal button,
+    body.app-theme-light #edit-receipt-modal button:not(.client-suggestion-item),
     body.app-theme-light #receipt-modal .no-print button,
     body.app-theme-light #kardex-modal .no-print button {
       background: #38bdf8 !important;
@@ -441,10 +487,11 @@
       opacity: 1 !important;
     }
 
-    body.app-theme-light #app-shell button:hover:not(:disabled),
+    body.app-theme-light #app-shell button:not(.client-suggestion-item):hover:not(:disabled),
     body.app-theme-light #edit-user-perms-modal button:hover:not(:disabled),
     body.app-theme-light #edit-product-modal button:hover:not(:disabled),
     body.app-theme-light #confirm-delete-modal button:hover:not(:disabled),
+    body.app-theme-light #edit-receipt-modal button:not(.client-suggestion-item):hover:not(:disabled),
     body.app-theme-light #receipt-modal .no-print button:hover:not(:disabled),
     body.app-theme-light #kardex-modal .no-print button:hover:not(:disabled) {
       background: #0ea5e9 !important;
@@ -453,9 +500,9 @@
       color: #000000 !important;
     }
 
-    body.app-theme-light #app-shell button,
-    body.app-theme-light #app-shell button span,
-    body.app-theme-light #app-shell button i,
+    body.app-theme-light #app-shell button:not(.client-suggestion-item),
+    body.app-theme-light #app-shell button:not(.client-suggestion-item) span,
+    body.app-theme-light #app-shell button:not(.client-suggestion-item) i,
     body.app-theme-light #edit-user-perms-modal button,
     body.app-theme-light #edit-user-perms-modal button span,
     body.app-theme-light #edit-user-perms-modal button i,
@@ -465,6 +512,9 @@
     body.app-theme-light #confirm-delete-modal button,
     body.app-theme-light #confirm-delete-modal button span,
     body.app-theme-light #confirm-delete-modal button i,
+    body.app-theme-light #edit-receipt-modal button:not(.client-suggestion-item),
+    body.app-theme-light #edit-receipt-modal button:not(.client-suggestion-item) span,
+    body.app-theme-light #edit-receipt-modal button:not(.client-suggestion-item) i,
     body.app-theme-light #receipt-modal .no-print button,
     body.app-theme-light #receipt-modal .no-print button span,
     body.app-theme-light #receipt-modal .no-print button i,
@@ -475,10 +525,11 @@
     }
 
     /* Modo Oscuro: botones celestes con letras e íconos en BLANCO PURO */
-    body.app-theme-dark #app-shell button,
+    body.app-theme-dark #app-shell button:not(.client-suggestion-item),
     body.app-theme-dark #edit-user-perms-modal button,
     body.app-theme-dark #edit-product-modal button,
     body.app-theme-dark #confirm-delete-modal button,
+    body.app-theme-dark #edit-receipt-modal button:not(.client-suggestion-item),
     body.app-theme-dark #receipt-modal .no-print button,
     body.app-theme-dark #kardex-modal .no-print button {
       background: #0ea5e9 !important;
@@ -488,10 +539,11 @@
       opacity: 1 !important;
     }
 
-    body.app-theme-dark #app-shell button:hover:not(:disabled),
+    body.app-theme-dark #app-shell button:not(.client-suggestion-item):hover:not(:disabled),
     body.app-theme-dark #edit-user-perms-modal button:hover:not(:disabled),
     body.app-theme-dark #edit-product-modal button:hover:not(:disabled),
     body.app-theme-dark #confirm-delete-modal button:hover:not(:disabled),
+    body.app-theme-dark #edit-receipt-modal button:not(.client-suggestion-item):hover:not(:disabled),
     body.app-theme-dark #receipt-modal .no-print button:hover:not(:disabled),
     body.app-theme-dark #kardex-modal .no-print button:hover:not(:disabled) {
       background: #0284c7 !important;
@@ -500,9 +552,9 @@
       color: #ffffff !important;
     }
 
-    body.app-theme-dark #app-shell button,
-    body.app-theme-dark #app-shell button span,
-    body.app-theme-dark #app-shell button i,
+    body.app-theme-dark #app-shell button:not(.client-suggestion-item),
+    body.app-theme-dark #app-shell button:not(.client-suggestion-item) span,
+    body.app-theme-dark #app-shell button:not(.client-suggestion-item) i,
     body.app-theme-dark #edit-user-perms-modal button,
     body.app-theme-dark #edit-user-perms-modal button span,
     body.app-theme-dark #edit-user-perms-modal button i,
@@ -512,6 +564,9 @@
     body.app-theme-dark #confirm-delete-modal button,
     body.app-theme-dark #confirm-delete-modal button span,
     body.app-theme-dark #confirm-delete-modal button i,
+    body.app-theme-dark #edit-receipt-modal button:not(.client-suggestion-item),
+    body.app-theme-dark #edit-receipt-modal button:not(.client-suggestion-item) span,
+    body.app-theme-dark #edit-receipt-modal button:not(.client-suggestion-item) i,
     body.app-theme-dark #receipt-modal .no-print button,
     body.app-theme-dark #receipt-modal .no-print button span,
     body.app-theme-dark #receipt-modal .no-print button i,
@@ -534,14 +589,16 @@
     }
 
     /* Botones deshabilitados (sin stock) */
-    body.app-theme-light #app-shell button:disabled {
+    body.app-theme-light #app-shell button:disabled,
+    body.app-theme-light #edit-receipt-modal button:disabled {
       background-color: #bae6fd !important;
       border-color: #7dd3fc !important;
       color: #334155 !important;
       opacity: 0.65 !important;
       cursor: not-allowed !important;
     }
-    body.app-theme-dark #app-shell button:disabled {
+    body.app-theme-dark #app-shell button:disabled,
+    body.app-theme-dark #edit-receipt-modal button:disabled {
       background-color: #0c4a6e !important;
       border-color: #0369a1 !important;
       color: #bae6fd !important;
@@ -748,6 +805,15 @@
                 <span>Historial de Recibos</span>
               </span>
               <span id="badge-receipts-count" class="bg-zinc-200 text-zinc-800 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            </button>
+
+            <button type="button" id="tab-btn-clients" onclick="switchTab('clients')"
+              class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition text-left text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-address-book w-4 text-center"></i>
+                <span>Clientes Guardados</span>
+              </span>
+              <span id="badge-clients-count" class="bg-zinc-200 text-zinc-800 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
             </button>
 
             <button type="button" id="tab-btn-reports" onclick="switchTab('reports')"
@@ -988,20 +1054,27 @@
                   <span class="text-[11px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">Alvir Moto Store</span>
                 </div>
 
-                <!-- Datos del Cliente -->
+                <!-- Datos del Cliente con Autocompletado Desplegable Opcional -->
                 <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
-                  <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-pen text-rose-400"></i> Datos del Cliente
-                  </h3>
+                  <div class="flex items-center justify-between gap-2">
+                    <h3 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                      <i class="fa-solid fa-user-pen text-rose-400"></i> Datos del Cliente
+                    </h3>
+                    <span class="text-[10px] text-zinc-400">Se guarda automáticamente al facturar</span>
+                  </div>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
+                    <div class="relative client-autocomplete-wrapper">
                       <label class="block text-xs font-semibold text-zinc-300 mb-1">Nombre del Cliente *</label>
-                      <input type="text" id="client-name" required placeholder="Ej. Carlos Mendoza"
+                      <input type="text" id="client-name" required autocomplete="off" placeholder="Ej. Roberto López"
                         class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+                      <!-- Ventanita desplegable de clientes guardados -->
+                      <div id="client-suggestions-box"
+                        class="client-suggestions-dropdown hidden absolute left-0 right-0 mt-1 bg-zinc-950 border-2 border-sky-400 rounded-xl shadow-2xl z-30 max-h-56 overflow-y-auto divide-y divide-zinc-800">
+                      </div>
                     </div>
                     <div>
                       <label class="block text-xs font-semibold text-zinc-300 mb-1">Número de Teléfono *</label>
-                      <input type="tel" id="client-phone" required placeholder="Ej. 8888-9999"
+                      <input type="tel" id="client-phone" required autocomplete="off" placeholder="Ej. 57253215"
                         class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
                     </div>
                   </div>
@@ -1081,7 +1154,7 @@
                     <h2 class="text-base font-extrabold text-white">Historial de Recibos de Compra / Entrega</h2>
                     <span id="history-active-period-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-600 text-white">Mostrando: Hoy</span>
                   </div>
-                  <p class="text-xs text-zinc-400 mt-0.5">Por defecto muestra únicamente lo facturado hoy; usa las pestañas rápidas o el filtro de fechas para ver días anteriores</p>
+                  <p class="text-xs text-zinc-400 mt-0.5">Puedes ver o editar cualquier recibo sin límite de tiempo; el inventario se ajusta automáticamente</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                   <button type="button" onclick="clearHistoryFilters()" class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
@@ -1139,7 +1212,7 @@
                     <th class="py-3.5 px-5">Vendedor</th>
                     <th class="py-3.5 px-5">Método Pago</th>
                     <th class="py-3.5 px-5 text-right">Total</th>
-                    <th class="py-3.5 px-5 text-right">Comprobante</th>
+                    <th class="py-3.5 px-5 text-right">Comprobante / Editar</th>
                   </tr>
                 </thead>
                 <tbody id="history-table-body" class="divide-y divide-zinc-800/80 text-sm">
@@ -1151,6 +1224,47 @@
             <div id="history-empty-state" class="hidden p-10 text-center text-zinc-400">
               <i class="fa-solid fa-receipt text-3xl mb-2"></i>
               <p class="text-sm font-medium">No hay recibos que coincidan con el filtro o aún no se ha emitido ninguno.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA CLIENTES GUARDADOS -->
+        <div id="view-clients" class="hidden fade-in space-y-6">
+          <div class="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+            <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 class="text-base font-extrabold text-white">Clientes Guardados en el Sistema</h2>
+                <p class="text-xs text-zinc-400">Cada cliente nuevo se guarda automáticamente una sola vez al emitir o editar un recibo</p>
+              </div>
+              <div class="relative w-full sm:w-72">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-400">
+                  <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </span>
+                <input type="text" id="clients-search-input" oninput="renderClientsTable(this.value)" placeholder="Buscar por nombre o teléfono..."
+                  class="w-full pl-9 pr-3 py-2 bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 transition" />
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                    <th class="py-3.5 px-5">#</th>
+                    <th class="py-3.5 px-5">Nombre del Cliente</th>
+                    <th class="py-3.5 px-5">Teléfono</th>
+                    <th class="py-3.5 px-5 text-center">Compras Registradas</th>
+                    <th class="py-3.5 px-5 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="clients-table-body" class="divide-y divide-zinc-800/80 text-sm">
+                  <!-- Clientes generados dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="clients-empty-state" class="hidden p-10 text-center text-zinc-400">
+              <i class="fa-solid fa-address-book text-3xl mb-2"></i>
+              <p class="text-sm font-medium">Aún no hay clientes guardados. Se guardarán automáticamente al facturar.</p>
             </div>
           </div>
         </div>
@@ -1235,7 +1349,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-zinc-800">
               <div>
                 <h2 class="text-base font-extrabold text-white">Balance de Recuperación y Ganancias</h2>
-                <p class="text-xs text-zinc-400">Calculado automáticamente con cada recibo emitido según el precio de costo y venta</p>
+                <p class="text-xs text-zinc-400">Calculado automáticamente con cada recibo emitido o editado según el precio de costo y venta</p>
               </div>
               <span class="text-xs font-semibold bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-full">Solo visible para perfiles autorizados</span>
             </div>
@@ -1652,6 +1766,127 @@
     </div>
   </div>
 
+  <!-- MODAL PARA EDITAR RECIBO EXISTENTE (SIN LÍMITE DE FECHA, CON RETORNO Y DESCUENTO DE INVENTARIO) -->
+  <div id="edit-receipt-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-[2px] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-zinc-900 text-zinc-100 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden border border-zinc-800 fade-in my-auto">
+      <div class="px-6 py-4 border-b border-zinc-800 flex items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-base font-extrabold text-white">Editar Recibo de Entrega</h3>
+            <span id="edit-rec-number-badge" class="font-mono text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-600 text-white">REC-0001</span>
+          </div>
+          <p class="text-xs text-zinc-400 mt-0.5">Al quitar o cambiar productos, el stock regresa y se actualiza automáticamente en tu inventario</p>
+        </div>
+        <button type="button" onclick="closeEditReceiptModal()" class="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 max-h-[82vh] overflow-y-auto">
+        <input type="hidden" id="edit-rec-index" />
+
+        <!-- Datos del Cliente en Edición (con sugerencias de clientes guardados) -->
+        <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-pen text-rose-400"></i> Datos del Cliente
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="relative client-autocomplete-wrapper">
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Nombre del Cliente *</label>
+              <input type="text" id="edit-rec-client-name" autocomplete="off" placeholder="Nombre del cliente"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+              <div id="edit-client-suggestions-box"
+                class="client-suggestions-dropdown hidden absolute left-0 right-0 mt-1 bg-zinc-950 border-2 border-sky-400 rounded-xl shadow-2xl z-30 max-h-48 overflow-y-auto divide-y divide-zinc-800">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Número de Teléfono *</label>
+              <input type="tel" id="edit-rec-client-phone" autocomplete="off" placeholder="Teléfono del cliente"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Método de Pago</label>
+              <select id="edit-rec-payment-method"
+                class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-zinc-300 mb-1">Fecha Registrada</label>
+              <input type="text" id="edit-rec-date" readonly
+                class="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 text-zinc-400 rounded-lg text-sm font-mono" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Buscador para agregar otro producto al recibo editado -->
+        <div class="bg-zinc-950/70 p-4 rounded-xl border border-zinc-800 space-y-3">
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle text-rose-400"></i> Agregar Producto Correcto al Recibo
+          </h4>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-zinc-400">
+              <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            </span>
+            <input type="text" id="edit-rec-product-search" oninput="renderEditReceiptProductSearch(this.value)"
+              placeholder="Buscar producto por nombre o N° de serie para agregarlo..."
+              class="w-full pl-9 pr-3 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500" />
+          </div>
+          <div id="edit-rec-search-results" class="space-y-2 max-h-44 overflow-y-auto">
+            <!-- Resultados de búsqueda para añadir -->
+          </div>
+        </div>
+
+        <!-- Lista de Productos Actuales en el Recibo -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Productos en este Recibo</h4>
+            <span class="text-[11px] text-zinc-400">Usa <strong class="text-white">Quitar</strong> para devolver el producto al inventario</span>
+          </div>
+          <div class="border border-zinc-800 rounded-xl overflow-hidden">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-zinc-950/70 border-b border-zinc-800 text-[11px] uppercase text-zinc-400">
+                <tr>
+                  <th class="py-2.5 px-3">Producto / Serie</th>
+                  <th class="py-2.5 px-2 text-center">Cant.</th>
+                  <th class="py-2.5 px-3 text-right">Subtotal</th>
+                  <th class="py-2.5 px-3 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="edit-rec-items-body" class="divide-y divide-zinc-800/80">
+                <!-- Items editables -->
+              </tbody>
+            </table>
+            <div id="edit-rec-empty-msg" class="hidden p-5 text-center text-zinc-400 text-xs">
+              No hay productos en este recibo. Agrega al menos uno arriba antes de guardar.
+            </div>
+          </div>
+        </div>
+
+        <!-- Total y Botones de Guardado -->
+        <div class="pt-3 border-t border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-zinc-400 block">Nuevo Total del Recibo:</span>
+            <span id="edit-rec-total-display" class="text-2xl font-extrabold text-white">C$ 0.00</span>
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <button type="button" onclick="closeEditReceiptModal()" class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition">
+              Cancelar
+            </button>
+            <button type="button" onclick="saveEditedReceipt()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Guardar Cambios del Recibo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR PRODUCTO -->
   <div id="confirm-delete-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px] flex items-center justify-center p-4">
     <div class="bg-zinc-900 text-zinc-100 w-full max-w-sm rounded-2xl shadow-xl overflow-hidden border border-zinc-800 p-6 fade-in space-y-4">
@@ -1870,12 +2105,214 @@
     let appData = {
       users: [PRIMARY_ADMIN],
       inventory: [...DEFAULT_INVENTORY],
-      receipts: []
+      receipts: [],
+      clients: []
     };
     let cart = [];
     let openActionMenuId = null;
     let pendingDeleteId = null;
 
+    // Estado temporal del modal de edición de recibo
+    let editingReceiptIndex = null;
+    let editingReceiptItems = [];
+
+    /* =========================================================================
+       GESTIÓN DE CLIENTES GUARDADOS (PERFILES SIN DUPLICADOS EXACTOS)
+       ========================================================================= */
+    function normalizeClientKey(name, phone) {
+      const cleanName = String(name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+      const cleanPhone = String(phone || '').trim().toLowerCase().replace(/\s+/g, ' ');
+      return `${cleanName}__${cleanPhone}`;
+    }
+
+    function normalizeClientRecord(c) {
+      return {
+        id: String(c.id || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`),
+        name: String(c.name || '').trim(),
+        phone: String(c.phone || '').trim(),
+        createdAt: c.createdAt || new Date().toISOString()
+      };
+    }
+
+    function ensureClientSaved(name, phone) {
+      const cleanName = String(name || '').trim();
+      const cleanPhone = String(phone || '').trim();
+      if (!cleanName || !cleanPhone) return false;
+
+      if (!Array.isArray(appData.clients)) {
+        appData.clients = [];
+      }
+
+      const targetKey = normalizeClientKey(cleanName, cleanPhone);
+      const alreadyExists = appData.clients.some(
+        c => normalizeClientKey(c.name, c.phone) === targetKey
+      );
+
+      if (!alreadyExists) {
+        appData.clients.unshift({
+          id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+          name: cleanName,
+          phone: cleanPhone,
+          createdAt: new Date().toISOString()
+        });
+        return true;
+      }
+      return false;
+    }
+
+    function syncClientsFromExistingReceipts() {
+      if (!Array.isArray(appData.clients)) {
+        appData.clients = [];
+      }
+      if (!Array.isArray(appData.receipts)) return;
+      // Recorrer de más antiguo a más reciente para conservar el orden de registro
+      for (let i = appData.receipts.length - 1; i >= 0; i--) {
+        const r = appData.receipts[i];
+        if (r && r.clientName && r.clientPhone) {
+          ensureClientSaved(r.clientName, r.clientPhone);
+        }
+      }
+    }
+
+    function renderClientSuggestions(inputId, boxId, phoneInputId) {
+      const nameInput = document.getElementById(inputId);
+      const box = document.getElementById(boxId);
+      if (!nameInput || !box) return;
+
+      const query = nameInput.value.trim().toLowerCase();
+      const clientsList = Array.isArray(appData.clients) ? appData.clients : [];
+
+      if (!query || clientsList.length === 0) {
+        box.classList.add('hidden');
+        box.innerHTML = '';
+        return;
+      }
+
+      const matches = clientsList.filter(c =>
+        c.name.toLowerCase().includes(query) ||
+        c.phone.toLowerCase().includes(query)
+      );
+
+      if (matches.length === 0) {
+        box.classList.add('hidden');
+        box.innerHTML = '';
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-sky-400 bg-zinc-900/90 flex items-center justify-between">
+          <span>Clientes Guardados (Toca para elegir o sigue escribiendo)</span>
+          <span>${matches.length}</span>
+        </div>
+        ${matches.map(c => `
+          <button type="button"
+            onmousedown="selectSavedClient('${escapeAttr(inputId)}', '${escapeAttr(phoneInputId)}', '${escapeAttr(boxId)}', '${escapeAttr(c.name)}', '${escapeAttr(c.phone)}')"
+            class="client-suggestion-item w-full text-left px-3.5 py-2.5 transition flex flex-col gap-0.5 cursor-pointer">
+            <span class="text-xs font-extrabold text-white leading-tight">${escapeHTML(c.name)}</span>
+            <span class="text-[11px] font-mono text-zinc-400 leading-tight"><i class="fa-solid fa-phone text-[9px] mr-1"></i>${escapeHTML(c.phone)}</span>
+          </button>
+        `).join('')}
+      `;
+
+      box.classList.remove('hidden');
+    }
+
+    function selectSavedClient(nameInputId, phoneInputId, boxId, selectedName, selectedPhone) {
+      const nameEl = document.getElementById(nameInputId);
+      const phoneEl = document.getElementById(phoneInputId);
+      const boxEl = document.getElementById(boxId);
+
+      if (nameEl) nameEl.value = selectedName;
+      if (phoneEl) phoneEl.value = selectedPhone;
+      if (boxEl) {
+        boxEl.classList.add('hidden');
+        boxEl.innerHTML = '';
+      }
+    }
+
+    function hideAllClientSuggestionBoxes() {
+      ['client-suggestions-box', 'edit-client-suggestions-box'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function renderClientsTable(filterText = '') {
+      const tbody = document.getElementById('clients-table-body');
+      const emptyState = document.getElementById('clients-empty-state');
+      if (!tbody || !emptyState) return;
+
+      const query = String(filterText || '').trim().toLowerCase();
+      const clientsList = Array.isArray(appData.clients) ? appData.clients : [];
+
+      const filtered = clientsList.filter(c => {
+        if (!query) return true;
+        return c.name.toLowerCase().includes(query) || c.phone.toLowerCase().includes(query);
+      });
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      filtered.forEach((client, idx) => {
+        const key = normalizeClientKey(client.name, client.phone);
+        const purchaseCount = appData.receipts.filter(
+          r => normalizeClientKey(r.clientName, r.clientPhone) === key
+        ).length;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-zinc-800/40 transition';
+        tr.innerHTML = `
+          <td class="py-3.5 px-5 text-xs text-zinc-400 font-mono">${idx + 1}</td>
+          <td class="py-3.5 px-5 font-bold text-white text-sm">${escapeHTML(client.name)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs text-zinc-300">${escapeHTML(client.phone)}</td>
+          <td class="py-3.5 px-5 text-center">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-950/80 text-sky-300 border border-sky-800/50">
+              ${purchaseCount} ${purchaseCount === 1 ? 'recibo' : 'recibos'}
+            </span>
+          </td>
+          <td class="py-3.5 px-5 text-right">
+            <div class="inline-flex items-center gap-2">
+              <button type="button" onclick="useClientInBilling('${escapeAttr(client.name)}', '${escapeAttr(client.phone)}')"
+                class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Facturar</span>
+              </button>
+              <button type="button" onclick="deleteSavedClient('${escapeAttr(client.id)}')"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition" title="Eliminar cliente guardado">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function useClientInBilling(name, phone) {
+      switchTab('billing');
+      const nameEl = document.getElementById('client-name');
+      const phoneEl = document.getElementById('client-phone');
+      if (nameEl) nameEl.value = name;
+      if (phoneEl) phoneEl.value = phone;
+      hideAllClientSuggestionBoxes();
+      showToast(`Cliente "${name}" cargado en Emisión de Recibos.`, 'info');
+    }
+
+    function deleteSavedClient(clientId) {
+      appData.clients = (appData.clients || []).filter(c => c.id !== clientId);
+      saveAppData();
+      renderClientsTable(document.getElementById('clients-search-input')?.value || '');
+      showToast('Cliente eliminado de la lista guardada.', 'info');
+    }
+
+    /* =========================================================================
+       TEMA CLARO / OSCURO Y PERFIL
+       ========================================================================= */
     function loadSavedTheme() {
       const saved = localStorage.getItem(THEME_STORAGE_KEY);
       currentAppTheme = (saved === 'light') ? 'light' : 'dark';
@@ -1968,6 +2405,7 @@
         enabledItems.push({ label: 'Crear y Administrar Perfiles', icon: 'fa-users-gear', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
       }
       enabledItems.push({ label: 'Emisión de Recibos', icon: 'fa-receipt', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
+      enabledItems.push({ label: 'Clientes Guardados', icon: 'fa-address-book', cls: 'bg-zinc-950 text-zinc-100 border-zinc-700' });
       if (perms.inventory) enabledItems.push({ label: 'Acceso a Inventario', icon: 'fa-boxes-stacked', cls: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/50' });
       if (perms.kardex) enabledItems.push({ label: 'Hoja de Kardex', icon: 'fa-file-lines', cls: 'bg-amber-950/80 text-amber-300 border-amber-800/50' });
       if (perms.history) enabledItems.push({ label: 'Historial de Recibos', icon: 'fa-clock-rotate-left', cls: 'bg-sky-950/80 text-sky-300 border-sky-800/50' });
@@ -2046,6 +2484,11 @@
         ? parsed.inventory.map(normalizeInventoryItem)
         : [...DEFAULT_INVENTORY];
       appData.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
+      appData.clients = Array.isArray(parsed.clients)
+        ? parsed.clients.map(normalizeClientRecord).filter(c => c.name && c.phone)
+        : [];
+      syncClientsFromExistingReceipts();
+
       const secondaryUsers = Array.isArray(parsed.users)
         ? parsed.users
             .filter(u => u && u.username && u.username.toLowerCase() !== PRIMARY_ADMIN.username.toLowerCase())
@@ -2082,6 +2525,7 @@
             renderInventoryTable(document.getElementById('inventory-search')?.value || '');
             renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
             renderHistoryTable();
+            renderClientsTable(document.getElementById('clients-search-input')?.value || '');
             renderUsersTable();
             renderProfileInfoPanel();
             renderSalesReports();
@@ -2232,6 +2676,7 @@
       renderBillingProducts(document.getElementById('billing-product-search').value);
       renderCart();
       renderHistoryTable();
+      renderClientsTable();
       renderUsersTable();
       renderProfileInfoPanel();
       renderSalesReports();
@@ -2323,7 +2768,32 @@
           openActionMenuId = null;
           renderInventoryTable(document.getElementById('inventory-search').value);
         }
+        if (!e.target.closest('.client-autocomplete-wrapper')) {
+          hideAllClientSuggestionBoxes();
+        }
       });
+
+      // Autocompletado de clientes en Emisión de Recibos
+      const clientNameInput = document.getElementById('client-name');
+      if (clientNameInput) {
+        clientNameInput.addEventListener('input', () => {
+          renderClientSuggestions('client-name', 'client-suggestions-box', 'client-phone');
+        });
+        clientNameInput.addEventListener('focus', () => {
+          renderClientSuggestions('client-name', 'client-suggestions-box', 'client-phone');
+        });
+      }
+
+      // Autocompletado de clientes en Modal de Edición de Recibo
+      const editClientNameInput = document.getElementById('edit-rec-client-name');
+      if (editClientNameInput) {
+        editClientNameInput.addEventListener('input', () => {
+          renderClientSuggestions('edit-rec-client-name', 'edit-client-suggestions-box', 'edit-rec-client-phone');
+        });
+        editClientNameInput.addEventListener('focus', () => {
+          renderClientSuggestions('edit-rec-client-name', 'edit-client-suggestions-box', 'edit-rec-client-phone');
+        });
+      }
 
       document.getElementById('login-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -2571,7 +3041,7 @@
 
     function canAccessTab(tabName) {
       if (!currentUser) return false;
-      if (tabName === 'billing' || tabName === 'settings') return true;
+      if (tabName === 'billing' || tabName === 'settings' || tabName === 'clients') return true;
       if (tabName === 'users') return Boolean(currentUser.isOwner);
       if (tabName === 'inventory') return Boolean(currentUser.permissions?.inventory);
       if (tabName === 'history') return Boolean(currentUser.permissions?.history);
@@ -2585,7 +3055,7 @@
         tabName = getDefaultTabForUser();
       }
 
-      const views = ['inventory', 'billing', 'history', 'reports', 'earnings', 'settings', 'users'];
+      const views = ['inventory', 'billing', 'history', 'clients', 'reports', 'earnings', 'settings', 'users'];
       views.forEach(v => {
         const viewEl = document.getElementById(`view-${v}`);
         const btnEl = document.getElementById(`tab-btn-${v}`);
@@ -2611,6 +3081,8 @@
         if (document.getElementById('history-date-from')) document.getElementById('history-date-from').value = '';
         if (document.getElementById('history-date-to')) document.getElementById('history-date-to').value = '';
         renderHistoryTable();
+      } else if (tabName === 'clients') {
+        renderClientsTable(document.getElementById('clients-search-input')?.value || '');
       } else if (tabName === 'reports') {
         renderSalesReports();
       } else if (tabName === 'earnings') {
@@ -2643,6 +3115,8 @@
       document.getElementById('stat-total-value').textContent = formatCurrency(totalValue);
       document.getElementById('badge-inventory-count').textContent = totalProducts;
       document.getElementById('badge-receipts-count').textContent = todayReceiptsCount;
+      const clientsBadge = document.getElementById('badge-clients-count');
+      if (clientsBadge) clientsBadge.textContent = (appData.clients || []).length;
     }
 
     function toggleProductActionMenu(id, event) {
@@ -3202,6 +3676,7 @@
         return;
       }
 
+      // Descontar unidades del inventario
       cart.forEach(cartItem => {
         const invItem = appData.inventory.find(i => i.id === cartItem.id);
         if (invItem) {
@@ -3214,6 +3689,9 @@
           }
         }
       });
+
+      // Guardar cliente una sola vez si es nuevo
+      const isNewClientSaved = ensureClientSaved(clientName, clientPhone);
 
       const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       const nextNum = appData.receipts.length + 1;
@@ -3243,16 +3721,23 @@
       document.getElementById('client-name').value = '';
       document.getElementById('client-phone').value = '';
       document.getElementById('billing-product-search').value = '';
+      hideAllClientSuggestionBoxes();
       cart = [];
       renderCart();
       renderInventoryTable(document.getElementById('inventory-search').value);
       renderBillingProducts('');
       renderHistoryTable();
+      renderClientsTable(document.getElementById('clients-search-input')?.value || '');
       renderSalesReports();
       renderEarningsReport();
 
       openReceiptModal(newReceipt);
-      showToast(`Recibo ${receiptNumber} emitido.`, 'success');
+      showToast(
+        isNewClientSaved
+          ? `Recibo ${receiptNumber} emitido y cliente guardado en el sistema.`
+          : `Recibo ${receiptNumber} emitido.`,
+        'success'
+      );
     }
 
     function openReceiptModal(receipt) {
@@ -3446,7 +3931,10 @@
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-zinc-800/40 transition';
         tr.innerHTML = `
-          <td class="py-3.5 px-5 font-mono text-xs font-bold text-rose-400">${escapeHTML(rec.number)}</td>
+          <td class="py-3.5 px-5 font-mono text-xs font-bold text-rose-400">
+            <div>${escapeHTML(rec.number)}</div>
+            ${rec.editedAt ? `<span class="text-[10px] font-sans font-semibold text-amber-300">Editado</span>` : ''}
+          </td>
           <td class="py-3.5 px-5 text-xs text-zinc-400">${escapeHTML(rec.date)}</td>
           <td class="py-3.5 px-5">
             <p class="font-bold text-white text-xs">${escapeHTML(rec.clientName)}</p>
@@ -3456,9 +3944,16 @@
           <td class="py-3.5 px-5">${payBadge}</td>
           <td class="py-3.5 px-5 text-right font-extrabold text-white">${formatCurrency(rec.total)}</td>
           <td class="py-3.5 px-5 text-right">
-            <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300">
-              <i class="fa-solid fa-eye mr-1"></i>Ver Recibo
-            </button>
+            <div class="inline-flex items-center justify-end gap-2">
+              <button type="button" onclick="openEditReceiptModal(${originalIdx})" class="theme-action-btn px-3 py-1.5 text-xs font-bold rounded-lg transition inline-flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Editar</span>
+              </button>
+              <button type="button" onclick="viewReceiptByIndex(${originalIdx})" class="theme-action-btn px-3 py-1.5 bg-white hover:bg-rose-600 text-zinc-950 hover:text-white text-xs font-bold rounded-lg transition border border-zinc-300 inline-flex items-center gap-1">
+                <i class="fa-solid fa-eye"></i>
+                <span>Ver Recibo</span>
+              </button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -3469,6 +3964,345 @@
       if (appData.receipts[index]) {
         openReceiptModal(appData.receipts[index]);
       }
+    }
+
+    /* =========================================================================
+       EDICIÓN DE RECIBOS EXISTENTES (CON DEVOLUCIÓN Y DESCUENTO DE INVENTARIO)
+       ========================================================================= */
+    function getAvailableStockForReceiptEdit(productId, colorName = null) {
+      const invItem = appData.inventory.find(p => p.id === productId);
+      if (!invItem) return 0;
+
+      const originalRec = editingReceiptIndex !== null ? appData.receipts[editingReceiptIndex] : null;
+      const originalItems = (originalRec && Array.isArray(originalRec.items)) ? originalRec.items : [];
+
+      if (colorName && Array.isArray(invItem.colors) && invItem.colors.length > 0) {
+        const cObj = invItem.colors.find(c => c.name === colorName);
+        const currentInvColorStock = cObj ? (Number(cObj.qty) || 0) : 0;
+        const originalColorQty = originalItems
+          .filter(it => it.id === productId && (it.colorName || null) === colorName)
+          .reduce((s, it) => s + (Number(it.qty) || 0), 0);
+        const alreadyInEditedRec = editingReceiptItems
+          .filter(it => it.id === productId && (it.colorName || null) === colorName)
+          .reduce((s, it) => s + (Number(it.qty) || 0), 0);
+        return Math.max(0, currentInvColorStock + originalColorQty - alreadyInEditedRec);
+      }
+
+      const currentInvStock = Number(invItem.stock) || 0;
+      const originalTotalQty = originalItems
+        .filter(it => it.id === productId)
+        .reduce((s, it) => s + (Number(it.qty) || 0), 0);
+      const alreadyInEditedTotal = editingReceiptItems
+        .filter(it => it.id === productId)
+        .reduce((s, it) => s + (Number(it.qty) || 0), 0);
+
+      return Math.max(0, currentInvStock + originalTotalQty - alreadyInEditedTotal);
+    }
+
+    function openEditReceiptModal(index) {
+      const receipt = appData.receipts[index];
+      if (!receipt) return;
+
+      editingReceiptIndex = index;
+      editingReceiptItems = JSON.parse(JSON.stringify(receipt.items || [])).map(it => ({
+        ...it,
+        cartKey: it.cartKey || (it.colorName ? `${it.id}__${it.colorName}` : String(it.id))
+      }));
+
+      document.getElementById('edit-rec-index').value = index;
+      document.getElementById('edit-rec-number-badge').textContent = receipt.number || 'REC';
+      document.getElementById('edit-rec-client-name').value = receipt.clientName || '';
+      document.getElementById('edit-rec-client-phone').value = receipt.clientPhone || '';
+      document.getElementById('edit-rec-payment-method').value = receipt.paymentMethod === 'Transferencia' ? 'Transferencia' : 'Efectivo';
+      document.getElementById('edit-rec-date').value = receipt.date || '';
+      document.getElementById('edit-rec-product-search').value = '';
+      document.getElementById('edit-rec-search-results').innerHTML = '';
+      hideAllClientSuggestionBoxes();
+
+      renderEditReceiptItems();
+      document.getElementById('edit-receipt-modal').classList.remove('hidden');
+    }
+
+    function closeEditReceiptModal() {
+      editingReceiptIndex = null;
+      editingReceiptItems = [];
+      hideAllClientSuggestionBoxes();
+      document.getElementById('edit-receipt-modal').classList.add('hidden');
+    }
+
+    function renderEditReceiptItems() {
+      const tbody = document.getElementById('edit-rec-items-body');
+      const emptyMsg = document.getElementById('edit-rec-empty-msg');
+      const totalDisplay = document.getElementById('edit-rec-total-display');
+
+      tbody.innerHTML = '';
+
+      if (editingReceiptItems.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        totalDisplay.textContent = formatCurrency(0);
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      let total = 0;
+
+      editingReceiptItems.forEach((item, idx) => {
+        const subtotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
+        total += subtotal;
+        const colorLabel = item.colorName ? ` · Color: ${escapeHTML(item.colorName)}` : '';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2.5 px-3">
+            <p class="font-bold text-white text-xs leading-snug">${escapeHTML(item.name)}</p>
+            <p class="font-mono text-[10px] text-zinc-400 mb-1">${escapeHTML(item.serial || 'S/N')}${colorLabel}</p>
+            <div class="inline-flex items-center gap-1">
+              <span class="text-[10px] font-semibold text-zinc-400">C$/u:</span>
+              <input type="number" value="${Number(item.price).toFixed(2)}" min="0.01" step="0.01"
+                onchange="updateEditReceiptItemPrice(${idx}, this.value)"
+                class="w-20 px-1.5 py-0.5 bg-zinc-950 border border-zinc-700 text-amber-300 font-bold rounded text-[11px] focus:outline-none focus:ring-1 focus:ring-rose-500" />
+            </div>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <div class="inline-flex items-center border border-zinc-700 rounded-lg bg-zinc-950">
+              <button type="button" onclick="updateEditReceiptItemQty(${idx}, -1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-rose-400">-</button>
+              <span class="px-2 text-xs font-bold text-white">${item.qty}</span>
+              <button type="button" onclick="updateEditReceiptItemQty(${idx}, 1)" class="px-2 py-1 text-xs font-bold text-zinc-300 hover:text-emerald-400">+</button>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-right font-bold text-white text-xs">${formatCurrency(subtotal)}</td>
+          <td class="py-2.5 px-3 text-right">
+            <button type="button" onclick="removeEditReceiptItem(${idx})"
+              class="px-2.5 py-1 rounded-lg text-xs font-bold transition inline-flex items-center gap-1"
+              title="Quitar este producto y regresarlo al inventario">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Quitar</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      totalDisplay.textContent = formatCurrency(total);
+    }
+
+    function updateEditReceiptItemPrice(idx, rawVal) {
+      const item = editingReceiptItems[idx];
+      if (!item) return;
+      const newPrice = parseFloat(rawVal);
+      if (isNaN(newPrice) || newPrice <= 0) {
+        showToast('Ingresa un precio válido mayor a cero.', 'error');
+        renderEditReceiptItems();
+        return;
+      }
+      item.price = newPrice;
+      renderEditReceiptItems();
+    }
+
+    function updateEditReceiptItemQty(idx, delta) {
+      const item = editingReceiptItems[idx];
+      if (!item) return;
+
+      const nextQty = (Number(item.qty) || 0) + delta;
+      if (nextQty <= 0) {
+        editingReceiptItems.splice(idx, 1);
+      } else {
+        if (delta > 0) {
+          const remainingAvailable = getAvailableStockForReceiptEdit(item.id, item.colorName || null);
+          if (delta > remainingAvailable) {
+            showToast('No hay más unidades disponibles en inventario para este artículo.', 'error');
+            return;
+          }
+        }
+        item.qty = nextQty;
+      }
+
+      renderEditReceiptItems();
+      renderEditReceiptProductSearch(document.getElementById('edit-rec-product-search')?.value || '');
+    }
+
+    function removeEditReceiptItem(idx) {
+      editingReceiptItems.splice(idx, 1);
+      renderEditReceiptItems();
+      renderEditReceiptProductSearch(document.getElementById('edit-rec-product-search')?.value || '');
+    }
+
+    function renderEditReceiptProductSearch(filterText = '') {
+      const container = document.getElementById('edit-rec-search-results');
+      if (!container) return;
+
+      const query = String(filterText || '').trim().toLowerCase();
+      container.innerHTML = '';
+
+      if (!query) return;
+
+      const matches = appData.inventory.filter(item =>
+        item.name.toLowerCase().includes(query) ||
+        (item.serial && item.serial.toLowerCase().includes(query))
+      );
+
+      if (matches.length === 0) {
+        container.innerHTML = `<p class="text-xs text-zinc-400 py-2">No se encontraron productos con "${escapeHTML(filterText)}".</p>`;
+        return;
+      }
+
+      matches.forEach(item => {
+        const available = getAvailableStockForReceiptEdit(item.id, null);
+        const isOutOfStock = available <= 0;
+        const hasColors = Array.isArray(item.colors) && item.colors.length > 0;
+
+        const colorSelect = hasColors
+          ? `<select id="edit-rec-color-${item.id}" ${isOutOfStock ? 'disabled' : ''}
+               class="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg text-xs font-semibold">
+               ${item.colors.map((c, cIdx) => {
+                 const remC = getAvailableStockForReceiptEdit(item.id, c.name);
+                 return `<option value="${cIdx}" ${remC <= 0 ? 'disabled' : ''}>${escapeHTML(c.name)} (${remC} disp.)</option>`;
+               }).join('')}
+             </select>`
+          : '';
+
+        const row = document.createElement('div');
+        row.className = 'p-2.5 rounded-xl border border-zinc-800 bg-zinc-900/90 flex items-center justify-between gap-2';
+        row.innerHTML = `
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200">${escapeHTML(item.serial || 'S/N')}</span>
+              <span class="text-[11px] font-semibold ${available > 0 ? 'text-emerald-400' : 'text-rose-400'}">${available} disp.</span>
+            </div>
+            <p class="text-xs font-bold text-white truncate mt-0.5">${escapeHTML(item.name)} — ${formatCurrency(item.price)}</p>
+            <div class="mt-1">${colorSelect}</div>
+          </div>
+          <button type="button" onclick="addProductToEditedReceipt('${item.id}')" ${isOutOfStock ? 'disabled' : ''}
+            class="px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-plus"></i>
+            <span>Agregar</span>
+          </button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function addProductToEditedReceipt(productId) {
+      const product = appData.inventory.find(p => p.id === productId);
+      if (!product) return;
+
+      let chosenColor = null;
+      if (Array.isArray(product.colors) && product.colors.length > 0) {
+        const selEl = document.getElementById(`edit-rec-color-${productId}`);
+        const cIdx = selEl ? parseInt(selEl.value, 10) : 0;
+        const cObj = product.colors[cIdx] || product.colors[0];
+        if (!cObj) return;
+
+        const remColor = getAvailableStockForReceiptEdit(productId, cObj.name);
+        if (remColor <= 0) {
+          showToast(`No hay más unidades disponibles en color ${cObj.name}.`, 'error');
+          return;
+        }
+        chosenColor = cObj.name;
+      } else {
+        const remTotal = getAvailableStockForReceiptEdit(productId, null);
+        if (remTotal <= 0) {
+          showToast('No hay más unidades disponibles en inventario.', 'error');
+          return;
+        }
+      }
+
+      const cartKey = chosenColor ? `${productId}__${chosenColor}` : productId;
+      const existing = editingReceiptItems.find(it => it.cartKey === cartKey);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        editingReceiptItems.push({
+          cartKey,
+          id: product.id,
+          serial: product.serial || 'S/N',
+          name: product.name,
+          colorName: chosenColor,
+          cost: Number(product.cost) || 0,
+          price: Number(product.price) || 0,
+          qty: 1
+        });
+      }
+
+      renderEditReceiptItems();
+      renderEditReceiptProductSearch(document.getElementById('edit-rec-product-search')?.value || '');
+    }
+
+    function saveEditedReceipt() {
+      if (editingReceiptIndex === null || !appData.receipts[editingReceiptIndex]) return;
+
+      const newClientName = document.getElementById('edit-rec-client-name').value.trim();
+      const newClientPhone = document.getElementById('edit-rec-client-phone').value.trim();
+      const newPaymentMethod = document.getElementById('edit-rec-payment-method').value || 'Efectivo';
+
+      if (!newClientName) {
+        showToast('El nombre del cliente es obligatorio.', 'error');
+        document.getElementById('edit-rec-client-name').focus();
+        return;
+      }
+      if (!newClientPhone) {
+        showToast('El número de teléfono del cliente es obligatorio.', 'error');
+        document.getElementById('edit-rec-client-phone').focus();
+        return;
+      }
+      if (editingReceiptItems.length === 0) {
+        showToast('El recibo debe tener al menos un producto.', 'error');
+        return;
+      }
+
+      const originalReceipt = appData.receipts[editingReceiptIndex];
+
+      // 1. Devolver al inventario los productos anteriores del recibo
+      (originalReceipt.items || []).forEach(oldItem => {
+        const invItem = appData.inventory.find(i => i.id === oldItem.id);
+        if (invItem) {
+          invItem.stock = (Number(invItem.stock) || 0) + (Number(oldItem.qty) || 0);
+          if (oldItem.colorName && Array.isArray(invItem.colors)) {
+            const cObj = invItem.colors.find(c => c.name === oldItem.colorName);
+            if (cObj) {
+              cObj.qty = (Number(cObj.qty) || 0) + (Number(oldItem.qty) || 0);
+            }
+          }
+        }
+      });
+
+      // 2. Descontar del inventario los productos nuevos/actualizados del recibo
+      editingReceiptItems.forEach(newItem => {
+        const invItem = appData.inventory.find(i => i.id === newItem.id);
+        if (invItem) {
+          invItem.stock = Math.max(0, (Number(invItem.stock) || 0) - (Number(newItem.qty) || 0));
+          if (newItem.colorName && Array.isArray(invItem.colors)) {
+            const cObj = invItem.colors.find(c => c.name === newItem.colorName);
+            if (cObj) {
+              cObj.qty = Math.max(0, (Number(cObj.qty) || 0) - (Number(newItem.qty) || 0));
+            }
+          }
+        }
+      });
+
+      // 3. Guardar cliente si es nuevo (sin duplicar si ya existía)
+      ensureClientSaved(newClientName, newClientPhone);
+
+      // 4. Actualizar los datos del recibo
+      const newTotal = editingReceiptItems.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.qty) || 0)), 0);
+      originalReceipt.clientName = newClientName;
+      originalReceipt.clientPhone = newClientPhone;
+      originalReceipt.paymentMethod = newPaymentMethod;
+      originalReceipt.items = JSON.parse(JSON.stringify(editingReceiptItems));
+      originalReceipt.total = newTotal;
+      originalReceipt.editedAt = new Date().toISOString();
+
+      saveAppData();
+      closeEditReceiptModal();
+
+      renderInventoryTable(document.getElementById('inventory-search')?.value || '');
+      renderBillingProducts(document.getElementById('billing-product-search')?.value || '');
+      renderHistoryTable();
+      renderClientsTable(document.getElementById('clients-search-input')?.value || '');
+      renderSalesReports();
+      renderEarningsReport();
+
+      showToast(`Recibo ${originalReceipt.number} actualizado e inventario ajustado.`, 'success');
     }
 
     function renderSalesReports() {
@@ -3556,89 +4390,83 @@
       let totalGrossSales = 0;
       let totalNetProfit = 0;
 
-      const byProduct = {};
+      const byProduct = new Map();
 
       appData.receipts.forEach(rec => {
         if (!Array.isArray(rec.items)) return;
         rec.items.forEach(it => {
           const qty = Number(it.qty) || 0;
           const salePrice = Number(it.price) || 0;
-          const invMatch = appData.inventory.find(p => p.id === it.id);
-          const unitCost = (it.cost !== undefined && it.cost !== null)
-            ? Number(it.cost) || 0
-            : (invMatch ? (Number(invMatch.cost) || 0) : salePrice);
+          const invMatch = appData.inventory.find(p => p.id === it.id || (it.serial && p.serial === it.serial && p.name === it.name));
+          const unitCost = (typeof it.cost === 'number' && !isNaN(it.cost))
+            ? it.cost
+            : (invMatch && typeof invMatch.cost === 'number' ? invMatch.cost : salePrice);
 
-          const recovered = unitCost * qty;
-          const gross = salePrice * qty;
-          const profit = gross - recovered;
+          const lineRecovered = unitCost * qty;
+          const lineSales = salePrice * qty;
+          const lineProfit = lineSales - lineRecovered;
 
-          totalRecoveredCost += recovered;
-          totalGrossSales += gross;
-          totalNetProfit += profit;
+          totalRecoveredCost += lineRecovered;
+          totalGrossSales += lineSales;
+          totalNetProfit += lineProfit;
 
-          const key = `${it.id || it.name}__${it.colorName || ''}`;
-          if (!byProduct[key]) {
-            byProduct[key] = {
-              name: it.name + (it.colorName ? ` (${it.colorName})` : ''),
+          const key = `${it.serial || 'S/N'}__${it.name}`;
+          if (!byProduct.has(key)) {
+            byProduct.set(key, {
               serial: it.serial || 'S/N',
+              name: it.name,
               qty: 0,
               recovered: 0,
               profit: 0,
-              gross: 0
-            };
+              sales: 0
+            });
           }
-          byProduct[key].qty += qty;
-          byProduct[key].recovered += recovered;
-          byProduct[key].profit += profit;
-          byProduct[key].gross += gross;
+          const agg = byProduct.get(key);
+          agg.qty += qty;
+          agg.recovered += lineRecovered;
+          agg.profit += lineProfit;
+          agg.sales += lineSales;
         });
       });
 
-      let stockCostTotal = 0;
-      let stockSaleTotal = 0;
-      appData.inventory.forEach(item => {
-        const st = Number(item.stock) || 0;
-        stockCostTotal += st * (Number(item.cost) || 0);
-        stockSaleTotal += st * (Number(item.price) || 0);
-      });
+      const currentStockCost = appData.inventory.reduce((sum, p) => sum + ((Number(p.cost) || 0) * (Number(p.stock) || 0)), 0);
+      const currentStockSale = appData.inventory.reduce((sum, p) => sum + ((Number(p.price) || 0) * (Number(p.stock) || 0)), 0);
 
       const recEl = document.getElementById('earnings-recovered-total');
       const profEl = document.getElementById('earnings-net-profit-total');
       const grossSubEl = document.getElementById('earnings-gross-sales-sub');
-      const stCostEl = document.getElementById('earnings-stock-cost');
-      const stSaleEl = document.getElementById('earnings-stock-sale');
+      const stockCostEl = document.getElementById('earnings-stock-cost');
+      const stockSaleEl = document.getElementById('earnings-stock-sale');
+      const tbody = document.getElementById('earnings-table-body');
+      const emptyEl = document.getElementById('earnings-empty-state');
 
       if (recEl) recEl.textContent = formatCurrency(totalRecoveredCost);
       if (profEl) profEl.textContent = formatCurrency(totalNetProfit);
       if (grossSubEl) grossSubEl.textContent = `Total vendido bruto: ${formatCurrency(totalGrossSales)}`;
-      if (stCostEl) stCostEl.textContent = formatCurrency(stockCostTotal);
-      if (stSaleEl) stSaleEl.textContent = formatCurrency(stockSaleTotal);
+      if (stockCostEl) stockCostEl.textContent = formatCurrency(currentStockCost);
+      if (stockSaleEl) stockSaleEl.textContent = formatCurrency(currentStockSale);
 
-      const tbody = document.getElementById('earnings-table-body');
-      const emptyEl = document.getElementById('earnings-empty-state');
       if (!tbody || !emptyEl) return;
-
       tbody.innerHTML = '';
-      const rows = Object.values(byProduct);
 
-      if (rows.length === 0) {
+      if (byProduct.size === 0) {
         emptyEl.classList.remove('hidden');
         return;
       }
       emptyEl.classList.add('hidden');
 
-      rows.forEach(r => {
+      byProduct.forEach(row => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-zinc-800/40';
+        tr.className = 'hover:bg-zinc-800/40 transition';
         tr.innerHTML = `
           <td class="py-3 px-4">
-            <div class="font-semibold text-white text-xs">${escapeHTML(r.name)}</div>
-            <div class="font-mono text-[10px] text-zinc-400">${escapeHTML(r.serial)}</div>
+            <p class="font-bold text-white text-xs">${escapeHTML(row.name)}</p>
+            <p class="font-mono text-[10px] text-zinc-400">${escapeHTML(row.serial)}</p>
           </td>
-          <td class="py-3 px-4 text-center font-bold text-zinc-200">${r.qty}</td>
-          <td class="py-3 px-4 text-right font-semibold text-amber-300">${formatCurrency(r.recovered)}</td>
-          <td class="py-3 px-4 text-right font-bold ${r.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${formatCurrency(r.profit)}</td>
-          <td class="py-3 px-4 text-right font-bold text-white">${formatCurrency(r.gross)}</td>
+          <td class="py-3 px-4 text-center font-bold text-zinc-200">${row.qty}</td>
+          <td class="py-3 px-4 text-right font-bold text-amber-300">${formatCurrency(row.recovered)}</td>
+          <td class="py-3 px-4 text-right font-extrabold text-emerald-400">${formatCurrency(row.profit)}</td>
+          <td class="py-3 px-4 text-right font-bold text-white">${formatCurrency(row.sales)}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -3646,21 +4474,38 @@
 
     function printDocument(type) {
       document.body.classList.remove('printing-receipt', 'printing-kardex');
-      document.body.classList.add(type === 'kardex' ? 'printing-kardex' : 'printing-receipt');
+      if (type === 'receipt') {
+        document.body.classList.add('printing-receipt');
+      } else if (type === 'kardex') {
+        document.body.classList.add('printing-kardex');
+      }
       window.print();
+      setTimeout(() => {
+        document.body.classList.remove('printing-receipt', 'printing-kardex');
+      }, 500);
     }
 
-    function formatCurrency(amount) {
-      return 'C$ ' + Number(amount || 0).toLocaleString('en-US', {
+    function formatCurrency(value) {
+      return 'C$ ' + Number(value).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
     }
 
     function escapeHTML(str) {
-      const div = document.createElement('div');
-      div.textContent = str == null ? '' : String(str);
-      return div.innerHTML;
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeAttr(str) {
+      return String(str)
+        .replace(/\/g, '\\')
+        .replace(/'/g, "\'")
+        .replace(/"/g, '&quot;');
     }
 
     function showToast(message, type = 'info') {
@@ -3668,18 +4513,18 @@
       const toast = document.createElement('div');
 
       const colors = {
-        success: 'bg-emerald-600 text-white',
-        error: 'bg-rose-600 text-white',
-        info: 'bg-zinc-950 text-white border border-zinc-700'
+        success: 'bg-zinc-950 text-white border-emerald-500',
+        error: 'bg-rose-600 text-white border-rose-800',
+        info: 'bg-zinc-900 text-white border-zinc-700'
       };
 
       const icons = {
-        success: 'fa-circle-check',
-        error: 'fa-circle-exclamation',
-        info: 'fa-circle-info'
+        success: 'fa-circle-check text-emerald-400',
+        error: 'fa-circle-exclamation text-white',
+        info: 'fa-circle-info text-zinc-300'
       };
 
-      toast.className = `${colors[type] || colors.info} px-4 py-3 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2.5 fade-in pointer-events-auto`;
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg border-l-4 text-xs font-semibold fade-in ${colors[type] || colors.info}`;
       toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-sm"></i><span>${escapeHTML(message)}</span>`;
 
       container.appendChild(toast);
